@@ -20,9 +20,16 @@ public class StopLine : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		CarController car = col.GetComponent<CarController>();
-		if (car != null) {
+		if (car != null && VerifyCarTrigger(car)) {
+			car.StopCar();
 			intersection.Enqueue(car, this);
 		}
+	}
+
+	public bool VerifyCarTrigger(CarController car) {
+		// Ignore this trigger enter if the car hits a stop line on the other lane (e.g. while turning at an intersection).
+		float angle = Vector2.Angle(car.transform.up, this.transform.up);
+		return (Mathf.Abs(angle) < 45f);
 	}
 
 	public bool CanTurnLeft() {
