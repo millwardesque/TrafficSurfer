@@ -1,11 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum DrivingState {
-	Driving
+	Driving,
+	Stopped
 };
 
+struct PossibleDirection {
+	public Vector2 direction;
+	public float duration;
+
+	public PossibleDirection(Vector2 direction, float duration) {
+		this.direction = direction;
+		this.duration = duration;
+	}
+}
+
 public class CarController : MonoBehaviour {
+	public static float TurnAngleVariance = 0.0001f;
 	public float maxSpeed = 1f;
 	float currentSpeed = 0f;
 
@@ -18,6 +31,9 @@ public class CarController : MonoBehaviour {
 
 			if (m_state == DrivingState.Driving) {
 				currentSpeed = maxSpeed;
+			}
+			else if (m_state == DrivingState.Stopped) {
+				currentSpeed = 0f;
 			}
 		}
 	}
@@ -35,16 +51,46 @@ public class CarController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {
-		TurningNode turningNode = col.GetComponent<TurningNode>();
-		if (turningNode != null) {
-			Vector2 newDirection = turningNode.GetRandomDirection(transform.up);
-			float angle = Vector2.Angle(transform.up, newDirection);
-
-			// HACK: If the car is turning, snap it to the position of the turning node to keep it on the road.
-			if (angle > TurningNode.AngleVariance) {
-				transform.Rotate (new Vector3(0f, 0f, -1f), angle);
-				transform.position = col.transform.position;
-			}
+		StopLine stopLine = col.GetComponent<StopLine>();
+		if (stopLine != null) {
+			State = DrivingState.Stopped;
 		}
+	}
+
+	public void ChooseDirection(bool canTurnLeft, bool canGoStraight, bool canTurnRight) {
+		// Note: The turn-duration values are hand-tweaked. Change with caution.
+		List<PossibleDirection> possibleDirections = new List<PossibleDirection>();
+		if (canTurnLeft) {
+			possibleDirections.Add(new PossibleDirection(-transform.right, 1.8f));
+		}
+
+		if (canGoStraight) {
+			possibleDirections.Add(new PossibleDirection(transform.up, 0f));
+		}
+
+		if (canTurnRight) {
+			possibleDirections.Add(new PossibleDirection(transform.right, 0.9f));
+		}
+
+		int randDirection = Random.Range(0, possibleDirections.Count);
+		Vector2 turnDirection = possibleDirections[randDirection].direction;
+		float turnDuration = possibleDirections[randDirection].duration;
+
+		for (int i = 0; i < possibleDirections.Count; ++i) {
+			Debug.Log (string.Format("Possible direction {0}", possibleDirections[i].direction));
+		}
+		Debug.Log (string.Format("Chose direction {0}", turnDirection));
+
+		float angle = Vector2.Angle(transform.up, turnDirection);
+		Vector3 cross = Vector3.Cross(transform.up, turnDirection);
+		if (cross.z < 0f) {
+			angle = -angle;
+		}
+
+		if (Mathf.Abs (angle) > CarController.TurnAngleVariance) {
+			iTween.RotateBy(gameObject, iTween.Hash("z", angle / 360f, "time", turnDuration));
+		}
+
+		State = DrivingState.Driving;
 	}
 }
