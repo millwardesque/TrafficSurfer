@@ -25,7 +25,6 @@ public class IntersectionManager : MonoBehaviour {
 	public IntersectionState State {
 		get { return m_state; }
 		set {
-			IntersectionState oldState = m_state;
 			m_state = value;
 		}
 	}

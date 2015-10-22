@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour {
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && car != lastCar) {
 			if (State == PlayerState.OnGround) {
-				Destroy (gameObject);
+				GameManager.Instance.GameOver();
 			}
 			else if (State == PlayerState.Jumping) {
 				State = PlayerState.OnCar;
@@ -151,5 +151,12 @@ public class PlayerController : MonoBehaviour {
 				this.transform.position = car.transform.position;
 			}
 		}
+	}
+
+	public void ResetPlayer(Transform spawnLocation) {
+		transform.SetParent(null);
+		transform.position = spawnLocation.position;
+		transform.rotation = spawnLocation.rotation;
+		State = PlayerState.OnGround;
 	}
 }

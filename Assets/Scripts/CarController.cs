@@ -21,12 +21,13 @@ public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
 	public float maxSpeed = 1f;
 	float currentSpeed = 0f;
+	Vector3 startPosition;
+	Quaternion startRotation;
 
 	DrivingState m_state;
 	public DrivingState State {
 		get { return m_state; }
 		set {
-			DrivingState oldState = m_state;
 			m_state = value;
 
 			if (m_state == DrivingState.Driving) {
@@ -37,9 +38,11 @@ public class CarController : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	void Start () {
-		State = DrivingState.Driving;
+		startPosition = transform.position;
+		startRotation = transform.rotation;
+		ResetCar();
 	}
 
 	// Update is called once per frame
@@ -83,6 +86,13 @@ public class CarController : MonoBehaviour {
 			iTween.RotateBy(gameObject, iTween.Hash("z", angle / 360f, "time", turnDuration, "easeType", "linear"));
 		}
 
+		State = DrivingState.Driving;
+	}
+
+	public void ResetCar() {
+		iTween.Stop(gameObject);
+		transform.position = startPosition;
+		transform.rotation = startRotation;
 		State = DrivingState.Driving;
 	}
 }

@@ -23,6 +23,10 @@ public class ScoreManager : MonoBehaviour {
 	}
 
 	void Start() {
+		RestartGame ();
+	}
+
+	public void RestartGame() {
 		Score = 0;
 	}
 }

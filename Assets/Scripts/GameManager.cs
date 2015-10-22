@@ -3,10 +3,14 @@ using System.Collections;
 
 public enum GameState {
 	IsRunning,
-	IsPaused
+	IsPaused,
+	GameOver
 };
 
 public class GameManager : MonoBehaviour {
+	public Transform playerStart;
+	PlayerController player;
+
 	GameState m_state = GameState.IsRunning;
 	public GameState State {
 		get { return m_state; }
@@ -23,6 +27,13 @@ public class GameManager : MonoBehaviour {
 				if (oldState == GameState.IsPaused) {
 					GUIManager.Instance.ClosePausePanel();
 				}
+				else if (oldState == GameState.GameOver) {
+					GUIManager.Instance.CloseGameOverPanel();
+				}
+			}
+			else if (m_state == GameState.GameOver) {
+				Time.timeScale = 0f;
+				GUIManager.Instance.OpenGameOverPanel();
 			}
 		}
 	}
@@ -38,10 +49,20 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	void Start() {
+		GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
+		player = playerGO.GetComponent<PlayerController>();
+
+		RestartGame();
+	}
+
 	void Update() {
 		if (State == GameState.IsRunning) {
 			if (Input.GetKeyDown(KeyCode.P)) {
 				Pause();
+			}
+			else if (Input.GetKeyDown(KeyCode.G)) {
+				GameOver ();
 			}
 		}
 		else if (State == GameState.IsPaused) {
@@ -56,6 +77,23 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Unpause() {
+		State = GameState.IsRunning;
+	}
+
+	public void GameOver() {
+		State = GameState.GameOver;
+	}
+
+	public void RestartGame() {
+		GameTimer.Instance.RestartGame();
+		ScoreManager.Instance.RestartGame();
+		player.ResetPlayer(playerStart);
+
+		CarController[] cars = FindObjectsOfType<CarController>();
+		for (int i = 0; i < cars.Length; ++i) {
+			cars[i].ResetCar();
+		}
+
 		State = GameState.IsRunning;
 	}
 }
