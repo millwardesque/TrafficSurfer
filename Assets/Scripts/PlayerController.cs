@@ -30,13 +30,11 @@ public class PlayerController : MonoBehaviour {
 				GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 1f);
 
 				if (oldState == PlayerState.OnGround) {
-					Debug.Log ("Jumping off ground");
 					activeJumpDuration = fromGroundJumpDuration;
 					jumpRemaining = activeJumpDuration;
 					distanceToJump = 0f;
 				}
 				else if (oldState == PlayerState.OnCar) {
-					Debug.Log ("Jumping off car");
 					activeJumpDuration = fromCarJumpDuration;
 					jumpRemaining = activeJumpDuration;
 					distanceToJump = jumpDistance;
@@ -46,7 +44,6 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			else if (m_state == PlayerState.OnGround) {
-				Debug.Log ("Landing on ground");
 				GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f);
 				lastCar = null;
 
@@ -57,7 +54,6 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			else if (m_state == PlayerState.OnCar) {
-				Debug.Log ("Landing on car");
 				GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f);
 				lastCar = null;
 
@@ -65,6 +61,8 @@ public class PlayerController : MonoBehaviour {
 					jumpRemaining = 0f;
 					distanceToJump = 0f;
 					jumpCooldownRemaining = jumpCooldown;
+
+					ScoreManager.Instance.Score += 1;
 				}
 			}
 		}
