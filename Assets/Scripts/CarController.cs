@@ -58,7 +58,7 @@ public class CarController : MonoBehaviour {
 		// Note: The turn-duration values are hand-tweaked. Change with caution.
 		List<PossibleDirection> possibleDirections = new List<PossibleDirection>();
 		if (canTurnLeft) {
-			possibleDirections.Add(new PossibleDirection(-transform.right, 0.57f));
+			possibleDirections.Add(new PossibleDirection(-transform.right, 0.77f));
 		}
 
 		if (canGoStraight) {
@@ -66,7 +66,7 @@ public class CarController : MonoBehaviour {
 		}
 
 		if (canTurnRight) {
-			possibleDirections.Add(new PossibleDirection(transform.right, 0.27f));
+			possibleDirections.Add(new PossibleDirection(transform.right, 0.47f));
 		}
 
 		int randDirection = Random.Range(0, possibleDirections.Count);
