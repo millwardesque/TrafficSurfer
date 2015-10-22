@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 			else if (m_state == GameState.GameOver) {
+				ScoreManager.Instance.AddScore(new HighScore("TST", ScoreManager.Instance.Score));
 				Time.timeScale = 0f;
 				GUIManager.Instance.OpenGameOverPanel();
 			}
