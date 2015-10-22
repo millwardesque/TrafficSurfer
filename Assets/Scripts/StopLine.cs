@@ -43,4 +43,16 @@ public class StopLine : MonoBehaviour {
 	public bool CanTurnRight() {
 		return (turnTargets[(int)TurnDirections.RightTurn] != null);
 	}
+
+	public Vector2 GetLeftTurnDestination() {
+		return turnTargets[(int)TurnDirections.LeftTurn].transform.position;
+	}
+
+	public Vector2 GetStraightDestination() {
+		return turnTargets[(int)TurnDirections.Straight].transform.position;
+	}
+
+	public Vector2 GetRightTurnDestination() {
+		return turnTargets[(int)TurnDirections.RightTurn].transform.position;
+	}
 }

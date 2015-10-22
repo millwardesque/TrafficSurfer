@@ -4,18 +4,9 @@ using System.Collections.Generic;
 
 public enum DrivingState {
 	Driving,
+	Turning,
 	Stopped
 };
-
-struct PossibleDirection {
-	public Vector2 direction;
-	public float duration;
-
-	public PossibleDirection(Vector2 direction, float duration) {
-		this.direction = direction;
-		this.duration = duration;
-	}
-}
 
 public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
@@ -23,6 +14,7 @@ public class CarController : MonoBehaviour {
 	float currentSpeed = 0f;
 	Vector3 startPosition;
 	Quaternion startRotation;
+	Vector2 turnDestination;
 
 	DrivingState m_state;
 	public DrivingState State {
@@ -31,6 +23,9 @@ public class CarController : MonoBehaviour {
 			m_state = value;
 
 			if (m_state == DrivingState.Driving) {
+				currentSpeed = maxSpeed;
+			}
+			else if (m_state == DrivingState.Turning) {
 				currentSpeed = maxSpeed;
 			}
 			else if (m_state == DrivingState.Stopped) {
@@ -47,7 +42,11 @@ public class CarController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (m_state == DrivingState.Driving) {
+		if (State == DrivingState.Driving) {
+			Vector2 distance = transform.up * currentSpeed * Time.deltaTime;
+			transform.position += (Vector3)distance;
+		}
+		else if (State == DrivingState.Turning) {
 			Vector2 distance = transform.up * currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
 		}
@@ -57,40 +56,43 @@ public class CarController : MonoBehaviour {
 		State = DrivingState.Stopped;
 	}
 
-	public void ChooseDirection(bool canTurnLeft, bool canGoStraight, bool canTurnRight) {
+	public void ChooseDirection(StopLine stopLine) {
 		// Note: The turn-duration values are hand-tweaked. Change with caution.
-		List<PossibleDirection> possibleDirections = new List<PossibleDirection>();
-		if (canTurnLeft) {
-			possibleDirections.Add(new PossibleDirection(-transform.right, 0.77f));
+		List<Vector2> possibleDestinations = new List<Vector2>();
+		if (stopLine.CanTurnLeft()) {
+			possibleDestinations.Add(stopLine.GetLeftTurnDestination());
 		}
 
-		if (canGoStraight) {
-			possibleDirections.Add(new PossibleDirection(transform.up, 0f));
+		if (stopLine.CanGoStraight()) {
+			possibleDestinations.Add(stopLine.GetStraightDestination());
 		}
 
-		if (canTurnRight) {
-			possibleDirections.Add(new PossibleDirection(transform.right, 0.47f));
+		if (stopLine.CanTurnRight()) {
+			possibleDestinations.Add(stopLine.GetRightTurnDestination());
 		}
 
-		int randDirection = Random.Range(0, possibleDirections.Count);
-		Vector2 turnDirection = possibleDirections[randDirection].direction;
-		float turnDuration = possibleDirections[randDirection].duration;
-
-		float angle = Vector2.Angle(transform.up, turnDirection);
-		Vector3 cross = Vector3.Cross(transform.up, turnDirection);
-		if (cross.z < 0f) {
-			angle = -angle;
-		}
-
-		if (Mathf.Abs (angle) > CarController.TurnAngleVariance) {
-			iTween.RotateBy(gameObject, iTween.Hash("z", angle / 360f, "time", turnDuration, "easeType", "linear"));
-		}
-
-		State = DrivingState.Driving;
+		int i = Random.Range(0, possibleDestinations.Count);
+		turnDestination = possibleDestinations[i];
+		Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
+		RotateTo(turnDirection);
+		State = DrivingState.Turning;
 	}
 
+	public void RotateTo(Vector2 direction) {
+		float angle = Vector2.Angle(transform.up, direction);
+		Vector3 cross = Vector3.Cross((Vector3)transform.up, (Vector3)direction);
+		if (cross.z < 0f) {
+			angle *= -1f;
+		}
+
+		// Debug.Log (string.Format("Rotating from {0} to {1} ({2} degrees)", transform.up, direction, angle));
+
+		Quaternion newRotation = transform.rotation;
+		newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
+		transform.rotation = newRotation;
+	}
+	
 	public void ResetCar() {
-		iTween.Stop(gameObject);
 		transform.position = startPosition;
 		transform.rotation = startRotation;
 		State = DrivingState.Driving;

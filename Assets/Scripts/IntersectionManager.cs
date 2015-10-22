@@ -43,7 +43,7 @@ public class IntersectionManager : MonoBehaviour {
 				WaitingCar waitingCar = cars.Dequeue();
 				CarController car = waitingCar.car;
 				StopLine stopLine = waitingCar.stopLine;
-				car.ChooseDirection(stopLine.CanTurnLeft(), stopLine.CanGoStraight(), stopLine.CanTurnRight());
+				car.ChooseDirection(stopLine);
 
 				State = IntersectionState.WaitingForCar;
 			}
