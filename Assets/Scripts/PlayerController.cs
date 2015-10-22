@@ -10,9 +10,9 @@ public enum PlayerState {
 public class PlayerController : MonoBehaviour {
 	public float walkSpeed = 1f;
 	public float jumpDistance = 0.3f;
-	public float fromCarJumpDuration = 0.3f;
+	public float fromCarJumpDuration = 0.2f;
 	public float fromGroundJumpDuration = 0.5f;
-	public float jumpCooldown = 0.1f;
+	public float jumpCooldown = 0.2f;
 	float jumpCooldownRemaining = 0f;
 	float activeJumpDuration = 0f;
 	float jumpRemaining = 0f;

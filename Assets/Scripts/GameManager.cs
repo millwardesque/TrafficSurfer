@@ -9,7 +9,11 @@ public enum GameState {
 
 public class GameManager : MonoBehaviour {
 	public Transform playerStart;
-	PlayerController player;
+
+	PlayerController m_player;
+	public PlayerController Player {
+		get { return m_player; }
+	}
 
 	GameState m_state = GameState.IsRunning;
 	public GameState State {
@@ -51,7 +55,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start() {
 		GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
-		player = playerGO.GetComponent<PlayerController>();
+		m_player = playerGO.GetComponent<PlayerController>();
 
 		RestartGame();
 	}
@@ -87,12 +91,14 @@ public class GameManager : MonoBehaviour {
 	public void RestartGame() {
 		GameTimer.Instance.RestartGame();
 		ScoreManager.Instance.RestartGame();
-		player.ResetPlayer(playerStart);
+		m_player.ResetPlayer(playerStart);
 
 		CarController[] cars = FindObjectsOfType<CarController>();
 		for (int i = 0; i < cars.Length; ++i) {
 			cars[i].ResetCar();
 		}
+
+		GoalManager.Instance.RestartGame();
 
 		State = GameState.IsRunning;
 	}
