@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour {
 	public float fromCarJumpDuration = 0.2f;
 	public float fromGroundJumpDuration = 0.5f;
 	public float jumpCooldown = 0.2f;
+	public AudioSource walkSound;
+
 	float jumpCooldownRemaining = 0f;
 	float activeJumpDuration = 0f;
 	float jumpRemaining = 0f;
@@ -87,23 +89,37 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			Quaternion rotation = transform.rotation;
+			Vector2 offset = Vector2.zero;
 			if (Input.GetKey(KeyCode.LeftArrow)) {
-				transform.position += new Vector3(-walkSpeed * Time.deltaTime, 0f, 0f);
+				offset += new Vector2(-walkSpeed * Time.deltaTime, 0f);
 				rotation.eulerAngles = new Vector3(0, 0, 90.0f);
 			}
 			else if (Input.GetKey(KeyCode.RightArrow)) {
-				transform.position += new Vector3(walkSpeed * Time.deltaTime, 0f, 0f);
+				offset += new Vector2(walkSpeed * Time.deltaTime, 0f);
 				rotation.eulerAngles = new Vector3(0, 0, -90.0f);
 			}
 
 			if (Input.GetKey(KeyCode.UpArrow)) {
-				transform.position += new Vector3(0f, walkSpeed * Time.deltaTime, 0f);
+				offset += new Vector2(0f, walkSpeed * Time.deltaTime);
 				rotation.eulerAngles = new Vector3(0, 0, 0.0f);
 			}
 			else if (Input.GetKey(KeyCode.DownArrow)) {
-				transform.position += new Vector3(0f, -walkSpeed * Time.deltaTime, 0f);
+				offset += new Vector2(0f, -walkSpeed * Time.deltaTime);
 				rotation.eulerAngles = new Vector3(0, 0, 180.0f);
 			}
+
+			if (offset.magnitude > float.Epsilon) {
+				if (!walkSound.isPlaying) {
+					walkSound.Play();
+				}
+			}
+			else {
+				if (walkSound.isPlaying) {
+					walkSound.Stop();
+				}
+			}
+
+			transform.position += (Vector3)offset;
 			transform.rotation = rotation;
 		}
 		else if (State == PlayerState.Jumping) {
