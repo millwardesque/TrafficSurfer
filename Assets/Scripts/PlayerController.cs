@@ -14,7 +14,10 @@ public class PlayerController : MonoBehaviour {
 	public float fromCarJumpDuration = 0.2f;
 	public float fromGroundJumpDuration = 0.5f;
 	public float jumpCooldown = 0.2f;
-	public AudioSource walkSound;
+	public AudioClip walkSound;
+	public AudioClip jumpSound;
+	public AudioClip landOnCarSound;
+	AudioSource audioSource;
 
 	float jumpCooldownRemaining = 0f;
 	float activeJumpDuration = 0f;
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 				GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 1f);
 
 				if (oldState == PlayerState.OnGround) {
+					audioSource.Stop();
 					activeJumpDuration = fromGroundJumpDuration;
 					jumpRemaining = activeJumpDuration;
 					distanceToJump = 0f;
@@ -45,6 +49,8 @@ public class PlayerController : MonoBehaviour {
 					lastCar = transform.parent.GetComponent<CarController>();
 					transform.SetParent(null, true);
 				}
+
+				audioSource.PlayOneShot(jumpSound);
 			}
 			else if (m_state == PlayerState.OnGround) {
 				GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f);
@@ -67,8 +73,15 @@ public class PlayerController : MonoBehaviour {
 
 					ScoreManager.Instance.Score += 1;
 				}
+
+				audioSource.PlayOneShot(landOnCarSound);
 			}
 		}
+	}
+
+	void Awake() {
+		audioSource = GetComponent<AudioSource>();
+		audioSource.clip = walkSound;
 	}
 
 	// Use this for initialization
@@ -109,13 +122,13 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			if (offset.magnitude > float.Epsilon) {
-				if (!walkSound.isPlaying) {
-					walkSound.Play();
+				if (!audioSource.isPlaying) {
+					audioSource.Play();
 				}
 			}
 			else {
-				if (walkSound.isPlaying) {
-					walkSound.Stop();
+				if (audioSource.isPlaying) {
+					audioSource.Stop();
 				}
 			}
 
