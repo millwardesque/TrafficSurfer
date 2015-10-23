@@ -21,3 +21,7 @@
 sysinfo.txt
 
 .DS_Store
+
+# Skip adding the Universal Sound FX library
+/Assets/Universal Sound FX.meta
+/Assets/Universal Sound FX/
