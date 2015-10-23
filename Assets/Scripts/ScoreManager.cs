@@ -63,7 +63,11 @@ public class ScoreManager : MonoBehaviour {
 		return scores;
 	}
 
-	public void AddScore(HighScore score) {	
+	public void AddScore(HighScore score) {
+		if (score.score < 1) {
+			return;
+		}
+
 		bool hasInserted = false;
 		List<HighScore> scores = GetHighScores();
 		for (int i = 0; i < scores.Count; ++i) {

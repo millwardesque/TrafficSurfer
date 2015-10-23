@@ -8,6 +8,7 @@ public enum PlayerState {
 };
 
 public class PlayerController : MonoBehaviour {
+	public static float minDeathSpeed = 1f;
 	public float walkSpeed = 1f;
 	public float jumpDistance = 0.3f;
 	public float fromCarJumpDuration = 0.2f;
@@ -142,7 +143,7 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col) {
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && car != lastCar) {
-			if (State == PlayerState.OnGround) {
+			if (State == PlayerState.OnGround && car.CurrentSpeed >= PlayerController.minDeathSpeed ) {
 				GameManager.Instance.GameOver();
 			}
 			else if (State == PlayerState.Jumping) {

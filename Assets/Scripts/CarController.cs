@@ -11,7 +11,12 @@ public enum DrivingState {
 public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
 	public float maxSpeed = 1f;
-	float currentSpeed = 0f;
+
+	float m_currentSpeed = 0f;
+	public float CurrentSpeed {
+		get { return m_currentSpeed; }
+	}
+
 	Vector3 startPosition;
 	Quaternion startRotation;
 	Vector2 turnDestination;
@@ -23,13 +28,13 @@ public class CarController : MonoBehaviour {
 			m_state = value;
 
 			if (m_state == DrivingState.Driving) {
-				currentSpeed = maxSpeed;
+				m_currentSpeed = maxSpeed;
 			}
 			else if (m_state == DrivingState.Turning) {
-				currentSpeed = maxSpeed;
+				m_currentSpeed = maxSpeed;
 			}
 			else if (m_state == DrivingState.Stopped) {
-				currentSpeed = 0f;
+				m_currentSpeed = 0f;
 			}
 		}
 	}
@@ -43,11 +48,11 @@ public class CarController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (State == DrivingState.Driving) {
-			Vector2 distance = transform.up * currentSpeed * Time.deltaTime;
+			Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
 		}
 		else if (State == DrivingState.Turning) {
-			Vector2 distance = transform.up * currentSpeed * Time.deltaTime;
+			Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
 		}
 	}
