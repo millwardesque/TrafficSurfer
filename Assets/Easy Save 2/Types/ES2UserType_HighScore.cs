@@ -10,7 +10,6 @@ public class ES2UserType_HighScore : ES2Type
 	{
 		HighScore data = (HighScore)obj;
 
-		Debug.Log (data.ToString());
 		// Add your writer.Write calls here.
 		writer.Write(data.name);
 		writer.Write(data.score);

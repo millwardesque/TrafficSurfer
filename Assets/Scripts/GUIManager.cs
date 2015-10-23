@@ -5,6 +5,7 @@ using System.Collections;
 public class GUIManager : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public GameObject pausePanel;
+	public UIHighScore highScoreUI;
 	public Text scoreLabel;
 	public Text timeRemainingLabel;
 	
@@ -13,13 +14,17 @@ public class GUIManager : MonoBehaviour {
 	void Awake () {
 		if (Instance == null) {
 			Instance = this;
+			if (gameOverPanel == null) {
+				Debug.LogError("GUI Manager: No Game-Over panel is set.");
+			}
+
 
 			if (pausePanel == null) {
 				Debug.LogError("GUI Manager: No Pause panel is set.");
 			}
 
-			if (gameOverPanel == null) {
-				Debug.LogError("GUI Manager: No Game-Over panel is set.");
+			if (highScoreUI == null) {
+				Debug.LogError("GUI Manager: No high-score UI is set.");
 			}
 
 			if (scoreLabel == null) {
@@ -45,6 +50,7 @@ public class GUIManager : MonoBehaviour {
 
 	public void OpenGameOverPanel() {
 		gameOverPanel.SetActive(true);
+		highScoreUI.RefreshHighScores();
 	}
 	
 	public void CloseGameOverPanel() {
