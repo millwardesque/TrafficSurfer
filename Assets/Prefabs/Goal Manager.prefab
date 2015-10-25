@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goalPrefab: {fileID: 11461494, guid: 9bf0acd2d2d56440aaee5a973fbbb257, type: 2}
-  minDistanceFromPlayer: 0
+  minDistanceFromPlayer: 3
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GoalManager : MonoBehaviour {
 	public Goal goalPrefab;
-	public float minDistanceFromPlayer = 1f;
+	public float minDistanceFromPlayer = 3f;
 
 	// Spawn bounding box.
 	Vector2 bottomLeft;
