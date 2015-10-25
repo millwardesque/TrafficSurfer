@@ -9,6 +9,7 @@ public enum GameState {
 
 public class GameManager : MonoBehaviour {
 	public Transform playerStart;
+    public AudioSource backgroundMusic;
 
 	PlayerController m_player;
 	public PlayerController Player {
@@ -25,9 +26,11 @@ public class GameManager : MonoBehaviour {
 			if (m_state == GameState.IsPaused) {
 				Time.timeScale = 0f;
 				GUIManager.Instance.OpenPausePanel();
+                backgroundMusic.Pause();
 			}
 			else if (m_state == GameState.IsRunning) {
-				Time.timeScale = 1f;
+                backgroundMusic.Play();
+                Time.timeScale = 1f;
 				if (oldState == GameState.IsPaused) {
 					GUIManager.Instance.ClosePausePanel();
 				}
@@ -36,7 +39,8 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 			else if (m_state == GameState.GameOver) {
-				ScoreManager.Instance.AddScore(new HighScore("TST", ScoreManager.Instance.Score));
+                backgroundMusic.Stop();
+                ScoreManager.Instance.AddScore(new HighScore("TST", ScoreManager.Instance.Score));
 				Time.timeScale = 0f;
 				GUIManager.Instance.OpenGameOverPanel();
 			}
@@ -48,6 +52,7 @@ public class GameManager : MonoBehaviour {
 	void Awake () {
 		if (Instance == null) {
 			Instance = this;
+            backgroundMusic = GetComponent<AudioSource>();
 		}
 		else {
 			Destroy(gameObject);
