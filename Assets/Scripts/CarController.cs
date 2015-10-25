@@ -48,16 +48,44 @@ public class CarController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (State == DrivingState.Driving) {
-			Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
+            CheckForOtherCars();
+
+            Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
 
-            Debug.DrawLine(transform.position, transform.position + transform.up/2f, Color.red);
+            Debug.DrawLine(transform.position, transform.position + transform.up / 2f, Color.red);
         }
 		else if (State == DrivingState.Turning) {
-			Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
+            CheckForOtherCars();
+
+            Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
 		}
 	}
+
+    void CheckForOtherCars()
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.up, 0.5f);
+        for (int i = 0; i < hits.Length; ++i)
+        {
+            CarController car = hits[i].collider.GetComponent<CarController>();
+            bool willHitCar = false;
+            if (car != null && car != this)
+            {
+                float angle = Vector2.Angle(transform.up, car.transform.up);
+                if (angle <= 90f)
+                {
+                    m_currentSpeed = 0f;
+                    willHitCar = true;
+                    break;
+                }
+            }
+            if (!willHitCar)
+            {
+                m_currentSpeed = maxSpeed;
+            }
+        }
+    }
 
 	public void StopCar() {
 		State = DrivingState.Stopped;
