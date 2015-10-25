@@ -99,7 +99,13 @@ public class GameManager : MonoBehaviour {
 			cars[i].ResetCar();
 		}
 
-		GoalManager.Instance.RestartGame();
+        IntersectionManager[] intersections = FindObjectsOfType<IntersectionManager>();
+        for (int i = 0; i < intersections.Length; ++i)
+        {
+            intersections[i].ResetIntersection();
+        }
+
+        GoalManager.Instance.RestartGame();
 
 		State = GameState.IsRunning;
 	}

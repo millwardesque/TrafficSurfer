@@ -8,48 +8,77 @@ public enum IntersectionState {
 	WaitingForCar
 };
 
-struct WaitingCar {
-	public CarController car;
-	public StopLine stopLine;
+public struct WaitingCar
+{
+    public CarController car;
+    public StopLine stopLine;
 
-	public WaitingCar(CarController car, StopLine stopLine) {
-		this.car = car;
-		this.stopLine = stopLine;
-	}
-};
+    public WaitingCar(CarController car, StopLine stopLine)
+    {
+        this.car = car;
+        this.stopLine = stopLine;
+    }
+
+    public override string ToString()
+    {
+        if (car != null && stopLine != null)
+        {
+            return string.Format("{0} at stop {1}", this.car.name, this.stopLine.name);
+        }
+        else if (car != null)
+        {
+            return string.Format("{0} at null stop", this.car.name);
+        }
+        else if (stopLine != null)
+        {
+            return string.Format("null car at stop {0}", this.stopLine.name);
+        }
+        else
+        {
+            return "Null car & stopLine";
+        }
+    }
+}
 
 public class IntersectionManager : MonoBehaviour {
-	Queue<WaitingCar> cars = new Queue<WaitingCar>();
+    WaitingCar m_waitingOnCar;
+    public WaitingCar WaitingOnCar
+    {
+        get { return m_waitingOnCar; }
+    }
 
-	IntersectionState m_state = IntersectionState.Empty;
+	Queue<WaitingCar> cars = new Queue<WaitingCar>();
+    public Queue<WaitingCar> CarQueue
+    {
+        get { return cars; }
+    }
+
+    IntersectionState m_state = IntersectionState.Empty;
 	public IntersectionState State {
 		get { return m_state; }
 		set {
 			m_state = value;
+            if (m_state == IntersectionState.Empty)
+            {
+                m_waitingOnCar = new WaitingCar();
+            }
 		}
 	}
 
 	void Update() {
-		if (State == IntersectionState.Empty) {
-			if (cars.Count > 0) {
-				State = IntersectionState.ReleaseNextCar;
-			}
-		}
-		else if (State == IntersectionState.ReleaseNextCar) {
+		if (State == IntersectionState.ReleaseNextCar) {
 			if (cars.Count == 0) {
 				State = IntersectionState.Empty;
 			}
 			else {
 				WaitingCar waitingCar = cars.Dequeue();
-				CarController car = waitingCar.car;
+                m_waitingOnCar = waitingCar;
+                CarController car = waitingCar.car;
 				StopLine stopLine = waitingCar.stopLine;
 				car.ChooseDirection(stopLine);
-
-				State = IntersectionState.WaitingForCar;
+                
+                State = IntersectionState.WaitingForCar;
 			}
-		}
-		else if (State == IntersectionState.WaitingForCar) {
-			// Do nothing since we're waiting.
 		}
 	}
 
@@ -59,6 +88,11 @@ public class IntersectionManager : MonoBehaviour {
 
 	public void Enqueue(CarController car, StopLine stopLine) {
 		cars.Enqueue(new WaitingCar(car, stopLine));
+
+        if (State == IntersectionState.Empty)
+        {
+            State = IntersectionState.ReleaseNextCar;
+        }
 	}
 
 	public void SignalCarFinished() {
@@ -66,4 +100,10 @@ public class IntersectionManager : MonoBehaviour {
 			State = IntersectionState.ReleaseNextCar;
 		}
 	}
+
+    public void ResetIntersection()
+    {
+        cars.Clear();
+        State = IntersectionState.Empty;
+    }
 }

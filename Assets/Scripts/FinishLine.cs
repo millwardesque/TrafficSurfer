@@ -23,15 +23,9 @@ public class FinishLine : MonoBehaviour {
 				Vector3 lateralOffset = new Vector3(Mathf.Abs (transform.right.x) * distance.x, Mathf.Abs (transform.right.y) * distance.y, 0f);
 				car.transform.position += lateralOffset;
 
-				car.State = DrivingState.Driving;
+                intersection.SignalCarFinished();
+                car.State = DrivingState.Driving;
 			}
-		}
-	}
-	
-	void OnTriggerExit2D(Collider2D col) {
-		CarController car = col.GetComponent<CarController>();
-		if (car != null) {
-			intersection.SignalCarFinished();
 		}
 	}
 }

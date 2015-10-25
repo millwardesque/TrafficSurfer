@@ -50,7 +50,9 @@ public class CarController : MonoBehaviour {
 		if (State == DrivingState.Driving) {
 			Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
-		}
+
+            Debug.DrawLine(transform.position, transform.position + transform.up/2f, Color.red);
+        }
 		else if (State == DrivingState.Turning) {
 			Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
@@ -62,7 +64,6 @@ public class CarController : MonoBehaviour {
 	}
 
 	public void ChooseDirection(StopLine stopLine) {
-		// Note: The turn-duration values are hand-tweaked. Change with caution.
 		List<Vector2> possibleDestinations = new List<Vector2>();
 		if (stopLine.CanTurnLeft()) {
 			possibleDestinations.Add(stopLine.GetLeftTurnDestination());
@@ -89,8 +90,6 @@ public class CarController : MonoBehaviour {
 		if (cross.z < 0f) {
 			angle *= -1f;
 		}
-
-		// Debug.Log (string.Format("Rotating from {0} to {1} ({2} degrees)", transform.up, direction, angle));
 
 		Quaternion newRotation = transform.rotation;
 		newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
