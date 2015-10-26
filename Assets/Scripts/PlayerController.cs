@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip landOnCarSound;
 	AudioSource audioSource;
 
+	bool isMoving = false;
 	float jumpCooldownRemaining = 0f;
 	float activeJumpDuration = 0f;
 	float jumpRemaining = 0f;
@@ -39,7 +40,9 @@ public class PlayerController : MonoBehaviour {
 					audioSource.Stop();
 					activeJumpDuration = fromGroundJumpDuration;
 					jumpRemaining = activeJumpDuration;
-					distanceToJump = 0f;
+
+					Debug.Log (isMoving ? jumpDistance : 0f);
+					distanceToJump = isMoving ? jumpDistance : 0f;
 				}
 				else if (oldState == PlayerState.OnCar) {
 					activeJumpDuration = fromCarJumpDuration;
@@ -92,13 +95,10 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (State == PlayerState.OnGround) {
+			isMoving = false;
+
 			if (jumpCooldownRemaining > 0f) {
 				jumpCooldownRemaining -= Time.deltaTime;
-			}
-
-			if (Input.GetKeyDown(KeyCode.Space) && jumpCooldownRemaining <= 0f) {
-				State = PlayerState.Jumping;
-				return;
 			}
 
 			Quaternion rotation = transform.rotation;
@@ -132,8 +132,19 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 
-			transform.position += (Vector3)offset;
+			if (offset.magnitude > 0.00001f) {
+				isMoving = true;
+				Debug.Log ("Is moving.");
+			}
+
 			transform.rotation = rotation;
+			if (Input.GetKeyDown(KeyCode.Space) && jumpCooldownRemaining <= 0f) {
+				Debug.Log ("Is moving + jumping");
+				State = PlayerState.Jumping;
+			}
+			else {
+				transform.position += (Vector3)offset;
+			}
 		}
 		else if (State == PlayerState.Jumping) {
 			Vector2 positionChange = transform.up * Time.deltaTime * distanceToJump / activeJumpDuration;
