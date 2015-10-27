@@ -103,22 +103,39 @@ public class PlayerController : MonoBehaviour {
 
 			Quaternion rotation = transform.rotation;
 			Vector2 offset = Vector2.zero;
+			float rotationAngle = rotation.eulerAngles.z;
+			bool movedLeftOrRight = false;
+
 			if (Input.GetKey(KeyCode.LeftArrow)) {
 				offset += new Vector2(-walkSpeed * Time.deltaTime, 0f);
-				rotation.eulerAngles = new Vector3(0, 0, 90.0f);
+				rotationAngle = 90f;
+				movedLeftOrRight = true;
 			}
 			else if (Input.GetKey(KeyCode.RightArrow)) {
 				offset += new Vector2(walkSpeed * Time.deltaTime, 0f);
-				rotation.eulerAngles = new Vector3(0, 0, -90.0f);
+				rotationAngle = -90f;
+				movedLeftOrRight = true;
 			}
 
 			if (Input.GetKey(KeyCode.UpArrow)) {
 				offset += new Vector2(0f, walkSpeed * Time.deltaTime);
-				rotation.eulerAngles = new Vector3(0, 0, 0.0f);
+
+				if (movedLeftOrRight) {
+					rotationAngle = rotationAngle / 2f;
+				}
+				else {
+					rotationAngle = 0f;
+				}
 			}
 			else if (Input.GetKey(KeyCode.DownArrow)) {
 				offset += new Vector2(0f, -walkSpeed * Time.deltaTime);
-				rotation.eulerAngles = new Vector3(0, 0, 180.0f);
+
+				if (movedLeftOrRight) {
+					rotationAngle = 180f - rotationAngle / 2f;
+				}
+				else {
+					rotationAngle = 180f;
+				}
 			}
 
 			if (offset.magnitude > float.Epsilon) {
@@ -136,6 +153,7 @@ public class PlayerController : MonoBehaviour {
 				isMoving = true;
 			}
 
+			rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
 			transform.rotation = rotation;
 			if (Input.GetKeyDown(KeyCode.Space) && jumpCooldownRemaining <= 0f) {
 				Debug.Log ("Is moving + jumping");
