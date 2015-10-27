@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour {
 				audioSource.PlayOneShot(jumpSound);
 			}
 			else if (m_state == PlayerState.OnGround) {
-				GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f);
+				GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 				lastCar = null;
 
 				if (oldState == PlayerState.Jumping) {
@@ -134,7 +134,6 @@ public class PlayerController : MonoBehaviour {
 
 			if (offset.magnitude > 0.00001f) {
 				isMoving = true;
-				Debug.Log ("Is moving.");
 			}
 
 			transform.rotation = rotation;
