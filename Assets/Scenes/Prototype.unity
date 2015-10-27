@@ -2235,6 +2235,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 21250962, guid: 42810b9357eed452e98b66a2ae0f0894, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e8fbe823fcbc44ea7bef874043d6dfe5,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 42810b9357eed452e98b66a2ae0f0894, type: 2}
   m_IsPrefabParent: 0
@@ -2693,6 +2698,27 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 429978, guid: f7d8c814366bb474b831761e487ddda4, type: 2}
   m_PrefabInternal: {fileID: 991700241}
+--- !u!1 &994612724 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 162652, guid: 42810b9357eed452e98b66a2ae0f0894, type: 2}
+  m_PrefabInternal: {fileID: 848635280}
+--- !u!95 &994612725
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 994612724}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4c105e429bfa34207b69fc01a9b143f8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &1009264823 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11401816, guid: 9c9e696aaaa884c09a420750f08a7b48,
@@ -3563,6 +3589,7 @@ GameObject:
   - 124: {fileID: 1689274661}
   - 81: {fileID: 1689274660}
   - 82: {fileID: 1689274665}
+  - 114: {fileID: 1689274666}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3611,7 +3638,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3707,6 +3734,20 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+--- !u!114 &1689274666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1689274659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c5f88dcfa0a4079ad39c629585c574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minZoom: 2
+  normalZoom: 4
+  zoomSpeed: 5
 --- !u!1001 &1697257953
 Prefab:
   m_ObjectHideFlags: 0

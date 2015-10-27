@@ -188,6 +188,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			else if (State == PlayerState.Jumping) {
 				State = PlayerState.OnCar;
+				car.Colourize();
 				this.transform.SetParent(car.transform);
 				this.transform.position = car.transform.position;
 			}

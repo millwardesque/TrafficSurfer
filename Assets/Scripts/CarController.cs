@@ -129,4 +129,8 @@ public class CarController : MonoBehaviour {
 		transform.rotation = startRotation;
 		State = DrivingState.Driving;
 	}
+
+	public void Colourize() {
+		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
+	}
 }
