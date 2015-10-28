@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour {
 			m_state = value;
 
 			if (m_state == PlayerState.Jumping) {
-				animator.SetTrigger("Is Jumping");
 				GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 1f);
 
 				if (oldState == PlayerState.OnGround) {
@@ -57,7 +56,6 @@ public class PlayerController : MonoBehaviour {
 				audioSource.PlayOneShot(jumpSound);
 			}
 			else if (m_state == PlayerState.OnGround) {
-				animator.SetTrigger("Is Idle");
 				GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 				lastCar = null;
 
@@ -68,7 +66,6 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			else if (m_state == PlayerState.OnCar) {
-				animator.SetTrigger("Is Idle");
 				GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f);
 				lastCar = null;
 
@@ -166,10 +163,10 @@ public class PlayerController : MonoBehaviour {
 			else {
 				transform.position += (Vector3)offset;
 				if (isMoving) {
-					animator.SetTrigger("Is Walking");
+					TriggerWalkingAnimation("Update");
 				}
 				else {
-					animator.SetTrigger("Is Idle");
+					TriggerIdleAnimation("Update");
 				}
 			}
 		}
@@ -179,6 +176,7 @@ public class PlayerController : MonoBehaviour {
 
 			jumpRemaining -= Time.deltaTime;
 			if (jumpRemaining <= 0f) {
+				Debug.Log ("Jump Done");
 				State = PlayerState.OnGround;
 			}
 		}
@@ -227,5 +225,17 @@ public class PlayerController : MonoBehaviour {
 		transform.position = spawnLocation.position;
 		transform.rotation = spawnLocation.rotation;
 		State = PlayerState.OnGround;
+	}
+
+	void TriggerJumpAnimation(string source) {
+		animator.SetTrigger("Jumping");
+	}
+
+	void TriggerIdleAnimation(string source) {
+		animator.SetTrigger("Idle");
+	}
+
+	void TriggerWalkingAnimation(string source) {
+		animator.SetTrigger("Walking");
 	}
 }
