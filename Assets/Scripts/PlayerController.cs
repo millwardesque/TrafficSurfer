@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip jumpSound;
 	public AudioClip landOnCarSound;
 	AudioSource audioSource;
+	Animator animator;
 
 	bool isMoving = false;
 	float jumpCooldownRemaining = 0f;
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 			m_state = value;
 
 			if (m_state == PlayerState.Jumping) {
+				animator.SetTrigger("Is Jumping");
 				GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 1f);
 
 				if (oldState == PlayerState.OnGround) {
@@ -41,7 +43,6 @@ public class PlayerController : MonoBehaviour {
 					activeJumpDuration = fromGroundJumpDuration;
 					jumpRemaining = activeJumpDuration;
 
-					Debug.Log (isMoving ? jumpDistance : 0f);
 					distanceToJump = isMoving ? jumpDistance : 0f;
 				}
 				else if (oldState == PlayerState.OnCar) {
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour {
 				audioSource.PlayOneShot(jumpSound);
 			}
 			else if (m_state == PlayerState.OnGround) {
+				animator.SetTrigger("Is Idle");
 				GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 				lastCar = null;
 
@@ -66,6 +68,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			else if (m_state == PlayerState.OnCar) {
+				animator.SetTrigger("Is Idle");
 				GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f);
 				lastCar = null;
 
@@ -85,6 +88,8 @@ public class PlayerController : MonoBehaviour {
 	void Awake() {
 		audioSource = GetComponent<AudioSource>();
 		audioSource.clip = walkSound;
+
+		animator = GetComponent<Animator>();
 	}
 
 	// Use this for initialization
@@ -156,11 +161,16 @@ public class PlayerController : MonoBehaviour {
 			rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
 			transform.rotation = rotation;
 			if (Input.GetKeyDown(KeyCode.Space) && jumpCooldownRemaining <= 0f) {
-				Debug.Log ("Is moving + jumping");
 				State = PlayerState.Jumping;
 			}
 			else {
 				transform.position += (Vector3)offset;
+				if (isMoving) {
+					animator.SetTrigger("Is Walking");
+				}
+				else {
+					animator.SetTrigger("Is Idle");
+				}
 			}
 		}
 		else if (State == PlayerState.Jumping) {

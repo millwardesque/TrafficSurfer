@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour {
 			}
 			else if (m_state == GameState.GameOver) {
                 backgroundMusic.Stop();
-                ScoreManager.Instance.AddScore(new HighScore("TST", ScoreManager.Instance.Score));
+                ScoreManager.Instance.AddScore(new HighScore("TEST", ScoreManager.Instance.Score));
 				Time.timeScale = 0f;
 				GUIManager.Instance.OpenGameOverPanel();
 			}
@@ -70,9 +70,6 @@ public class GameManager : MonoBehaviour {
 		if (State == GameState.IsRunning) {
 			if (Input.GetKeyDown(KeyCode.P)) {
 				Pause();
-			}
-			else if (Input.GetKeyDown(KeyCode.G)) {
-				GameOver ();
 			}
 		}
 		else if (State == GameState.IsPaused) {
