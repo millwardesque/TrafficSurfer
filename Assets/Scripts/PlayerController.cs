@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour {
 	AudioSource audioSource;
 	Animator animator;
 
-	bool isMoving = false;
+	bool wasMoving = false;
 	float jumpCooldownRemaining = 0f;
 	float activeJumpDuration = 0f;
 	float jumpRemaining = 0f;
@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 			m_state = value;
 
 			if (m_state == PlayerState.Jumping) {
+				TriggerJumpAnimation();
 				GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 1f);
 
 				if (oldState == PlayerState.OnGround) {
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour {
 					activeJumpDuration = fromGroundJumpDuration;
 					jumpRemaining = activeJumpDuration;
 
-					distanceToJump = isMoving ? jumpDistance : 0f;
+					distanceToJump = wasMoving ? jumpDistance : 0f;
 				}
 				else if (oldState == PlayerState.OnCar) {
 					activeJumpDuration = fromCarJumpDuration;
@@ -54,8 +55,10 @@ public class PlayerController : MonoBehaviour {
 				}
 
 				audioSource.PlayOneShot(jumpSound);
+				wasMoving = false;
 			}
 			else if (m_state == PlayerState.OnGround) {
+				TriggerIdleAnimation();
 				GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 				lastCar = null;
 
@@ -64,8 +67,11 @@ public class PlayerController : MonoBehaviour {
 					distanceToJump = 0f;
 					jumpCooldownRemaining = jumpCooldown;
 				}
+
+				wasMoving = false;
 			}
 			else if (m_state == PlayerState.OnCar) {
+				TriggerIdleAnimation();
 				GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f);
 				lastCar = null;
 
@@ -78,6 +84,8 @@ public class PlayerController : MonoBehaviour {
 				}
 
 				audioSource.PlayOneShot(landOnCarSound);
+
+				wasMoving = false;
 			}
 		}
 	}
@@ -97,111 +105,124 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (State == PlayerState.OnGround) {
-			isMoving = false;
-
-			if (jumpCooldownRemaining > 0f) {
-				jumpCooldownRemaining -= Time.deltaTime;
-			}
-
-			Quaternion rotation = transform.rotation;
-			Vector2 offset = Vector2.zero;
-			float rotationAngle = rotation.eulerAngles.z;
-			bool movedLeftOrRight = false;
-
-			if (Input.GetKey(KeyCode.LeftArrow)) {
-				offset += new Vector2(-walkSpeed * Time.deltaTime, 0f);
-				rotationAngle = 90f;
-				movedLeftOrRight = true;
-			}
-			else if (Input.GetKey(KeyCode.RightArrow)) {
-				offset += new Vector2(walkSpeed * Time.deltaTime, 0f);
-				rotationAngle = -90f;
-				movedLeftOrRight = true;
-			}
-
-			if (Input.GetKey(KeyCode.UpArrow)) {
-				offset += new Vector2(0f, walkSpeed * Time.deltaTime);
-
-				if (movedLeftOrRight) {
-					rotationAngle = rotationAngle / 2f;
-				}
-				else {
-					rotationAngle = 0f;
-				}
-			}
-			else if (Input.GetKey(KeyCode.DownArrow)) {
-				offset += new Vector2(0f, -walkSpeed * Time.deltaTime);
-
-				if (movedLeftOrRight) {
-					rotationAngle = 180f - rotationAngle / 2f;
-				}
-				else {
-					rotationAngle = 180f;
-				}
-			}
-
-			if (offset.magnitude > float.Epsilon) {
-				if (!audioSource.isPlaying) {
-					audioSource.Play();
-				}
-			}
-			else {
-				if (audioSource.isPlaying) {
-					audioSource.Stop();
-				}
-			}
-
-			if (offset.magnitude > 0.00001f) {
-				isMoving = true;
-			}
-
-			rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
-			transform.rotation = rotation;
-			if (Input.GetKeyDown(KeyCode.Space) && jumpCooldownRemaining <= 0f) {
-				State = PlayerState.Jumping;
-			}
-			else {
-				transform.position += (Vector3)offset;
-				if (isMoving) {
-					TriggerWalkingAnimation("Update");
-				}
-				else {
-					TriggerIdleAnimation("Update");
-				}
-			}
+			OnUpdateOnGround ();
 		}
 		else if (State == PlayerState.Jumping) {
-			Vector2 positionChange = transform.up * Time.deltaTime * distanceToJump / activeJumpDuration;
-			transform.position += (Vector3)positionChange;
-
-			jumpRemaining -= Time.deltaTime;
-			if (jumpRemaining <= 0f) {
-				Debug.Log ("Jump Done");
-				State = PlayerState.OnGround;
-			}
+			OnUpdateJumping ();
 		}
 		else if (State == PlayerState.OnCar) {
-			Quaternion rotation = transform.rotation;
-			if (Input.GetKey(KeyCode.LeftArrow)) {
-				rotation.eulerAngles = new Vector3(0, 0, 90.0f);
-			}
-			else if (Input.GetKey(KeyCode.RightArrow)) {
-				rotation.eulerAngles = new Vector3(0, 0, -90.0f);
-			}
-			else if (Input.GetKey(KeyCode.UpArrow)) {
-				rotation.eulerAngles = new Vector3(0, 0, 0.0f);
-			}
-			else if (Input.GetKey(KeyCode.DownArrow)) {
-				rotation.eulerAngles = new Vector3(0, 0, 180.0f);
-			}
-			transform.rotation = rotation;
+			OnUpdateOnCar ();
+		}
+	}
 
-			if (jumpCooldownRemaining > 0f) {
-				jumpCooldownRemaining -= Time.deltaTime;
+	void OnUpdateOnGround() {
+		bool isMoving = false;
+		
+		if (jumpCooldownRemaining > 0f) {
+			jumpCooldownRemaining -= Time.deltaTime;
+		}
+		
+		Quaternion rotation = transform.rotation;
+		Vector2 offset = Vector2.zero;
+		float rotationAngle = rotation.eulerAngles.z;
+		bool movedLeftOrRight = false;
+		
+		if (Input.GetKey(KeyCode.LeftArrow)) {
+			offset += new Vector2(-walkSpeed * Time.deltaTime, 0f);
+			rotationAngle = 90f;
+			movedLeftOrRight = true;
+		}
+		else if (Input.GetKey(KeyCode.RightArrow)) {
+			offset += new Vector2(walkSpeed * Time.deltaTime, 0f);
+			rotationAngle = -90f;
+			movedLeftOrRight = true;
+		}
+		
+		if (Input.GetKey(KeyCode.UpArrow)) {
+			offset += new Vector2(0f, walkSpeed * Time.deltaTime);
+			
+			if (movedLeftOrRight) {
+				rotationAngle = rotationAngle / 2f;
 			}
-			if (Input.GetKey (KeyCode.Space) && jumpCooldownRemaining <= 0f) {
-				State = PlayerState.Jumping;
+			else {
+				rotationAngle = 0f;
 			}
+		}
+		else if (Input.GetKey(KeyCode.DownArrow)) {
+			offset += new Vector2(0f, -walkSpeed * Time.deltaTime);
+			
+			if (movedLeftOrRight) {
+				rotationAngle = 180f - rotationAngle / 2f;
+			}
+			else {
+				rotationAngle = 180f;
+			}
+		}
+
+		if (offset.magnitude > 0.00001f) {
+			isMoving = true;
+		}
+		
+		if (isMoving) {
+			if (!audioSource.isPlaying) {
+				audioSource.Play();
+			}
+		}
+		else {
+			if (audioSource.isPlaying) {
+				audioSource.Stop();
+			}
+		}	
+		
+		rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
+		transform.rotation = rotation;
+		if (Input.GetKeyDown(KeyCode.Space) && jumpCooldownRemaining <= 0f) {
+			State = PlayerState.Jumping;
+		}
+		else {
+			transform.position += (Vector3)offset;
+			if (isMoving && !wasMoving) {
+				TriggerWalkingAnimation();
+			}
+			else if (!isMoving && wasMoving) {
+				TriggerIdleAnimation();
+			}
+		}
+
+		wasMoving = isMoving;
+	}
+	
+	void OnUpdateJumping() {
+		Vector2 positionChange = transform.up * Time.deltaTime * distanceToJump / activeJumpDuration;
+		transform.position += (Vector3)positionChange;
+		
+		jumpRemaining -= Time.deltaTime;
+		if (jumpRemaining <= 0f) {
+			State = PlayerState.OnGround;
+		}
+	}
+	
+	void OnUpdateOnCar() {
+		Quaternion rotation = transform.rotation;
+		if (Input.GetKey(KeyCode.LeftArrow)) {
+			rotation.eulerAngles = new Vector3(0, 0, 90.0f);
+		}
+		else if (Input.GetKey(KeyCode.RightArrow)) {
+			rotation.eulerAngles = new Vector3(0, 0, -90.0f);
+		}
+		else if (Input.GetKey(KeyCode.UpArrow)) {
+			rotation.eulerAngles = new Vector3(0, 0, 0.0f);
+		}
+		else if (Input.GetKey(KeyCode.DownArrow)) {
+			rotation.eulerAngles = new Vector3(0, 0, 180.0f);
+		}
+		transform.rotation = rotation;
+		
+		if (jumpCooldownRemaining > 0f) {
+			jumpCooldownRemaining -= Time.deltaTime;
+		}
+		if (Input.GetKey (KeyCode.Space) && jumpCooldownRemaining <= 0f) {
+			State = PlayerState.Jumping;
 		}
 	}
 
@@ -227,15 +248,18 @@ public class PlayerController : MonoBehaviour {
 		State = PlayerState.OnGround;
 	}
 
-	void TriggerJumpAnimation(string source) {
+	void TriggerJumpAnimation() {
+		Debug.Log ("Triggering Jump");
 		animator.SetTrigger("Jumping");
 	}
 
-	void TriggerIdleAnimation(string source) {
+	void TriggerIdleAnimation() {
+		Debug.Log ("Triggering Idle");
 		animator.SetTrigger("Idle");
 	}
 
-	void TriggerWalkingAnimation(string source) {
+	void TriggerWalkingAnimation() {
+		Debug.Log ("Triggering Walk");
 		animator.SetTrigger("Walking");
 	}
 }
