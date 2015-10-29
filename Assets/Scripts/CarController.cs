@@ -127,10 +127,17 @@ public class CarController : MonoBehaviour {
 	public void ResetCar() {
 		transform.position = startPosition;
 		transform.rotation = startRotation;
+		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 0);
 		State = DrivingState.Driving;
 	}
 
 	public void Colourize() {
+		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
+	}
+
+	public void Colourize(Color color) {
+		GetComponent<SpriteRenderer>().color = color;
 		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
 	}
 }

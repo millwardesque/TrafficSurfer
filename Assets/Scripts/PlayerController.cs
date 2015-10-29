@@ -17,6 +17,13 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip walkSound;
 	public AudioClip jumpSound;
 	public AudioClip landOnCarSound;
+
+	public CarController m_targetCar = null;
+	public CarController TargetCar {
+		get { return m_targetCar; }
+		set { m_targetCar = value; }
+	}
+
 	AudioSource audioSource;
 	Animator animator;
 
@@ -234,6 +241,11 @@ public class PlayerController : MonoBehaviour {
 			}
 			else if (State == PlayerState.Jumping) {
 				State = PlayerState.OnCar;
+
+				if (car == TargetCar) {
+					GameManager.Instance.OnReachedTargetCar();
+				}
+
 				car.Colourize();
 				this.transform.SetParent(car.transform);
 				this.transform.position = car.transform.position;
@@ -245,21 +257,20 @@ public class PlayerController : MonoBehaviour {
 		transform.SetParent(null);
 		transform.position = spawnLocation.position;
 		transform.rotation = spawnLocation.rotation;
+		TriggerIdleAnimation();
+		wasMoving = false;
 		State = PlayerState.OnGround;
 	}
 
 	void TriggerJumpAnimation() {
-		Debug.Log ("Triggering Jump");
 		animator.SetTrigger("Jumping");
 	}
 
 	void TriggerIdleAnimation() {
-		Debug.Log ("Triggering Idle");
 		animator.SetTrigger("Idle");
 	}
 
 	void TriggerWalkingAnimation() {
-		Debug.Log ("Triggering Walk");
 		animator.SetTrigger("Walking");
 	}
 }

@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour {
 			}
 			else if (m_state == GameState.GameOver) {
                 backgroundMusic.Stop();
-                ScoreManager.Instance.AddScore(new HighScore("TEST", ScoreManager.Instance.Score));
+				ScoreManager.Instance.AddHighScore(new HighScore("TEST", ScoreManager.Instance.Score));
 				Time.timeScale = 0f;
 				GUIManager.Instance.OpenGameOverPanel();
 			}
@@ -109,6 +109,29 @@ public class GameManager : MonoBehaviour {
 
         GoalManager.Instance.RestartGame();
 
+		ChooseTargetCar();
+
 		State = GameState.IsRunning;
+	}
+
+	public void OnReachedTargetCar() {
+		ScoreManager.Instance.Score += 20;
+		ChooseTargetCar();
+	}
+
+	void ChooseTargetCar() {
+		CarController oldCar = Player.TargetCar;
+		CarController[] cars = FindObjectsOfType<CarController>();
+		int index = Random.Range(0, cars.Length);
+		while (cars[index] == oldCar || cars[index] == null) {
+			index = Random.Range(0, cars.Length);
+		}
+
+		if (oldCar != null) {
+			oldCar.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+		}
+
+		Player.TargetCar = cars[index];
+		cars[index].Colourize(new Color(1f, 0f, 0f));
 	}
 }

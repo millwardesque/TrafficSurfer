@@ -63,7 +63,7 @@ public class ScoreManager : MonoBehaviour {
 		return scores;
 	}
 
-	public void AddScore(HighScore score) {
+	public void AddHighScore(HighScore score) {
 		if (score.score < 1) {
 			return;
 		}
