@@ -258,7 +258,7 @@ public class PlayerController : MonoBehaviour {
     {
         currentDeathDuration -= Time.deltaTime;
  
-        if (currentDeathDuration > deathDuration * 3f / 4f)
+        if (currentDeathDuration > deathDuration * 2f / 4f)
         {
             Vector2 positionChange = transform.up * Time.deltaTime * walkSpeed * 2f;
             transform.position += (Vector3)positionChange;
