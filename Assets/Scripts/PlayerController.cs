@@ -295,6 +295,10 @@ public class PlayerController : MonoBehaviour {
 		transform.position = spawnLocation.position;
 		transform.rotation = spawnLocation.rotation;
 		TriggerIdleAnimation();
+
+		GetComponent<CircleCollider2D>().enabled = true;
+		GetComponent<SpriteRenderer>().sortingLayerName = "Player";
+
 		wasMoving = false;
 		State = PlayerState.OnGround;
 	}
