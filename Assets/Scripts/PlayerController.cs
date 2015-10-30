@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour {
 
             if (oldState == PlayerState.Dead) {
                 GetComponent<CircleCollider2D>().enabled = true;
+				GetComponent<SpriteRenderer>().sortingLayerName = "Player";
             }
 
 			if (m_state == PlayerState.Jumping) {
@@ -259,7 +260,7 @@ public class PlayerController : MonoBehaviour {
  
         if (currentDeathDuration > deathDuration * 3f / 4f)
         {
-            Vector2 positionChange = transform.up * Time.deltaTime * walkSpeed / 2f;
+            Vector2 positionChange = transform.up * Time.deltaTime * walkSpeed * 2f;
             transform.position += (Vector3)positionChange;
         }
 
