@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45172b3c3c3f94054bc96ac02ec4c50f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 2.5
+  maxSpeed: 1.79999995
 --- !u!212 &21216278
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -127,7 +127,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: maxSpeed
-      value: 2.5
+      value: 1.79999995
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.g

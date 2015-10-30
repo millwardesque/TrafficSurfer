@@ -4,7 +4,8 @@ using System.Collections;
 public enum PlayerState {
 	OnGround,
 	OnCar,
-	Jumping
+	Jumping,
+    Dead
 };
 
 public class PlayerController : MonoBehaviour {
@@ -17,6 +18,8 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip walkSound;
 	public AudioClip jumpSound;
 	public AudioClip landOnCarSound;
+    public float deathDuration = 2f;
+    float currentDeathDuration = 0f;
 
 	public CarController m_targetCar = null;
 	public CarController TargetCar {
@@ -40,6 +43,10 @@ public class PlayerController : MonoBehaviour {
 		set {
 			PlayerState oldState = m_state;
 			m_state = value;
+
+            if (oldState == PlayerState.Dead) {
+                GetComponent<CircleCollider2D>().enabled = true;
+            }
 
 			if (m_state == PlayerState.Jumping) {
 				TriggerJumpAnimation();
@@ -94,6 +101,16 @@ public class PlayerController : MonoBehaviour {
 
 				wasMoving = false;
 			}
+            else if (m_state == PlayerState.Dead)
+            {
+                audioSource.Stop();
+                TriggerDeadAnimation();
+                currentDeathDuration = deathDuration;
+                GetComponent<CircleCollider2D>().enabled = false;
+
+                transform.Rotate(new Vector3(0f, 0f, 180f + Random.Range(-22.5f, 22.5f)));
+                GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+            }
 		}
 	}
 
@@ -120,6 +137,9 @@ public class PlayerController : MonoBehaviour {
 		else if (State == PlayerState.OnCar) {
 			OnUpdateOnCar ();
 		}
+        else if (State == PlayerState.Dead) {
+            OnUpdateDead();
+        }
 	}
 
 	void OnUpdateOnGround() {
@@ -233,11 +253,27 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+    void OnUpdateDead()
+    {
+        currentDeathDuration -= Time.deltaTime;
+ 
+        if (currentDeathDuration > deathDuration * 3f / 4f)
+        {
+            Vector2 positionChange = transform.up * Time.deltaTime * walkSpeed / 2f;
+            transform.position += (Vector3)positionChange;
+        }
+
+        if (currentDeathDuration <= 0f)
+        {
+            GameManager.Instance.GameOver();
+        }
+    }
+
 	void OnTriggerEnter2D(Collider2D col) {
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && car != lastCar) {
 			if (State == PlayerState.OnGround && car.CurrentSpeed >= PlayerController.minDeathSpeed ) {
-				GameManager.Instance.GameOver();
+                State = PlayerState.Dead;
 			}
 			else if (State == PlayerState.Jumping) {
 				State = PlayerState.OnCar;
@@ -273,4 +309,9 @@ public class PlayerController : MonoBehaviour {
 	void TriggerWalkingAnimation() {
 		animator.SetTrigger("Walking");
 	}
+
+    void TriggerDeadAnimation()
+    {
+        animator.SetTrigger("Dead");
+    }
 }
