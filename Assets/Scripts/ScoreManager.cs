@@ -31,7 +31,11 @@ public class ScoreManager : MonoBehaviour {
 		get { return m_score; }
 		set {
 			m_score = value;
-			GUIManager.Instance.UpdateScoreLabel(m_score);
+
+            if (GUIManager.Instance != null)
+            {
+                GUIManager.Instance.UpdateScoreLabel(m_score);
+            }
 		}
 	}
 	

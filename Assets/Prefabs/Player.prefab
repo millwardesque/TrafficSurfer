@@ -168,6 +168,8 @@ MonoBehaviour:
   walkSound: {fileID: 8300000, guid: c91a1f0b382724ed0965e3b26acd5162, type: 3}
   jumpSound: {fileID: 8300000, guid: 34bfa69656a2a40b8834c0123ad980e4, type: 3}
   landOnCarSound: {fileID: 8300000, guid: b7f13c17b88bc478ead9fbf0f9be3068, type: 3}
+  deathDuration: 1
+  m_targetCar: {fileID: 0}
 --- !u!212 &21250962
 SpriteRenderer:
   m_ObjectHideFlags: 1

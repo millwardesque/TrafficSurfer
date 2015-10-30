@@ -9,7 +9,7 @@ public enum GameState {
 
 public class GameManager : MonoBehaviour {
 	public Transform playerStart;
-    public AudioSource backgroundMusic;
+    AudioSource backgroundMusic;
 
 	PlayerController m_player;
 	public PlayerController Player {
@@ -134,4 +134,9 @@ public class GameManager : MonoBehaviour {
 		Player.TargetCar = cars[index];
 		cars[index].Colourize(new Color(1f, 0f, 0f));
 	}
+
+    public void GoToMainMenu()
+    {
+        Application.LoadLevel("Main Menu");
+    }
 }
