@@ -41,6 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Roads
+    uniqueID: 1364200079
+    locked: 0
+  - name: Cars
+    uniqueID: 966272963
+    locked: 0
   - name: Goal
     uniqueID: 1362081257
     locked: 0
