@@ -72,6 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 1.79999995
+  maxAcceleration: 1.5
 --- !u!212 &21216278
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -145,6 +146,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 06d5f8e637e8d400587049ccaaaa8718, type: 2}
+    - target: {fileID: 0}
+      propertyPath: maxAcceleration
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 142842}

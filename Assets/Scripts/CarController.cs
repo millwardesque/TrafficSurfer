@@ -11,6 +11,7 @@ public enum DrivingState {
 public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
 	public float maxSpeed = 1f;
+	public float maxAcceleration = 0.8f;
 
 	float m_currentSpeed = 0f;
 	public float CurrentSpeed {
@@ -27,13 +28,7 @@ public class CarController : MonoBehaviour {
 		set {
 			m_state = value;
 
-			if (m_state == DrivingState.Driving) {
-				m_currentSpeed = maxSpeed;
-			}
-			else if (m_state == DrivingState.Turning) {
-				m_currentSpeed = maxSpeed;
-			}
-			else if (m_state == DrivingState.Stopped) {
+			if (m_state == DrivingState.Stopped) {
 				m_currentSpeed = 0f;
 			}
 		}
@@ -63,6 +58,8 @@ public class CarController : MonoBehaviour {
 
             Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
+
+			Debug.DrawLine(transform.position, transform.position + transform.up / 2f, Color.red);
 		}
 	}
 
@@ -83,9 +80,10 @@ public class CarController : MonoBehaviour {
                     break;
                 }
             }
-            if (!willHitCar)
+            if (!willHitCar && m_currentSpeed < maxSpeed)
             {
-                m_currentSpeed = maxSpeed;
+				m_currentSpeed += maxAcceleration * Time.deltaTime;
+				m_currentSpeed = Mathf.Clamp(m_currentSpeed, 0f, maxSpeed);
             }
         }
     }

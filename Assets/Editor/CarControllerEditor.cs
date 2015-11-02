@@ -11,5 +11,6 @@ public class CarControllerEditor : Editor
 
         DrawDefaultInspector();
         EditorGUILayout.LabelField("State", myTarget.State.ToString());
+		EditorGUILayout.LabelField("Speed", myTarget.CurrentSpeed.ToString());
     }
 }
