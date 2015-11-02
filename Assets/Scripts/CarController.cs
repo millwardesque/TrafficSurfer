@@ -38,10 +38,13 @@ public class CarController : MonoBehaviour {
 			}
 		}
 	}
-	
-	void Start () {
+
+	void Awake() {
 		startPosition = transform.position;
 		startRotation = transform.rotation;
+	}
+
+	void Start () {
 		ResetCar();
 	}
 
