@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour {
 		GameTimer.Instance.RestartGame();
 		ScoreManager.Instance.RestartGame();
 		m_player.ResetPlayer(playerStart);
+		ChangeMusicPitch(1f);
 
 		CarController[] cars = FindObjectsOfType<CarController>();
 		for (int i = 0; i < cars.Length; ++i) {
@@ -139,4 +140,8 @@ public class GameManager : MonoBehaviour {
     {
         Application.LoadLevel("Main Menu");
     }
+
+	public void ChangeMusicPitch(float pitch) {
+		backgroundMusic.pitch = pitch;
+	}
 }

@@ -264,6 +264,8 @@ public class PlayerController : MonoBehaviour {
             transform.position += (Vector3)positionChange;
         }
 
+		GameManager.Instance.ChangeMusicPitch(currentDeathDuration / deathDuration);
+
         if (currentDeathDuration <= 0f)
         {
             GameManager.Instance.GameOver();
