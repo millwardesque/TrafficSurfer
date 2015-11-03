@@ -12,6 +12,7 @@ public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
 	public float maxSpeed = 1f;
 	public float maxAcceleration = 0.8f;
+	public float stopDistance = 1f;
 
 	float m_currentSpeed = 0f;
 	public float CurrentSpeed {
@@ -51,7 +52,7 @@ public class CarController : MonoBehaviour {
             Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
 
-            Debug.DrawLine(transform.position, transform.position + transform.up / 2f, Color.red);
+            Debug.DrawLine(transform.position, transform.position + transform.up * stopDistance, Color.red);
         }
 		else if (State == DrivingState.Turning) {
             CheckForOtherCars();
@@ -59,13 +60,13 @@ public class CarController : MonoBehaviour {
             Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
 
-			Debug.DrawLine(transform.position, transform.position + transform.up / 2f, Color.red);
+			Debug.DrawLine(transform.position, transform.position + transform.up * stopDistance, Color.red);
 		}
 	}
 
     void CheckForOtherCars()
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.up, 0.5f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.up, stopDistance);
         for (int i = 0; i < hits.Length; ++i)
         {
             CarController car = hits[i].collider.GetComponent<CarController>();

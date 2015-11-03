@@ -59,7 +59,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: .150000006, y: .349999994}
+  m_Size: {x: .300000012, y: .699999988}
 --- !u!114 &11474168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -71,8 +71,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45172b3c3c3f94054bc96ac02ec4c50f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 1.79999995
-  maxAcceleration: 1.5
+  maxSpeed: 3.5999999
+  maxAcceleration: 3
+  stopDistance: .75
 --- !u!212 &21216278
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -108,11 +109,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: m_Size.x
-      value: .150000006
+      value: .300000012
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Size.y
-      value: .349999994
+      value: .699999988
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalPosition.x
@@ -128,7 +129,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: maxSpeed
-      value: 1.79999995
+      value: 3.5999999
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.g
@@ -148,7 +149,11 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 06d5f8e637e8d400587049ccaaaa8718, type: 2}
     - target: {fileID: 0}
       propertyPath: maxAcceleration
-      value: 1.5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: stopDistance
+      value: .75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
