@@ -2888,10 +2888,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 11415436, guid: 42810b9357eed452e98b66a2ae0f0894, type: 2}
-      propertyPath: jumpDistance
-      value: 1.20000005
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 42810b9357eed452e98b66a2ae0f0894, type: 2}
   m_IsPrefabParent: 0
@@ -5503,6 +5499,7 @@ MonoBehaviour:
   minZoom: 2
   normalZoom: 4
   zoomSpeed: 5
+  followTarget: {fileID: 0}
 --- !u!1001 &1697257953
 Prefab:
   m_ObjectHideFlags: 0
@@ -6786,7 +6783,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2026726158
 RectTransform:
   m_ObjectHideFlags: 0

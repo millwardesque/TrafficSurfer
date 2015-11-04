@@ -108,6 +108,10 @@ public class GameManager : MonoBehaviour {
             intersections[i].ResetIntersection();
         }
 
+        CameraTools cameraTools = Camera.main.GetComponent<CameraTools>();
+        cameraTools.followTarget = Player.transform;
+        cameraTools.FollowState = CameraFollowState.Follow;
+
         GoalManager.Instance.RestartGame();
 
 		ChooseTargetCar();

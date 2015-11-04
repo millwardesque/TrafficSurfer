@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 1
-  jumpDistance: .600000024
+  jumpDistance: 1.20000005
   fromCarJumpDuration: .200000003
   fromGroundJumpDuration: .5
   jumpCooldown: .200000003

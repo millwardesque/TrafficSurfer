@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour {
             if (oldState == PlayerState.Dead) {
                 GetComponent<CircleCollider2D>().enabled = true;
 				GetComponent<SpriteRenderer>().sortingLayerName = "Player";
+                GetComponent<SpriteRenderer>().sortingOrder = 0;
             }
 
 			if (m_state == PlayerState.Jumping) {
@@ -110,7 +111,8 @@ public class PlayerController : MonoBehaviour {
                 GetComponent<CircleCollider2D>().enabled = false;
 
                 transform.Rotate(new Vector3(0f, 0f, 180f + Random.Range(-22.5f, 22.5f)));
-                GetComponent<SpriteRenderer>().sortingLayerName = "Default";
+                GetComponent<SpriteRenderer>().sortingLayerName = "Roads";
+                GetComponent<SpriteRenderer>().sortingOrder = 1;
             }
 		}
 	}
