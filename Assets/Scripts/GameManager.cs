@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour {
 
         GoalManager.Instance.RestartGame();
 
-		ChooseTargetCar();
+        ChooseTargetCar();
 
 		State = GameState.IsRunning;
 	}
@@ -136,8 +136,9 @@ public class GameManager : MonoBehaviour {
 			oldCar.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 		}
 
-		Player.TargetCar = cars[index];
-		cars[index].Colourize(new Color(1f, 0f, 0f));
+        TargetCarIndicator.Instance.targetCar = cars[index];
+        Player.TargetCar = cars[index];
+        cars[index].Colourize(new Color(1f, 0f, 0f));
 	}
 
     public void GoToMainMenu()
