@@ -1,6 +1,71 @@
-﻿using UnityEngine;using System.Collections;public class TargetCarIndicator : MonoBehaviour {    public CarController targetCar;    SpriteRenderer sprite;    public static TargetCarIndicator Instance = null;    void Awake()    {        if (Instance == null)        {            Instance = this;            sprite = GetComponent<SpriteRenderer>();        }        else        {            Destroy(gameObject);        }    }	// Use this for initialization	void Start () {		}		// Update is called once per frame	void Update () {	    if (targetCar != null && !targetCar.GetComponent<SpriteRenderer>().isVisible)        {            if (!sprite.enabled)            {                sprite.enabled = true;            }
+﻿using UnityEngine;
+using System.Collections;
 
-            Vector3 direction = (targetCar.transform.position - Camera.main.transform.position);            direction.z = 0;            Vector3 position = Camera.main.transform.position + (direction.normalized * Camera.main.orthographicSize);            position.z = 0;            transform.position = position;
+public class TargetCarIndicator : MonoBehaviour {
+    public CarController targetCar;
+    SpriteRenderer sprite;
+	float scaleAugment = 0f;
 
-            float angle = Vector2.Angle(transform.up, direction);
-            transform.rotation = Quaternion.Euler(0f, 0f, transform.rotation.eulerAngles.z + angle);        }        else        {            if (sprite.enabled)            {                sprite.enabled = false;            }        }	}}
+    public static TargetCarIndicator Instance = null;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            sprite = GetComponent<SpriteRenderer>();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+	void Update() {
+		scaleAugment += Time.deltaTime;
+		while (scaleAugment > 360f) {
+			scaleAugment -= 360f;
+		}
+		Vector2 minScale = new Vector2(0.5f, 0.5f);
+		Vector2 scale = new Vector2 (Mathf.Sin(scaleAugment) + 1f, Mathf.Sin(scaleAugment) + 1f) * 0.5f;
+		transform.localScale = minScale + scale;
+	}
+
+	// Update is called once per frame
+	void LateUpdate () {
+	    if (targetCar != null && !targetCar.GetComponent<SpriteRenderer>().isVisible)
+        {
+            if (!sprite.enabled)
+            {
+                sprite.enabled = true;
+            }
+
+			float cameraWidth = Camera.main.orthographicSize * Camera.main.aspect;
+			float cameraHeight = Camera.main.orthographicSize;
+
+			float cameraMaxX = Camera.main.transform.position.x + cameraWidth - sprite.sprite.bounds.extents.x * transform.localScale.x;
+			float cameraMinX = Camera.main.transform.position.x - cameraWidth + sprite.sprite.bounds.extents.x * transform.localScale.x;
+			float cameraMaxY = Camera.main.transform.position.y + cameraHeight - sprite.sprite.bounds.extents.y * transform.localScale.y;
+			float cameraMinY = Camera.main.transform.position.y - cameraHeight + sprite.sprite.bounds.extents.y * transform.localScale.y;
+			transform.position = new Vector2(Mathf.Clamp(targetCar.transform.position.x, cameraMinX, cameraMaxX), Mathf.Clamp(targetCar.transform.position.y, cameraMinY, cameraMaxY));
+
+			Vector2 direction = (targetCar.transform.position - Camera.main.transform.position);
+			float angle = Vector2.Angle(transform.right, direction);
+			Vector3 cross = Vector3.Cross((Vector3)transform.right, (Vector3)direction);
+			if (cross.z < 0f) {
+				angle *= -1f;
+			}
+			
+			Quaternion newRotation = transform.rotation;
+			newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
+			transform.rotation = newRotation;
+        }
+        else
+        {
+            if (sprite.enabled)
+            {
+                sprite.enabled = false;
+            }
+        }
+	}
+}
