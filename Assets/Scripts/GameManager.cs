@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 			else if (m_state == GameState.GameOver) {
+
                 backgroundMusic.Stop();
 				ScoreManager.Instance.AddHighScore(new HighScore("TEST", ScoreManager.Instance.Score));
 				Time.timeScale = 0f;

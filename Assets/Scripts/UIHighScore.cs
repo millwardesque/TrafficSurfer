@@ -12,8 +12,14 @@ public class UIHighScore : MonoBehaviour {
 
 		for (int i = 0; i < scores.Count; ++i) {
 			if (i < highScoreLabels.Length) {
-				highScoreLabels[i].text = scores[i].ToString();
+                highScoreLabels[i].text = string.Format("{0}: {1}", i + 1, scores[i].ToString());
 			}
 		}
+
+        // Clear any labels that don't have corresponding high scores.
+        for (int i = scores.Count; i < highScoreLabels.Length; ++i)
+        {
+            highScoreLabels[i].text = string.Format("{0}: {1}", i + 1, "<none>");
+        }
 	}
 }

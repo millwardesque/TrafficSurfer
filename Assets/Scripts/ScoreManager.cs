@@ -93,6 +93,11 @@ public class ScoreManager : MonoBehaviour {
 		ES2.Save(scores, ScoreManager.highScorePath);
 	}
 
+    public void EraseHighScores()
+    {
+        ES2.Delete(ScoreManager.highScorePath);
+    }
+
 	void DumpHighScores(List<HighScore> scores) {
 		Debug.Log ("Dumping high-scores");
 		for(int i = 0; i < scores.Count; ++i) {

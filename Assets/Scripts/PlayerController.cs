@@ -258,6 +258,12 @@ public class PlayerController : MonoBehaviour {
 
     void OnUpdateDead()
     {
+        // This state is triggered continuously once the game-over has been popped by the game manager. To avoid constantly setting the GameOver state, exit early when necessary.
+        if (currentDeathDuration <= 0f)
+        {
+            return;
+        }
+
         currentDeathDuration -= Time.deltaTime;
  
         if (currentDeathDuration > deathDuration * 2f / 4f)
