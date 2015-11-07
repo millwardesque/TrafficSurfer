@@ -8,12 +8,21 @@ public enum DrivingState {
 	Stopped
 };
 
+enum TurnIndex
+{
+    LeftTurn = 0,
+    Straight = 1,
+    RightTurn = 2
+}
+
 public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
 	public float maxSpeed = 1f;
 	public float maxAcceleration = 0.8f;
 	public float stopDistance = 1f;
     public List<Color> carColours = new List<Color>();
+
+    TurnIndicator turnIndicator = null;
 
 	float m_currentSpeed = 0f;
 	public float CurrentSpeed {
@@ -28,7 +37,13 @@ public class CarController : MonoBehaviour {
 	public DrivingState State {
 		get { return m_state; }
 		set {
+            DrivingState oldState = m_state;
 			m_state = value;
+
+            if (oldState == DrivingState.Turning)
+            {
+                turnIndicator.DoneTurn();
+            }
 
 			if (m_state == DrivingState.Stopped) {
 				m_currentSpeed = 0f;
@@ -39,7 +54,8 @@ public class CarController : MonoBehaviour {
 	void Awake() {
 		startPosition = transform.position;
 		startRotation = transform.rotation;
-	}
+        turnIndicator = GetComponentInChildren<TurnIndicator>();
+    }
 
 	void Start () {
 		ResetCar();
@@ -95,22 +111,54 @@ public class CarController : MonoBehaviour {
 	}
 
 	public void ChooseDirection(StopLine stopLine) {
-		List<Vector2> possibleDestinations = new List<Vector2>();
+		List<Vector2> possibleDestinations = new List<Vector2>(3);
 		if (stopLine.CanTurnLeft()) {
-			possibleDestinations.Add(stopLine.GetLeftTurnDestination());
+            possibleDestinations.Add(stopLine.GetLeftTurnDestination());
 		}
+        else
+        {
+            possibleDestinations.Add(Vector2.zero);
+        }
 
 		if (stopLine.CanGoStraight()) {
-			possibleDestinations.Add(stopLine.GetStraightDestination());
-		}
+            possibleDestinations.Add(stopLine.GetStraightDestination());
+        }
+        else
+        {
+            possibleDestinations.Add(Vector2.zero);
+        }
 
-		if (stopLine.CanTurnRight()) {
-			possibleDestinations.Add(stopLine.GetRightTurnDestination());
-		}
+        if (stopLine.CanTurnRight()) {
+            possibleDestinations.Add(stopLine.GetRightTurnDestination());
+        }
+        else
+        {
+            possibleDestinations.Add(Vector2.zero);
+        }
 
-		int i = Random.Range(0, possibleDestinations.Count);
-		turnDestination = possibleDestinations[i];
-		Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
+        int i = Random.Range(0, possibleDestinations.Count);
+        while (possibleDestinations[i] == Vector2.zero)
+        {
+            i = Random.Range(0, possibleDestinations.Count);
+        }
+        turnDestination = possibleDestinations[i];
+
+        switch (i)
+        {
+            case (int)TurnIndex.LeftTurn:
+                turnIndicator.TurnLeft();
+                break;
+            case (int)TurnIndex.Straight:
+                turnIndicator.GoStraight();
+                break;
+            case (int)TurnIndex.RightTurn:
+                turnIndicator.TurnRight();
+                break;
+            default:
+                break;
+        }
+
+        Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
 		RotateTo(turnDirection);
 		State = DrivingState.Turning;
 	}
