@@ -108,6 +108,8 @@ MonoBehaviour:
   - {r: .419607788, g: .718321562, b: .956862748, a: 1}
   - {r: .956862748, g: .419607788, b: .897579432, a: 1}
   - {r: .956862748, g: .58915484, b: .419607788, a: 1}
+  - {r: .956862748, g: .419607788, b: .419607788, a: 1}
+  - {r: .860527396, g: .956862748, b: .419607788, a: 1}
 --- !u!212 &21216278
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -169,7 +171,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: carColours.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Size.x
@@ -291,6 +293,30 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: carColours.Array.data[3].a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[4].r
+      value: .956862748
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[4].g
+      value: .419607788
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[4].b
+      value: .419607788
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[5].r
+      value: .860527396
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[5].g
+      value: .956862748
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[5].b
+      value: .419607788
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
