@@ -224,7 +224,7 @@ GameObject:
   - 114: {fileID: 11435848}
   - 114: {fileID: 11457090}
   m_Layer: 5
-  m_Name: Restart Game
+  m_Name: New game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -914,7 +914,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Restart Game
+  m_Text: New Game
 --- !u!222 &22206254
 CanvasRenderer:
   m_ObjectHideFlags: 1

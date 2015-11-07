@@ -71,8 +71,9 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void SubmitHighScoreName() {
-		highScoreNamePanel.SetActive(false);
 		GameManager.Instance.playerName = highScoreNamePanel.GetComponentInChildren<InputField>().text;
+		highScoreNamePanel.SetActive(false);
+
 		GameManager.Instance.OnHighScoreNameSet();
 	}
 
