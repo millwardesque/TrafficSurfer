@@ -26,19 +26,23 @@ public class TargetCarIndicator : MonoBehaviour {
 		while (scaleAugment > 360f) {
 			scaleAugment -= 360f;
 		}
-		Vector2 minScale = new Vector2(0.5f, 0.5f);
+		Vector2 minScale = new Vector2(1f, 1f);
 		Vector2 scale = new Vector2 (Mathf.Sin(scaleAugment) + 1f, Mathf.Sin(scaleAugment) + 1f) * 0.5f;
 		transform.localScale = minScale + scale;
 	}
 
 	// Update is called once per frame
 	void LateUpdate () {
-	    if (targetCar != null && !targetCar.GetComponent<SpriteRenderer>().isVisible)
+		if (targetCar == null) {
+			return;
+		}
+
+	    if (!targetCar.GetComponent<SpriteRenderer>().isVisible)
         {
-            if (!sprite.enabled)
-            {
-                sprite.enabled = true;
-            }
+			if (sprite.sortingLayerName != "Player") {
+				sprite.sortingLayerName = "Player";
+				sprite.sortingOrder = 0;
+			}
 
 			float cameraWidth = Camera.main.orthographicSize * Camera.main.aspect;
 			float cameraHeight = Camera.main.orthographicSize;
@@ -62,10 +66,13 @@ public class TargetCarIndicator : MonoBehaviour {
         }
         else
         {
-            if (sprite.enabled)
-            {
-                sprite.enabled = false;
-            }
+			if (sprite.sortingLayerName != "Cars") {
+				sprite.sortingLayerName = "Cars";
+				sprite.sortingOrder = -2;
+			}
+
+			transform.position = targetCar.transform.position;
+			transform.rotation = targetCar.transform.rotation;
         }
 	}
 }
