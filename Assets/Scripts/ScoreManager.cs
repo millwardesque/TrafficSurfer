@@ -67,6 +67,20 @@ public class ScoreManager : MonoBehaviour {
 		return scores;
 	}
 
+	public bool IsHighScore(int score) {
+		List<HighScore> scores = GetHighScores();
+		for (int i = 0; i < scores.Count; ++i) {
+			if (i == maxHighScores) {
+				return false;
+			}
+			else if (score >= scores[i].score) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public void AddHighScore(HighScore score) {
 		if (score.score < 1) {
 			return;

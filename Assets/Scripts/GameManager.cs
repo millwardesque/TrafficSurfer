@@ -9,6 +9,7 @@ public enum GameState {
 
 public class GameManager : MonoBehaviour {
 	public Transform playerStart;
+	public string playerName = "";
     AudioSource backgroundMusic;
 
 	PlayerController m_player;
@@ -39,11 +40,15 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 			else if (m_state == GameState.GameOver) {
-
-                backgroundMusic.Stop();
-				ScoreManager.Instance.AddHighScore(new HighScore("TEST", ScoreManager.Instance.Score));
 				Time.timeScale = 0f;
-				GUIManager.Instance.OpenGameOverPanel();
+                backgroundMusic.Stop();
+
+				if (ScoreManager.Instance.IsHighScore(ScoreManager.Instance.Score)) {
+					GUIManager.Instance.OpenHighScoreNamePanel();
+				}
+				else {
+					GUIManager.Instance.OpenGameOverPanel();
+				}
 			}
 		}
 	}
@@ -149,5 +154,10 @@ public class GameManager : MonoBehaviour {
 
 	public void ChangeMusicPitch(float pitch) {
 		backgroundMusic.pitch = pitch;
+	}
+
+	public void OnHighScoreNameSet() {
+		ScoreManager.Instance.AddHighScore(new HighScore(playerName, ScoreManager.Instance.Score));
+		GUIManager.Instance.OpenGameOverPanel();
 	}
 }

@@ -5,6 +5,7 @@ using System.Collections;
 public class GUIManager : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public GameObject pausePanel;
+	public GameObject highScoreNamePanel;
 	public UIHighScore highScoreUI;
 	public Text scoreLabel;
 	public Text timeRemainingLabel;
@@ -21,6 +22,10 @@ public class GUIManager : MonoBehaviour {
 
 			if (pausePanel == null) {
 				Debug.LogError("GUI Manager: No Pause panel is set.");
+			}
+
+			if (highScoreNamePanel == null) {
+				Debug.LogError("GUI Manager: No high-score name panel is set.");
 			}
 
 			if (highScoreUI == null) {
@@ -63,5 +68,15 @@ public class GUIManager : MonoBehaviour {
 
 	public void UpdateTimeRemaining(int secondsRemaining) {
 		timeRemainingLabel.text = "Time Remaining: " + secondsRemaining;
+	}
+
+	public void SubmitHighScoreName() {
+		highScoreNamePanel.SetActive(false);
+		GameManager.Instance.playerName = highScoreNamePanel.GetComponentInChildren<InputField>().text;
+		GameManager.Instance.OnHighScoreNameSet();
+	}
+
+	public void OpenHighScoreNamePanel() {
+		highScoreNamePanel.SetActive(true);
 	}
 }

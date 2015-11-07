@@ -52,7 +52,6 @@ public class PlayerController : MonoBehaviour {
 
 			if (m_state == PlayerState.Jumping) {
 				TriggerJumpAnimation();
-				GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 1f);
 
 				if (oldState == PlayerState.OnGround) {
 					audioSource.Stop();
@@ -75,7 +74,6 @@ public class PlayerController : MonoBehaviour {
 			}
 			else if (m_state == PlayerState.OnGround) {
 				TriggerIdleAnimation();
-				GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
 				lastCar = null;
 
 				if (oldState == PlayerState.Jumping) {
@@ -88,7 +86,6 @@ public class PlayerController : MonoBehaviour {
 			}
 			else if (m_state == PlayerState.OnCar) {
 				TriggerIdleAnimation();
-				GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f);
 				lastCar = null;
 
 				if (oldState == PlayerState.Jumping) {
