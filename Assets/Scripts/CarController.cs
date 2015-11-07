@@ -13,6 +13,7 @@ public class CarController : MonoBehaviour {
 	public float maxSpeed = 1f;
 	public float maxAcceleration = 0.8f;
 	public float stopDistance = 1f;
+    public List<Color> carColours = new List<Color>();
 
 	float m_currentSpeed = 0f;
 	public float CurrentSpeed {
@@ -129,7 +130,15 @@ public class CarController : MonoBehaviour {
 	public void ResetCar() {
 		transform.position = startPosition;
 		transform.rotation = startRotation;
-		GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
+
+        if (carColours.Count > 0) {
+            GetComponent<SpriteRenderer>().color = carColours[Random.Range(0, carColours.Count)];
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+		
 		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 0);
 		State = DrivingState.Driving;
 	}

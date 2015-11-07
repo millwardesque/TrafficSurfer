@@ -2796,6 +2796,22 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: carColours.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: carColours.Array.data[1].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: carColours.Array.data[2].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: carColours.Array.data[3].a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
   m_IsPrefabParent: 0
