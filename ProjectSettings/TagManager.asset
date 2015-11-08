@@ -47,6 +47,9 @@ TagManager:
   - name: Cars
     uniqueID: 966272963
     locked: 0
+  - name: Buildings
+    uniqueID: 243040375
+    locked: 0
   - name: Goal
     uniqueID: 1362081257
     locked: 0
