@@ -287,6 +287,7 @@ public class PlayerController : MonoBehaviour {
 				State = PlayerState.OnCar;
 
 				if (car == TargetCar) {
+					car.GetComponent<AudioSource>().Play ();
 					GameManager.Instance.OnReachedTargetCar();
 				}
 
