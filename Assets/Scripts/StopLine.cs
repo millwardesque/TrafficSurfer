@@ -22,6 +22,7 @@ public class StopLine : MonoBehaviour {
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && VerifyCarTrigger(car)) {
 			car.StopCar();
+			car.ChooseDirection(this);
 			intersection.Enqueue(car, this);
 		}
 	}

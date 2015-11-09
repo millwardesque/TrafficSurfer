@@ -48,6 +48,10 @@ public class CarController : MonoBehaviour {
 			if (m_state == DrivingState.Stopped) {
 				m_currentSpeed = 0f;
 			}
+			else if (m_state == DrivingState.Turning) {
+				Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
+				RotateTo(turnDirection);
+			}
 		}
 	}
 
@@ -157,12 +161,8 @@ public class CarController : MonoBehaviour {
             default:
                 break;
         }
-
-        Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
-		RotateTo(turnDirection);
-		State = DrivingState.Turning;
 	}
-
+	
 	public void RotateTo(Vector2 direction) {
 		float angle = Vector2.Angle(transform.up, direction);
 		Vector3 cross = Vector3.Cross((Vector3)transform.up, (Vector3)direction);
