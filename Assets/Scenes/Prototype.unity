@@ -165,7 +165,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 490046, guid: 398a83c8fe4dc41ae8cdac5d0f16c002, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 100882, guid: 398a83c8fe4dc41ae8cdac5d0f16c002, type: 2}
       propertyPath: m_Name
@@ -447,7 +447,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 442156, guid: 19ac6104f75964e39a80472c39b4cb0b, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 19ac6104f75964e39a80472c39b4cb0b, type: 2}
@@ -1188,7 +1188,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 490046, guid: 398a83c8fe4dc41ae8cdac5d0f16c002, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 100882, guid: 398a83c8fe4dc41ae8cdac5d0f16c002, type: 2}
       propertyPath: m_Name
@@ -1858,7 +1858,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 442156, guid: 19ac6104f75964e39a80472c39b4cb0b, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114848, guid: 19ac6104f75964e39a80472c39b4cb0b, type: 2}
       propertyPath: m_Name
@@ -2192,10 +2192,10 @@ Transform:
   - {fileID: 511308974}
   - {fileID: 1632970901}
   - {fileID: 1102969826}
-  - {fileID: 866135938}
   - {fileID: 497785811}
-  - {fileID: 42504917}
   - {fileID: 618684057}
+  - {fileID: 42504917}
+  - {fileID: 866135938}
   - {fileID: 307026722}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -2294,7 +2294,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 442156, guid: 19ac6104f75964e39a80472c39b4cb0b, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114848, guid: 19ac6104f75964e39a80472c39b4cb0b, type: 2}
       propertyPath: m_Name
