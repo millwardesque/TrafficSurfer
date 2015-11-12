@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Com.LuisPedroFonseca.ProCamera2D;
 
 public class TargetCarIndicator : MonoBehaviour {
     public CarController targetCar;
@@ -21,16 +22,6 @@ public class TargetCarIndicator : MonoBehaviour {
         }
     }
 
-	void Update() {
-		scaleAugment += Time.deltaTime;
-		while (scaleAugment > 360f) {
-			scaleAugment -= 360f;
-		}
-		Vector2 minScale = new Vector2(1f, 1f);
-		Vector2 scale = new Vector2 (Mathf.Sin(scaleAugment) + 1f, Mathf.Sin(scaleAugment) + 1f) * 0.5f;
-		transform.localScale = minScale + scale;
-	}
-
 	// Update is called once per frame
 	void LateUpdate () {
 		if (targetCar == null) {
@@ -44,13 +35,15 @@ public class TargetCarIndicator : MonoBehaviour {
 				sprite.sortingOrder = 0;
 			}
 
-			float cameraWidth = Camera.main.orthographicSize * Camera.main.aspect;
-			float cameraHeight = Camera.main.orthographicSize;
+			Camera mainCamera = ProCamera2D.Instance.GameCamera; // Camera.main
 
-			float cameraMaxX = Camera.main.transform.position.x + cameraWidth - sprite.sprite.bounds.extents.x * transform.localScale.x;
-			float cameraMinX = Camera.main.transform.position.x - cameraWidth + sprite.sprite.bounds.extents.x * transform.localScale.x;
-			float cameraMaxY = Camera.main.transform.position.y + cameraHeight - sprite.sprite.bounds.extents.y * transform.localScale.y;
-			float cameraMinY = Camera.main.transform.position.y - cameraHeight + sprite.sprite.bounds.extents.y * transform.localScale.y;
+			float cameraWidth = ProCamera2D.Instance.GameCameraSize * mainCamera.aspect;
+			float cameraHeight = ProCamera2D.Instance.GameCameraSize;
+
+			float cameraMaxX = mainCamera.transform.position.x + cameraWidth - sprite.sprite.bounds.extents.x * transform.localScale.x;
+			float cameraMinX = mainCamera.transform.position.x - cameraWidth + sprite.sprite.bounds.extents.x * transform.localScale.x;
+			float cameraMaxY = mainCamera.transform.position.y + cameraHeight - sprite.sprite.bounds.extents.y * transform.localScale.y;
+			float cameraMinY = mainCamera.transform.position.y - cameraHeight + sprite.sprite.bounds.extents.y * transform.localScale.y;
 			transform.position = new Vector2(Mathf.Clamp(targetCar.transform.position.x, cameraMinX, cameraMaxX), Mathf.Clamp(targetCar.transform.position.y, cameraMinY, cameraMaxY));
 
 			Vector2 direction = (targetCar.transform.position - Camera.main.transform.position);
@@ -63,6 +56,11 @@ public class TargetCarIndicator : MonoBehaviour {
 			Quaternion newRotation = transform.rotation;
 			newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
 			transform.rotation = newRotation;
+
+			Vector2 minScale = new Vector2(1f, 1f);
+			scaleAugment = (targetCar.transform.position - mainCamera.transform.position).magnitude / 9f;
+			Vector2 scale = new Vector2 (scaleAugment, scaleAugment);
+			transform.localScale = minScale + scale;
         }
         else
         {
@@ -73,6 +71,7 @@ public class TargetCarIndicator : MonoBehaviour {
 
 			transform.position = targetCar.transform.position;
 			transform.rotation = targetCar.transform.rotation;
+			transform.localScale = new Vector2(1f, 1f);
         }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Com.LuisPedroFonseca.ProCamera2D;
 
 public enum GameState {
 	IsRunning,
@@ -116,20 +117,18 @@ public class GameManager : MonoBehaviour {
 
 
         CameraTools cameraTools = Camera.main.GetComponent<CameraTools>();
-        cameraTools.followTarget = Player.transform;
-        cameraTools.FollowState = CameraFollowState.Follow;
+		if (cameraTools) {
+        	cameraTools.followTarget = Player.transform;
+        	cameraTools.FollowState = CameraFollowState.Follow;
+		}
 
-		/**
-		 * Disabled until I can make the car-target indicator work with ProCamera2D.
-		 * When re-enabling, add the following line to the top of the file:
+		ProCamera2D proCamera = Camera.main.GetComponent<ProCamera2D>();
+		if (proCamera) {
+			proCamera.CameraTargets.Clear();
+			proCamera.AddCameraTarget(Player.transform);
+		}
 
-		using Com.LuisPedroFonseca.ProCamera2D;
-		
-		Camera.main.GetComponent<ProCamera2D>().CameraTargets.Clear();
-		Camera.main.GetComponent<ProCamera2D>().AddCameraTarget(Player.transform);
-		*/
-
-        ChooseTargetCar();
+		ChooseTargetCar();
 
 		State = GameState.IsRunning;
 	}
