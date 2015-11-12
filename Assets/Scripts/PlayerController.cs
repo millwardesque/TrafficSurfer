@@ -292,7 +292,7 @@ public class PlayerController : MonoBehaviour {
 	void OnUpdateFallingOffPlatform() {
 		currentDeathDuration -= Time.deltaTime;
 
-		float scale = 0.5f + (0.5f * currentDeathDuration / deathDuration);
+		float scale = 0.1f + (0.9f * currentDeathDuration / deathDuration);
 		transform.localScale = new Vector3(scale, scale, 1);
 		
 		GameManager.Instance.ChangeMusicPitch(currentDeathDuration / deathDuration);

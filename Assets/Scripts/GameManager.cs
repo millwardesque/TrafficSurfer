@@ -118,8 +118,6 @@ public class GameManager : MonoBehaviour {
         cameraTools.followTarget = Player.transform;
         cameraTools.FollowState = CameraFollowState.Follow;
 
-        GoalManager.Instance.RestartGame();
-
         ChooseTargetCar();
 
 		State = GameState.IsRunning;
