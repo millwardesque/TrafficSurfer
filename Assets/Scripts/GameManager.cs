@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Com.LuisPedroFonseca.ProCamera2D;
 
 public enum GameState {
 	IsRunning,
@@ -114,9 +115,12 @@ public class GameManager : MonoBehaviour {
             intersections[i].ResetIntersection();
         }
 
+		/*
         CameraTools cameraTools = Camera.main.GetComponent<CameraTools>();
         cameraTools.followTarget = Player.transform;
-        cameraTools.FollowState = CameraFollowState.Follow;
+        cameraTools.FollowState = CameraFollowState.Follow; */
+		Camera.main.GetComponent<ProCamera2D>().CameraTargets.Clear();
+		Camera.main.GetComponent<ProCamera2D>().AddCameraTarget(Player.transform);
 
         ChooseTargetCar();
 

@@ -306,8 +306,20 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col) {
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && car != lastCar) {
-			if (State == PlayerState.OnGround && car.CurrentSpeed >= PlayerController.minDeathSpeed ) {
-                State = PlayerState.HitByCar;
+			if (State == PlayerState.OnGround) {
+				if (car.CurrentSpeed >= PlayerController.minDeathSpeed ) {
+                	State = PlayerState.HitByCar;
+				}
+				else {
+					Bounds carBounds = car.GetComponent<BoxCollider2D>().bounds;
+					Vector2 myColliderPosition = (Vector2)transform.position + GetComponent<CircleCollider2D>().offset;
+					Vector2 direction = ((Vector2)car.transform.position - myColliderPosition).normalized;
+					float distance;
+
+					if (carBounds.IntersectRay(new Ray((Vector3)myColliderPosition, (Vector3)direction), out distance)) {
+						transform.position -= (Vector3)(direction * distance);
+					}
+				}
 			}
 			else if (State == PlayerState.Jumping) {
 				State = PlayerState.OnCar;
