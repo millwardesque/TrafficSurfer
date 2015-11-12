@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45172b3c3c3f94054bc96ac02ec4c50f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0
+  maxSpeed: 3.5999999
   maxAcceleration: 3
   stopDistance: .75
   carColours:
@@ -336,7 +336,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: maxSpeed
-      value: 0
+      value: 3.5999999
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Color.g
