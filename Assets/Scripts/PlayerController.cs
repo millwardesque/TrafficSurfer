@@ -5,6 +5,8 @@ public enum PlayerState {
 	OnGround,
 	OnCar,
 	Jumping,
+	HitByCar,
+	FallingOffPlatform,
     Dead
 };
 
@@ -100,16 +102,28 @@ public class PlayerController : MonoBehaviour {
 
 				wasMoving = false;
 			}
+			else if (m_state == PlayerState.HitByCar) {
+				audioSource.Stop();
+				TriggerDeadAnimation();
+				currentDeathDuration = deathDuration;
+				GetComponent<CircleCollider2D>().enabled = false;
+				
+				transform.Rotate(new Vector3(0f, 0f, 180f + Random.Range(-22.5f, 22.5f)));
+				GetComponent<SpriteRenderer>().sortingLayerName = "Roads";
+				GetComponent<SpriteRenderer>().sortingOrder = 1;
+			}
+			else if (m_state == PlayerState.FallingOffPlatform) {
+				audioSource.Stop();
+				TriggerDeadAnimation();
+				currentDeathDuration = deathDuration;
+				GetComponent<CircleCollider2D>().enabled = false;
+
+				GetComponent<SpriteRenderer>().sortingLayerName = "Roads";
+				GetComponent<SpriteRenderer>().sortingOrder = 1;
+			}
             else if (m_state == PlayerState.Dead)
             {
-                audioSource.Stop();
-                TriggerDeadAnimation();
-                currentDeathDuration = deathDuration;
-                GetComponent<CircleCollider2D>().enabled = false;
-
-                transform.Rotate(new Vector3(0f, 0f, 180f + Random.Range(-22.5f, 22.5f)));
-                GetComponent<SpriteRenderer>().sortingLayerName = "Roads";
-                GetComponent<SpriteRenderer>().sortingOrder = 1;
+				GameManager.Instance.GameOver();
             }
 		}
 	}
@@ -137,9 +151,12 @@ public class PlayerController : MonoBehaviour {
 		else if (State == PlayerState.OnCar) {
 			OnUpdateOnCar ();
 		}
-        else if (State == PlayerState.Dead) {
-            OnUpdateDead();
+        else if (State == PlayerState.HitByCar) {
+            OnUpdateHitByCar();
         }
+		else if (State == PlayerState.FallingOffPlatform) {
+			OnUpdateFallingOffPlatform();
+		}
 	}
 
 	void OnUpdateOnGround() {
@@ -218,9 +235,10 @@ public class PlayerController : MonoBehaviour {
 
 		wasMoving = isMoving;
 	}
-	
+
 	void OnUpdateJumping() {
 		Vector2 positionChange = transform.up * Time.deltaTime * distanceToJump / activeJumpDuration;
+
 		transform.position += (Vector3)positionChange;
 		
 		jumpRemaining -= Time.deltaTime;
@@ -253,14 +271,8 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-    void OnUpdateDead()
+    void OnUpdateHitByCar()
     {
-        // This state is triggered continuously once the game-over has been popped by the game manager. To avoid constantly setting the GameOver state, exit early when necessary.
-        if (currentDeathDuration <= 0f)
-        {
-            return;
-        }
-
         currentDeathDuration -= Time.deltaTime;
  
         if (currentDeathDuration > deathDuration * 2f / 4f)
@@ -273,15 +285,29 @@ public class PlayerController : MonoBehaviour {
 
         if (currentDeathDuration <= 0f)
         {
-            GameManager.Instance.GameOver();
+			State = PlayerState.Dead;
         }
     }
+
+	void OnUpdateFallingOffPlatform() {
+		currentDeathDuration -= Time.deltaTime;
+
+		float scale = 0.5f + (0.5f * currentDeathDuration / deathDuration);
+		transform.localScale = new Vector3(scale, scale, 1);
+		
+		GameManager.Instance.ChangeMusicPitch(currentDeathDuration / deathDuration);
+		
+		if (currentDeathDuration <= 0f)
+		{
+			State = PlayerState.Dead;
+		}
+	}
 
 	void OnTriggerEnter2D(Collider2D col) {
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && car != lastCar) {
 			if (State == PlayerState.OnGround && car.CurrentSpeed >= PlayerController.minDeathSpeed ) {
-                State = PlayerState.Dead;
+                State = PlayerState.HitByCar;
 			}
 			else if (State == PlayerState.Jumping) {
 				State = PlayerState.OnCar;
@@ -298,10 +324,17 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerStay2D(Collider2D col) {
+		if (col.tag == "Gap" && State == PlayerState.OnGround) {
+			State = PlayerState.FallingOffPlatform;
+		}
+	}
+
 	public void ResetPlayer(Transform spawnLocation) {
 		transform.SetParent(null);
 		transform.position = spawnLocation.position;
 		transform.rotation = spawnLocation.rotation;
+		transform.localScale = spawnLocation.localScale;
 		TriggerIdleAnimation();
 
 		GetComponent<CircleCollider2D>().enabled = true;
