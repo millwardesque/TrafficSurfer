@@ -239,6 +239,44 @@ public class PlayerController : MonoBehaviour {
 	void OnUpdateJumping() {
 		Vector2 positionChange = transform.up * Time.deltaTime * distanceToJump / activeJumpDuration;
 
+		Quaternion rotation = transform.rotation;
+		float rotationAngle = rotation.eulerAngles.z;
+		bool movedLeftOrRight = false;
+		
+		if (Input.GetKey(KeyCode.LeftArrow)) {
+			positionChange += new Vector2(-walkSpeed * Time.deltaTime, 0f);
+			rotationAngle = 90f;
+			movedLeftOrRight = true;
+		}
+		else if (Input.GetKey(KeyCode.RightArrow)) {
+			positionChange += new Vector2(walkSpeed * Time.deltaTime, 0f);
+			rotationAngle = -90f;
+			movedLeftOrRight = true;
+		}
+		
+		if (Input.GetKey(KeyCode.UpArrow)) {
+			positionChange += new Vector2(0f, walkSpeed * Time.deltaTime);
+			
+			if (movedLeftOrRight) {
+				rotationAngle = rotationAngle / 2f;
+			}
+			else {
+				rotationAngle = 0f;
+			}
+		}
+		else if (Input.GetKey(KeyCode.DownArrow)) {
+			positionChange += new Vector2(0f, -walkSpeed * Time.deltaTime);
+			
+			if (movedLeftOrRight) {
+				rotationAngle = 180f - rotationAngle / 2f;
+			}
+			else {
+				rotationAngle = 180f;
+			}
+		}
+
+		rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
+		transform.rotation = rotation;
 		transform.position += (Vector3)positionChange;
 		
 		jumpRemaining -= Time.deltaTime;
