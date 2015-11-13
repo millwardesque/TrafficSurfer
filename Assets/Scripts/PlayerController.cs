@@ -266,7 +266,7 @@ public class PlayerController : MonoBehaviour {
 		if (jumpCooldownRemaining > 0f) {
 			jumpCooldownRemaining -= Time.deltaTime;
 		}
-		if (Input.GetKey (KeyCode.Space) && jumpCooldownRemaining <= 0f) {
+		if (Input.GetKeyDown (KeyCode.Space) && jumpCooldownRemaining <= 0f) {
 			State = PlayerState.Jumping;
 		}
 	}
