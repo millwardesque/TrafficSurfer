@@ -46,6 +46,7 @@ public class CarManager : MonoBehaviour {
 				Sprite car1Sprite = newCar1.GetComponent<SpriteRenderer>().sprite;
 				float spriteWidthOffset = car1Sprite.rect.width / 1.5f / car1Sprite.pixelsPerUnit;
 				newCar1.transform.position = roads[i].transform.position + newCar1.transform.right * spriteWidthOffset;
+				newCar1.transform.position += newCar1.transform.up * Random.Range(-0.25f, 0.25f);
 
 				newCar1.ResetCar();
 				carCount++;
@@ -62,7 +63,8 @@ public class CarManager : MonoBehaviour {
 				Sprite car2Sprite = newCar2.GetComponent<SpriteRenderer>().sprite;
 				float spriteWidthOffset = car2Sprite.rect.width / 1.5f / car2Sprite.pixelsPerUnit;
 				newCar2.transform.position = roads[i].transform.position + newCar2.transform.right * spriteWidthOffset;
-				
+				newCar2.transform.position += newCar2.transform.up * Random.Range(-0.25f, 0.25f);
+
 				newCar2.ResetCar();
 				carCount++;
 			}
