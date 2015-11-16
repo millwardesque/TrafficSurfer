@@ -104,23 +104,13 @@ public class GameManager : MonoBehaviour {
 		m_player.ResetPlayer(playerStart);
 		ChangeMusicPitch(1f);
 
-		CarController[] cars = FindObjectsOfType<CarController>();
-		for (int i = 0; i < cars.Length; ++i) {
-			cars[i].ResetCar();
-		}
+		CarManager.Instance.GenerateCars(true);
 
         IntersectionManager[] intersections = FindObjectsOfType<IntersectionManager>();
         for (int i = 0; i < intersections.Length; ++i)
         {
             intersections[i].ResetIntersection();
         }
-
-
-        CameraTools cameraTools = Camera.main.GetComponent<CameraTools>();
-		if (cameraTools) {
-        	cameraTools.followTarget = Player.transform;
-        	cameraTools.FollowState = CameraFollowState.Follow;
-		}
 
 		ProCamera2D proCamera = Camera.main.GetComponent<ProCamera2D>();
 		if (proCamera) {

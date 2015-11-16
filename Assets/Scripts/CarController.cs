@@ -28,9 +28,7 @@ public class CarController : MonoBehaviour {
 	public float CurrentSpeed {
 		get { return m_currentSpeed; }
 	}
-
-	Vector3 startPosition;
-	Quaternion startRotation;
+	
 	Vector2 turnDestination;
 
 	DrivingState m_state;
@@ -56,14 +54,8 @@ public class CarController : MonoBehaviour {
 	}
 
 	void Awake() {
-		startPosition = transform.position;
-		startRotation = transform.rotation;
         turnIndicator = GetComponentInChildren<TurnIndicator>();
     }
-
-	void Start () {
-		ResetCar();
-	}
 
 	// Update is called once per frame
 	void Update () {
@@ -176,9 +168,6 @@ public class CarController : MonoBehaviour {
 	}
 	
 	public void ResetCar() {
-		transform.position = startPosition;
-		transform.rotation = startRotation;
-
         if (carColours.Count > 0) {
             GetComponent<SpriteRenderer>().color = carColours[Random.Range(0, carColours.Count)];
         }
