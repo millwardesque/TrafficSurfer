@@ -27,18 +27,18 @@ public class TargetCarIndicator : MonoBehaviour {
 		if (targetCar == null) {
 			return;
 		}
+		Camera mainCamera = ProCamera2D.Instance.GameCamera;
+		float cameraWidth = ProCamera2D.Instance.GameCameraSize * mainCamera.aspect;
+     	float cameraHeight = ProCamera2D.Instance.GameCameraSize;
 
-	    if (!targetCar.GetComponent<SpriteRenderer>().isVisible)
+		Bounds cameraBounds = new Bounds(mainCamera.transform.position, new Vector3(cameraWidth, cameraHeight, 1f));
+
+		if (!targetCar.GetComponent<SpriteRenderer>().bounds.Intersects(cameraBounds))
         {
 			if (sprite.sortingLayerName != "Player") {
 				sprite.sortingLayerName = "Player";
 				sprite.sortingOrder = 0;
 			}
-
-			Camera mainCamera = ProCamera2D.Instance.GameCamera; // Camera.main
-
-			float cameraWidth = ProCamera2D.Instance.GameCameraSize * mainCamera.aspect;
-			float cameraHeight = ProCamera2D.Instance.GameCameraSize;
 
 			float cameraMaxX = mainCamera.transform.position.x + cameraWidth - sprite.sprite.bounds.extents.x * transform.localScale.x;
 			float cameraMinX = mainCamera.transform.position.x - cameraWidth + sprite.sprite.bounds.extents.x * transform.localScale.x;
