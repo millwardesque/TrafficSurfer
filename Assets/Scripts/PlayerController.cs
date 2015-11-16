@@ -378,6 +378,13 @@ public class PlayerController : MonoBehaviour {
 		if (col.tag == "Gap" && State == PlayerState.OnGround) {
 			State = PlayerState.FallingOffPlatform;
 		}
+
+		CarController car = col.GetComponent<CarController>();
+		if (car != null && State == PlayerState.OnGround) {
+			if (car.CurrentSpeed >= minDeathSpeed ) {
+				State = PlayerState.HitByCar;
+			}
+		}
 	}
 
 	public void ResetPlayer(Transform spawnLocation) {
