@@ -47,8 +47,7 @@ public class CarController : MonoBehaviour {
 				m_currentSpeed = 0f;
 			}
 			else if (m_state == DrivingState.Turning) {
-				Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
-				RotateTo(turnDirection);
+
 			}
 		}
 	}
@@ -69,6 +68,18 @@ public class CarController : MonoBehaviour {
         }
 		else if (State == DrivingState.Turning) {
             CheckForOtherCars();
+
+            Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
+            float angle = Vector2.Angle(transform.up, turnDirection);
+
+            angle = Mathf.Clamp(angle, 0f, 1f);
+            Vector3 cross = Vector3.Cross((Vector3)transform.up, (Vector3)turnDirection);
+            if (cross.z < 0f)
+            {
+                angle *= -1f;
+            }
+
+            RotateBy(angle);
 
             Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
 			transform.position += (Vector3)distance;
@@ -162,10 +173,15 @@ public class CarController : MonoBehaviour {
 			angle *= -1f;
 		}
 
-		Quaternion newRotation = transform.rotation;
-		newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
-		transform.rotation = newRotation;
+        RotateBy(angle);
 	}
+
+    public void RotateBy(float angle)
+    {
+        Quaternion newRotation = transform.rotation;
+        newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
+        transform.rotation = newRotation;
+    }
 	
 	public void ResetCar() {
         if (carColours.Count > 0) {
