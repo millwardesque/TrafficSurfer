@@ -30,8 +30,7 @@ public class CarJumpAchievementTracker : MonoBehaviour {
 	}
 
 	void OnAchievementCompleted() {
-		/// @TODO Visual achievement indicator.
-		Debug.Log ("Achievement Completed: " + gameObject.name);
+		GUIManager.Instance.ShowAchievementPanel(gameObject.name);
 	}
 
 	void OnRestartGame(Message message) {

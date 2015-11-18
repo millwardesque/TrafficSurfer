@@ -44,8 +44,5 @@ public class MessageManager : MonoBehaviour {
 				recipients[i].Invoke(message);
 			}
 		}
-		else {
-			Debug.Log (string.Format("Sending message {0}: No listeners registered.", message.name));
-		}
 	}
 }

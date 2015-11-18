@@ -6,6 +6,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public GameObject pausePanel;
 	public GameObject highScoreNamePanel;
+	public UIAchievementPanel achievementPanel;
 	public UIHighScore highScoreUI;
 	public Text scoreLabel;
 	public Text timeRemainingLabel;
@@ -19,13 +20,16 @@ public class GUIManager : MonoBehaviour {
 				Debug.LogError("GUI Manager: No Game-Over panel is set.");
 			}
 
-
 			if (pausePanel == null) {
 				Debug.LogError("GUI Manager: No Pause panel is set.");
 			}
 
 			if (highScoreNamePanel == null) {
 				Debug.LogError("GUI Manager: No high-score name panel is set.");
+			}
+
+			if (achievementPanel == null) {
+				Debug.LogError("GUI Manager: No achievement panel is set.");
 			}
 
 			if (highScoreUI == null) {
@@ -39,10 +43,19 @@ public class GUIManager : MonoBehaviour {
 			if (timeRemainingLabel == null) {
 				Debug.LogError("GUI Manager: No Time-Remaining label is set.");
 			}
+
+			MessageManager.Instance.AddListener("RestartGame", OnRestartGame);
 		}
 		else {
 			Destroy(gameObject);
 		}
+	}
+
+	public void OnRestartGame(Message message) {
+		ClosePausePanel();
+		CloseGameOverPanel();
+		CloseHighScoreNamePanel();
+		HideAchievementPanel();
 	}
 
 	public void OpenPausePanel() {
@@ -79,5 +92,18 @@ public class GUIManager : MonoBehaviour {
 
 	public void OpenHighScoreNamePanel() {
 		highScoreNamePanel.SetActive(true);
+	}
+
+	public void CloseHighScoreNamePanel() {
+		highScoreNamePanel.SetActive(false);
+	}
+
+	public void ShowAchievementPanel(string achievementName) {
+		achievementPanel.gameObject.SetActive(true);
+		achievementPanel.ShowAchievement(achievementName);
+	}
+
+	public void HideAchievementPanel() {
+		achievementPanel.HideAchievement();
 	}
 }
