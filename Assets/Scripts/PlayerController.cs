@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum PlayerState {
 	OnGround,
@@ -96,7 +97,10 @@ public class PlayerController : MonoBehaviour {
 					jumpCooldownRemaining = jumpCooldown;
 
 					ScoreManager.Instance.Score += 1;
-					MessageManager.Instance.SendMessage(new Message(this, "OnCarJump", null));	// NOTE: At this point, transform.parent.gameObject should be the car according to code in OnTriggerEnter2D.
+
+					Dictionary<string, object> messageData = new Dictionary<string, object>();
+					messageData["IsTargetCar"] = this.transform.parent.GetComponent<CarController>() == TargetCar;
+					MessageManager.Instance.SendMessage(new Message(this, "OnCarJump", messageData));	// NOTE: At this point, transform.parent.gameObject should be the car according to code in OnTriggerEnter2D.
 				}
 
 				audioSource.PlayOneShot(landOnCarSound);
@@ -361,6 +365,10 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			else if (State == PlayerState.Jumping) {
+				// Note: This is done before setting the state so that the state-change can figure out which car we jumped on.
+				this.transform.SetParent(car.transform);
+				this.transform.position = car.transform.position;
+
 				State = PlayerState.OnCar;
 
 				if (car == TargetCar) {
@@ -369,8 +377,6 @@ public class PlayerController : MonoBehaviour {
 				}
 
 				car.Colourize();
-				this.transform.SetParent(car.transform);
-				this.transform.position = car.transform.position;
 			}
 		}
 	}

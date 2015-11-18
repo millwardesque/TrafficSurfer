@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class Message {
 	public MonoBehaviour sender;
 	public string name;
-	public object data;
+	public Dictionary<string, object> data;
 
-	public Message(MonoBehaviour sender, string name, object data) {
+	public Message(MonoBehaviour sender, string name, Dictionary<string, object> data) {
 		this.sender = sender;
 		this.name = name;
 		this.data = data;
