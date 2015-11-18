@@ -120,6 +120,8 @@ public class GameManager : MonoBehaviour {
 
 		ChooseTargetCar();
 
+		MessageManager.Instance.SendMessage(new Message(this, "RestartGame", null));
+
 		State = GameState.IsRunning;
 	}
 

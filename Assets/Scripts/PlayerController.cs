@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour {
 					jumpCooldownRemaining = jumpCooldown;
 
 					ScoreManager.Instance.Score += 1;
+					MessageManager.Instance.SendMessage(new Message(this, "OnCarJump", null));	// NOTE: At this point, transform.parent.gameObject should be the car according to code in OnTriggerEnter2D.
 				}
 
 				audioSource.PlayOneShot(landOnCarSound);
