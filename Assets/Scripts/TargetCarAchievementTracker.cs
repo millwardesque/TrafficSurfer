@@ -34,7 +34,8 @@ public class TargetCarAchievementTracker : MonoBehaviour {
 	}
 	
 	void OnAchievementCompleted() {
-		GUIManager.Instance.ShowAchievementPanel(gameObject.name);
+		string plural = (requiredJumps > 1 ? "s" : "");
+		GUIManager.Instance.ShowAchievementPanel(string.Format ("Jump on {0} target car{1}.", requiredJumps, plural));
 	}
 	
 	void OnRestartGame(Message message) {
