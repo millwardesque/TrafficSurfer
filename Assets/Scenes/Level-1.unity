@@ -2514,7 +2514,7 @@ Prefab:
       value: 
       objectReference: {fileID: 554849653}
     - target: {fileID: 11485576, guid: 31aaf6bacd2184fe8aaa0d85df54e914, type: 2}
-      propertyPath: achievementPanel
+      propertyPath: objectivePanel
       value: 
       objectReference: {fileID: 1980577912}
     - target: {fileID: 11485576, guid: 31aaf6bacd2184fe8aaa0d85df54e914, type: 2}
@@ -3899,57 +3899,9 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 22441500, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22441500, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22441500, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 63.4423523
-      objectReference: {fileID: 0}
-    - target: {fileID: 22441500, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -75
-      objectReference: {fileID: 0}
-    - target: {fileID: 22441500, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 106.884705
-      objectReference: {fileID: 0}
-    - target: {fileID: 22441500, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 130
-      objectReference: {fileID: 0}
-    - target: {fileID: 22469882, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22469882, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22469882, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 348.327057
-      objectReference: {fileID: 0}
-    - target: {fileID: 22469882, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -140
-      objectReference: {fileID: 0}
-    - target: {fileID: 22469882, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 442.884705
-      objectReference: {fileID: 0}
-    - target: {fileID: 22469882, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 130
-      objectReference: {fileID: 0}
     - target: {fileID: 140460, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_Name
+      value: Objective Completed Panel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 03baf1394a3a549e0b54cd176275ee4a, type: 2}

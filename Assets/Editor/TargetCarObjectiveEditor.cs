@@ -1,11 +1,11 @@
 ﻿using UnityEditor;
 using System.Collections;
 
-[CustomEditor(typeof(TargetCarAchievementTracker))]
-public class TargetCarAchievementTrackerEditor : Editor {
+[CustomEditor(typeof(TargetCarObjective))]
+public class TargetCarObjectiveEditor : Editor {
 	public override void OnInspectorGUI()
 	{
-		TargetCarAchievementTracker myTarget = (TargetCarAchievementTracker)target;
+		TargetCarObjective myTarget = (TargetCarObjective)target;
 		
 		DrawDefaultInspector();
 		EditorGUILayout.LabelField("Current Jumps", myTarget.Jumps.ToString());

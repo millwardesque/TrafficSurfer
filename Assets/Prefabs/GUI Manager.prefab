@@ -42,7 +42,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 0}
   pausePanel: {fileID: 0}
   highScoreNamePanel: {fileID: 0}
-  achievementPanel: {fileID: 0}
+  objectivePanel: {fileID: 0}
   highScoreUI: {fileID: 0}
   scoreLabel: {fileID: 0}
   timeRemainingLabel: {fileID: 0}

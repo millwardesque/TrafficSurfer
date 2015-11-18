@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour {
 				Time.timeScale = 0f;
                 backgroundMusic.Stop();
 
-				GUIManager.Instance.HideAchievementPanel();
+				GUIManager.Instance.HideObjectivePanel();
 				if (ScoreManager.Instance.IsHighScore(ScoreManager.Instance.Score)) {
 					GUIManager.Instance.OpenHighScoreNamePanel();
 				}

@@ -6,7 +6,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public GameObject pausePanel;
 	public GameObject highScoreNamePanel;
-	public UIAchievementPanel achievementPanel;
+	public UIObjectivePanel objectivePanel;
 	public UIHighScore highScoreUI;
 	public Text scoreLabel;
 	public Text timeRemainingLabel;
@@ -28,8 +28,8 @@ public class GUIManager : MonoBehaviour {
 				Debug.LogError("GUI Manager: No high-score name panel is set.");
 			}
 
-			if (achievementPanel == null) {
-				Debug.LogError("GUI Manager: No achievement panel is set.");
+			if (objectivePanel == null) {
+				Debug.LogError("GUI Manager: No objective panel is set.");
 			}
 
 			if (highScoreUI == null) {
@@ -55,7 +55,7 @@ public class GUIManager : MonoBehaviour {
 		ClosePausePanel();
 		CloseGameOverPanel();
 		CloseHighScoreNamePanel();
-		HideAchievementPanel();
+		HideObjectivePanel();
 	}
 
 	public void OpenPausePanel() {
@@ -98,12 +98,12 @@ public class GUIManager : MonoBehaviour {
 		highScoreNamePanel.SetActive(false);
 	}
 
-	public void ShowAchievementPanel(string achievementName) {
-		achievementPanel.gameObject.SetActive(true);
-		achievementPanel.ShowAchievement(achievementName);
+	public void ShowObjectivePanel(string objectiveName) {
+		objectivePanel.gameObject.SetActive(true);
+		objectivePanel.ShowObjective(objectiveName);
 	}
 
-	public void HideAchievementPanel() {
-		achievementPanel.HideAchievement();
+	public void HideObjectivePanel() {
+		objectivePanel.HideObjective();
 	}
 }

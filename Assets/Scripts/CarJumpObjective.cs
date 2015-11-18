@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CarJumpAchievementTracker : MonoBehaviour {
+public class CarJumpObjective : MonoBehaviour {
 	public int requiredJumps = 1;
 	
 	private int m_jumps = 0;
@@ -25,20 +25,20 @@ public class CarJumpAchievementTracker : MonoBehaviour {
 
 		m_jumps++;
 		if (m_jumps >= requiredJumps) {
-			OnAchievementCompleted();
+			OnObjectiveCompleted();
 		}
 	}
 
-	void OnAchievementCompleted() {
+	void OnObjectiveCompleted() {
 		string plural = (requiredJumps > 1 ? "s" : "");
-		GUIManager.Instance.ShowAchievementPanel(string.Format ("Jump on {0} car{1}.", requiredJumps, plural));
+		GUIManager.Instance.ShowObjectivePanel(string.Format ("Jump on {0} car{1}.", requiredJumps, plural));
 	}
 
 	void OnRestartGame(Message message) {
-		ResetAchievement();
+		ResetObjective();
 	}
 
-	void ResetAchievement() {
+	void ResetObjective() {
 		m_jumps = 0;
 	}
 }
