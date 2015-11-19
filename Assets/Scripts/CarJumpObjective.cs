@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CarJumpObjective : MonoBehaviour {
+public class CarJumpObjective : Objective {
 	public int requiredJumps = 1;
-	
+
 	private int m_jumps = 0;
 	public int Jumps { 
 		get { return m_jumps; }
@@ -25,13 +25,15 @@ public class CarJumpObjective : MonoBehaviour {
 
 		m_jumps++;
 		if (m_jumps >= requiredJumps) {
-			OnObjectiveCompleted();
+			OnObjectiveComplete();
 		}
 	}
 
-	void OnObjectiveCompleted() {
+	protected override void OnObjectiveComplete() {
+		m_isComplete = true;
 		string plural = (requiredJumps > 1 ? "s" : "");
 		GUIManager.Instance.ShowObjectivePanel(string.Format ("Jump on {0} car{1}.", requiredJumps, plural));
+		MessageManager.Instance.SendMessage(new Message(this, "ObjectiveComplete", null));
 	}
 
 	void OnRestartGame(Message message) {

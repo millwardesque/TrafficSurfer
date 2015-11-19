@@ -4,6 +4,7 @@ using System.Collections;
 
 public class GUIManager : MonoBehaviour {
 	public GameObject gameOverPanel;
+	public GameObject youWinPanel;
 	public GameObject pausePanel;
 	public GameObject highScoreNamePanel;
 	public UIObjectivePanel objectivePanel;
@@ -18,6 +19,10 @@ public class GUIManager : MonoBehaviour {
 			Instance = this;
 			if (gameOverPanel == null) {
 				Debug.LogError("GUI Manager: No Game-Over panel is set.");
+			}
+
+			if (youWinPanel == null) {
+				Debug.LogError("GUI Manager: No You-Win panel is set.");
 			}
 
 			if (pausePanel == null) {
@@ -54,6 +59,7 @@ public class GUIManager : MonoBehaviour {
 	public void OnRestartGame(Message message) {
 		ClosePausePanel();
 		CloseGameOverPanel();
+		CloseYouWinPanel();
 		CloseHighScoreNamePanel();
 		HideObjectivePanel();
 	}
@@ -73,6 +79,14 @@ public class GUIManager : MonoBehaviour {
 	
 	public void CloseGameOverPanel() {
 		gameOverPanel.SetActive(false);
+	}
+
+	public void OpenYouWinPanel() {
+		youWinPanel.SetActive(true);
+	}
+	
+	public void CloseYouWinPanel() {
+		youWinPanel.SetActive(false);
 	}
 
 	public void UpdateScoreLabel(int newScore) {

@@ -5,7 +5,8 @@ using Com.LuisPedroFonseca.ProCamera2D;
 public enum GameState {
 	IsRunning,
 	IsPaused,
-	GameOver
+	GameOver,
+	YouWin
 };
 
 public class GameManager : MonoBehaviour {
@@ -52,6 +53,13 @@ public class GameManager : MonoBehaviour {
 					GUIManager.Instance.OpenGameOverPanel();
 				}
 			}
+			else if (m_state == GameState.YouWin) {
+				Time.timeScale = 0f;
+				backgroundMusic.Stop();
+				
+				GUIManager.Instance.HideObjectivePanel();
+				GUIManager.Instance.OpenYouWinPanel();
+			}
 		}
 	}
 
@@ -68,6 +76,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
+		MessageManager.Instance.AddListener("AllObjectivesComplete", OnAllObjectivesComplete);
+
 		GameObject playerGO = GameObject.FindGameObjectWithTag("Player");
 		m_player = playerGO.GetComponent<PlayerController>();
 
@@ -146,6 +156,10 @@ public class GameManager : MonoBehaviour {
         TargetCarIndicator.Instance.targetCar = cars[index];
         Player.TargetCar = cars[index];
         cars[index].Colourize(new Color(1f, 0f, 0f));
+	}
+
+	public void OnAllObjectivesComplete(Message message) {
+		State = GameState.YouWin;
 	}
 
     public void GoToMainMenu()
