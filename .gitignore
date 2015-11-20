@@ -22,6 +22,8 @@ sysinfo.txt
 
 .DS_Store
 
-# Skip adding the Universal Sound FX library
+# Skip certain Asset-Store assets used for development only. 
 /Assets/Universal Sound FX.meta
 /Assets/Universal Sound FX/
+/Assets/SnazzyTools.meta
+/Assets/SnazzyTools/
