@@ -28,7 +28,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 162652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .363000005, y: 2.24000001, z: 0}
+  m_LocalPosition: {x: .363000005, y: -.860000014, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -141,7 +141,7 @@ Animator:
   m_GameObject: {fileID: 162652}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9dc198f553c0f4422a5a8a91a2b88748, type: 2}
+  m_Controller: {fileID: 9100000, guid: b0b1d7a62811a48f1b9ea078793f0f0b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76317b3bc4f74c75b2edaaa0b681d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minDeathSpeed: 3.5999999
   walkSpeed: 1
   jumpDistance: 1.20000005
   fromCarJumpDuration: .200000003
@@ -194,7 +195,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1088593085
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1a71c39a8d3f942c5bb495e95257390c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d1b395d9a07074bf2be03b3c96676f7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
