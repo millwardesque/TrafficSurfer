@@ -156,7 +156,6 @@ public class GameManager : MonoBehaviour {
 
         TargetCarIndicator.Instance.targetCar = cars[index];
         Player.TargetCar = cars[index];
-        cars[index].Colourize(new Color(1f, 0f, 0f));
 	}
 
 	public void OnAllObjectivesComplete(Message message) {

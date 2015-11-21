@@ -33,8 +33,13 @@ public class TargetCarIndicator : MonoBehaviour {
 
 		Bounds cameraBounds = new Bounds(mainCamera.transform.position, new Vector3(cameraWidth, cameraHeight, 1f));
 
-		if (!targetCar.GetComponent<SpriteRenderer>().bounds.Intersects(cameraBounds))
+
+		if (GameManager.Instance.Player.State != PlayerState.OnCar) {
+			sprite.enabled = false;
+		}
+		else if (!targetCar.GetComponent<SpriteRenderer>().bounds.Intersects(cameraBounds))
         {
+			sprite.enabled = true;
 			if (sprite.sortingLayerName != "Player") {
 				sprite.sortingLayerName = "Player";
 				sprite.sortingOrder = 0;
@@ -64,6 +69,7 @@ public class TargetCarIndicator : MonoBehaviour {
         }
         else
         {
+			sprite.enabled = true;
 			if (sprite.sortingLayerName != "Cars") {
 				sprite.sortingLayerName = "Cars";
 				sprite.sortingOrder = -2;
