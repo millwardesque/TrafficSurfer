@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CarManager : MonoBehaviour {
 	public CarController[] carPrefabs;
+	public int maxCars = 20;
 
 	public static CarManager Instance = null;
 
@@ -26,9 +27,18 @@ public class CarManager : MonoBehaviour {
 
 		int carCount = 0;
 		GameObject[] roads = GameObject.FindGameObjectsWithTag("Road");
+		int validRoadCount = 0;
 		for (int i = 0; i < roads.Length; ++i) {
 			// Skip roads with intersections, we only want to make cars on straight sections of road.
-			if (roads[i].GetComponent<IntersectionManager>() != null) {
+			if (roads[i].GetComponent<IntersectionManager>() == null) {
+				validRoadCount++;
+			}
+		}
+
+		int roadsPerCar = Mathf.CeilToInt(validRoadCount / maxCars);
+		for (int i = 0; i < roads.Length; ++i) {
+			// Skip roads with intersections, we only want to make cars on straight sections of road.
+			if (roads[i].GetComponent<IntersectionManager>() != null || i % roadsPerCar != 0) {
 				continue;
 			}
 
@@ -50,6 +60,9 @@ public class CarManager : MonoBehaviour {
 
 				newCar1.ResetCar();
 				carCount++;
+				if (carCount >= maxCars) {
+					break;
+				}
 			}
 
 			// Create the car in the left lane
@@ -67,6 +80,9 @@ public class CarManager : MonoBehaviour {
 
 				newCar2.ResetCar();
 				carCount++;
+				if (carCount >= maxCars) {
+					break;
+				}
 			}
 		}
 	}

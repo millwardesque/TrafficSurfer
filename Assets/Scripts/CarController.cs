@@ -192,7 +192,7 @@ public class CarController : MonoBehaviour {
             GetComponent<SpriteRenderer>().color = Color.white;
         }
 		
-		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 0);
+		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1); // @DEBUG 0);
 		State = DrivingState.Driving;
 	}
 

@@ -3,14 +3,14 @@ using System.Collections;
 
 public class SoundFXManager : MonoBehaviour {
 	public AudioClip youWinSFX;
-	AudioSource audio;
+	AudioSource audioSource;
 
 	public static SoundFXManager Instance = null;
 
 	void Awake() {
 		if (Instance == null) {
 			Instance = this;
-			audio = GetComponent<AudioSource>();
+			audioSource = GetComponent<AudioSource>();
 		}
 		else {
 			Destroy (gameObject);
@@ -18,6 +18,6 @@ public class SoundFXManager : MonoBehaviour {
 	}
 
 	public void PlayYouWinSFX() {
-		this.audio.PlayOneShot(youWinSFX);
+		audioSource.PlayOneShot(youWinSFX);
 	}
 }

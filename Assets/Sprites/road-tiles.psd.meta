@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 78938fc22813641d298ed45217a176ff
-timeCreated: 1446486469
+timeCreated: 1448073706
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,6 +8,10 @@ TextureImporter:
     21300002: road-tiles_1
     21300004: road-tiles_2
     21300006: road-tiles_3
+    21300008: road-tiles_4
+    21300010: road-tiles_5
+    21300012: road-tiles_6
+    21300014: road-tiles_7
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -89,6 +93,46 @@ TextureImporter:
         serializedVersion: 2
         x: 192
         y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: road-tiles_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: road-tiles_5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: road-tiles_6
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: road-tiles_7
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
         width: 64
         height: 64
       alignment: 0

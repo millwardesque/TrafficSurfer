@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 419976}
   - 61: {fileID: 6158658}
+  - 114: {fileID: 11410278}
   m_Layer: 0
   m_Name: Gap
   m_TagString: Gap
@@ -41,6 +42,17 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
+--- !u!114 &11410278
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23fa417ccfe154c0dafd1007cb0d27dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
