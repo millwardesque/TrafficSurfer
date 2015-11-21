@@ -3,10 +3,16 @@ using System.Collections;
 
 public class CarJumpObjective : Objective {
 	public int requiredJumps = 1;
+	public int scorePerCompletedJump = 5;
+	int originalRequiredJumps;
 
 	private int m_jumps = 0;
 	public int Jumps { 
 		get { return m_jumps; }
+	}
+
+	void Awake() {
+		originalRequiredJumps = requiredJumps;
 	}
 
 	void Start() {
@@ -44,5 +50,13 @@ public class CarJumpObjective : Objective {
 
 	public override void IncreaseDifficulty() {
 		requiredJumps += 5;
+	}
+
+	public override void ResetDifficulty() {
+		requiredJumps = originalRequiredJumps;
+	}
+
+	protected override int GetCompletionScore() {
+		return requiredJumps * scorePerCompletedJump;
 	}
 }

@@ -48,4 +48,10 @@ public class ObjectiveManager : MonoBehaviour {
 			objectives[i].IncreaseDifficulty();
 		}
 	}
+
+	public void ResetDifficulty() {
+		for (int i = 0; i < objectives.Length; ++i) {
+			objectives[i].ResetDifficulty();
+		}
+	}
 }

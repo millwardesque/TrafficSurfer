@@ -14,8 +14,11 @@ public class Objective : MonoBehaviour {
 	protected virtual void OnObjectiveComplete() {
 		m_isComplete = true;
 		GUIManager.Instance.ShowObjectivePanel(GetObjectiveDescription());
+		ScoreManager.Instance.Score += GetCompletionScore();
 		MessageManager.Instance.SendMessage(new Message(this, "ObjectiveComplete", null));
 	}
 
 	public virtual void IncreaseDifficulty() { }
+	public virtual void ResetDifficulty() {	}
+	protected virtual int GetCompletionScore() { return 0; }
 }

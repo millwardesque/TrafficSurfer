@@ -49,10 +49,10 @@ public class ScoreManager : MonoBehaviour {
 	}
 
 	void Start() {
-		RestartGame ();
+		ResetScore ();
 	}
 
-	public void RestartGame() {
+	public void ResetScore() {
 		Score = 0;
 	}
 

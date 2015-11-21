@@ -4,10 +4,16 @@ using System.Collections.Generic;
 
 public class TargetCarObjective : Objective {
 	public int requiredJumps = 1;
+	public int scorePerCompletedJump = 20;
+	int originalRequiredJumps;
 	
 	private int m_jumps = 0;
 	public int Jumps { 
 		get { return m_jumps; }
+	}
+
+	void Awake() {
+		originalRequiredJumps = requiredJumps;
 	}
 	
 	void Start() {
@@ -48,5 +54,13 @@ public class TargetCarObjective : Objective {
 
 	public override void IncreaseDifficulty() {
 		requiredJumps ++;
+	}
+
+	public override void ResetDifficulty() {
+		requiredJumps = originalRequiredJumps;
+	}
+
+	protected override int GetCompletionScore() {
+		return requiredJumps * scorePerCompletedJump;
 	}
 }

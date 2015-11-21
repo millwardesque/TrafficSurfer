@@ -130,9 +130,14 @@ public class GameManager : MonoBehaviour {
 		State = GameState.GameOver;
 	}
 
+	public void ResetScoreAndRestartGame() {
+		ScoreManager.Instance.ResetScore();
+		ObjectiveManager.Instance.ResetDifficulty();
+		RestartGame ();
+	}
+
 	public void RestartGame() {
 		GameTimer.Instance.RestartGame();
-		ScoreManager.Instance.RestartGame();
 		m_player.ResetPlayer(playerStart);
 		ChangeMusicPitch(1f);
 
