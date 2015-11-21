@@ -45,4 +45,8 @@ public class TargetCarObjective : Objective {
 		string plural = (requiredJumps > 1 ? "s" : "");
 		return string.Format ("Jump on {0} target car{1}.", requiredJumps, plural);
 	}
+
+	public override void IncreaseDifficulty() {
+		requiredJumps ++;
+	}
 }

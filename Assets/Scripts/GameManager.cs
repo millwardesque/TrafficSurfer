@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 	public Transform playerStart;
 	public string playerName = "";
 	public float minTargetSpawnDistance = 5f;
-	float levelIntroDuration = 5f;
+	public float levelIntroDuration = 3f;
 	float levelIntroRemaining = 0f;
     AudioSource backgroundMusic;
 
@@ -70,7 +70,8 @@ public class GameManager : MonoBehaviour {
 				Time.timeScale = 0f;
 				SoundFXManager.Instance.PlayYouWinSFX();
 				backgroundMusic.Stop();
-				
+
+				ObjectiveManager.Instance.IncreaseDifficulty();
 				GUIManager.Instance.HideObjectivePanel();
 				GUIManager.Instance.OpenYouWinPanel();
 			}

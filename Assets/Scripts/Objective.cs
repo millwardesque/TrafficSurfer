@@ -16,4 +16,6 @@ public class Objective : MonoBehaviour {
 		GUIManager.Instance.ShowObjectivePanel(GetObjectiveDescription());
 		MessageManager.Instance.SendMessage(new Message(this, "ObjectiveComplete", null));
 	}
+
+	public virtual void IncreaseDifficulty() { }
 }
