@@ -225,6 +225,10 @@ MonoBehaviour:
   - {r: .956862748, g: .58915484, b: .419607788, a: 1}
   - {r: .956862748, g: .419607788, b: .419607788, a: 1}
   - {r: .860527396, g: .956862748, b: .419607788, a: 1}
+  - {r: .133679375, g: .956862748, b: .884228826, a: 1}
+  - {r: .956862748, g: .956862748, b: .956862748, a: 1}
+  - {r: .224137917, g: .224137917, b: .224137917, a: 1}
+  - {r: .133679375, g: .448426068, b: .956862748, a: 1}
 --- !u!212 &21216278
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -312,7 +316,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: carColours.Array.size
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Size.x
@@ -474,6 +478,54 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 7ecb4415535c76e44881fae9318e0eb7,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[6].r
+      value: .133679375
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[6].g
+      value: .956862748
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[6].b
+      value: .884228826
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[7].r
+      value: .956862748
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[7].g
+      value: .956862748
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[7].b
+      value: .956862748
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[8].r
+      value: .224137917
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[8].g
+      value: .224137917
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[8].b
+      value: .224137917
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[9].r
+      value: .133679375
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[9].g
+      value: .448426068
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: carColours.Array.data[9].b
+      value: .956862748
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 142842}
