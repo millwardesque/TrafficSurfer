@@ -3,6 +3,8 @@ using System.Collections;
 using Com.LuisPedroFonseca.ProCamera2D;
 
 public class TargetCarIndicator : MonoBehaviour {
+	public bool onlyShowIfPlayerOnCar = false;
+
 	CarController m_targetCar;
 	public CarController TargetCar {
 		get { return m_targetCar; }
@@ -35,12 +37,13 @@ public class TargetCarIndicator : MonoBehaviour {
 			return;
 		}
 		Camera mainCamera = ProCamera2D.Instance.GameCamera;
-		float cameraWidth = ProCamera2D.Instance.GameCameraSize * mainCamera.aspect;
-     	float cameraHeight = ProCamera2D.Instance.GameCameraSize;
+		float cameraHeight = 2 * ProCamera2D.Instance.GameCameraSize;
+		float cameraWidth = cameraHeight * mainCamera.aspect;     	
 
-		Bounds cameraBounds = new Bounds(mainCamera.transform.position, new Vector3(cameraWidth, cameraHeight, 1f));
+		Bounds cameraBounds = new Bounds(mainCamera.transform.position, new Vector3(cameraWidth, cameraHeight, 100f));
+		Debug.Log (string.Format("{0} {1}", TargetCar.GetComponent<SpriteRenderer>().bounds, cameraBounds));
 
-		if (GameManager.Instance.Player.State != PlayerState.OnCar) {
+		if (onlyShowIfPlayerOnCar && GameManager.Instance.Player.State != PlayerState.OnCar) {
 			sprite.enabled = false;
 		}
 		else if (!TargetCar.GetComponent<SpriteRenderer>().bounds.Intersects(cameraBounds))
@@ -51,10 +54,10 @@ public class TargetCarIndicator : MonoBehaviour {
 				sprite.sortingOrder = 0;
 			}
 
-			float cameraMaxX = mainCamera.transform.position.x + cameraWidth - sprite.sprite.bounds.extents.x * transform.localScale.x;
-			float cameraMinX = mainCamera.transform.position.x - cameraWidth + sprite.sprite.bounds.extents.x * transform.localScale.x;
-			float cameraMaxY = mainCamera.transform.position.y + cameraHeight - sprite.sprite.bounds.extents.y * transform.localScale.y;
-			float cameraMinY = mainCamera.transform.position.y - cameraHeight + sprite.sprite.bounds.extents.y * transform.localScale.y;
+			float cameraMaxX = mainCamera.transform.position.x + cameraWidth / 2f - sprite.sprite.bounds.extents.x * transform.localScale.x;
+			float cameraMinX = mainCamera.transform.position.x - cameraWidth / 2f + sprite.sprite.bounds.extents.x * transform.localScale.x;
+			float cameraMaxY = mainCamera.transform.position.y + cameraHeight / 2f - sprite.sprite.bounds.extents.y * transform.localScale.y;
+			float cameraMinY = mainCamera.transform.position.y - cameraHeight / 2f + sprite.sprite.bounds.extents.y * transform.localScale.y;
 			transform.position = new Vector2(Mathf.Clamp(TargetCar.transform.position.x, cameraMinX, cameraMaxX), Mathf.Clamp(TargetCar.transform.position.y, cameraMinY, cameraMaxY));
 
 			Vector2 direction = (TargetCar.transform.position - Camera.main.transform.position);
@@ -65,7 +68,7 @@ public class TargetCarIndicator : MonoBehaviour {
 			}
 			
 			Quaternion newRotation = transform.rotation;
-			newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
+			newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle - 90f); // The -90f is due to the car's naturation rotation being at 90 degrees.
 			transform.rotation = newRotation;
 
 			Vector2 minScale = new Vector2(1f, 1f);
@@ -83,7 +86,7 @@ public class TargetCarIndicator : MonoBehaviour {
 
 			transform.position = TargetCar.transform.position;
 			transform.rotation = TargetCar.transform.rotation;
-			transform.localScale = new Vector2(1f, 1f);
+			transform.localScale = new Vector2(2f, 2f);
         }
 	}
 }

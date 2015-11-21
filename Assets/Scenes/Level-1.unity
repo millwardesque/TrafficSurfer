@@ -10687,19 +10687,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2096264, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
       propertyPath: orthographic size
-      value: 4.48148155
+      value: 4.23148155
       objectReference: {fileID: 0}
     - target: {fileID: 2048880, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
       propertyPath: orthographic size
-      value: 4.48148155
+      value: 4.23148155
       objectReference: {fileID: 0}
     - target: {fileID: 2087748, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
       propertyPath: orthographic size
-      value: 4.48148155
+      value: 4.23148155
       objectReference: {fileID: 0}
     - target: {fileID: 2085516, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
       propertyPath: orthographic size
-      value: 4.48148155
+      value: 4.23148155
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
