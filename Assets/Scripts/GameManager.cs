@@ -12,6 +12,7 @@ public enum GameState {
 public class GameManager : MonoBehaviour {
 	public Transform playerStart;
 	public string playerName = "";
+	public float minTargetSpawnDistance = 5f;
     AudioSource backgroundMusic;
 
 	PlayerController m_player;
@@ -146,13 +147,19 @@ public class GameManager : MonoBehaviour {
 		CarController oldCar = Player.TargetCar;
 		CarController[] cars = FindObjectsOfType<CarController>();
 		int index = Random.Range(0, cars.Length);
-		while (cars[index] == oldCar || cars[index] == null) {
+		int maxLoops = 1000;
+		int loopCount = 0;
+		while (cars[index] == oldCar || cars[index] == null || (cars[index].transform.position - Player.transform.position).magnitude < minTargetSpawnDistance) {
+			Debug.Log ((cars[index].transform.position - Player.transform.position).magnitude.ToString()); // @DEBUG
+
 			index = Random.Range(0, cars.Length);
+			loopCount++;
+			if (loopCount >= maxLoops) {
+				break;
+			}
 		}
 
-		if (oldCar != null) {
-			oldCar.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f);
-		}
+		Debug.Log ((cars[index].transform.position - Player.transform.position).magnitude.ToString()); // @DEBUG
 
         TargetCarIndicator.Instance.targetCar = cars[index];
         Player.TargetCar = cars[index];
