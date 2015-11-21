@@ -69,7 +69,7 @@ public class ScoreManager : MonoBehaviour {
 
 	public bool IsHighScore(int score) {
 		List<HighScore> scores = GetHighScores();
-		if (scores.Count < maxHighScores) {
+		if (scores.Count < maxHighScores && score > 0) {
 			return true;
 		}
 
