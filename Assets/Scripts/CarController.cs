@@ -55,6 +55,8 @@ public class CarController : MonoBehaviour {
 
 	void Awake() {
         turnIndicator = GetComponentInChildren<TurnIndicator>();
+		maxSpeed = Random.Range (maxSpeed - 1f, maxSpeed + 1f);
+		maxAcceleration = Random.Range (maxAcceleration - 1f, maxAcceleration + 1f);
     }
 
 	// Update is called once per frame
@@ -192,7 +194,7 @@ public class CarController : MonoBehaviour {
         {
             GetComponent<SpriteRenderer>().color = Color.white;
         }
-		
+
 		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
 		State = DrivingState.Driving;
 	}

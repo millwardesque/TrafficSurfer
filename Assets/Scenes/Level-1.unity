@@ -209,8 +209,8 @@ Transform:
   - {fileID: 866537142}
   - {fileID: 1913561589}
   - {fileID: 1130310069}
-  - {fileID: 46433418}
   - {fileID: 1148397546}
+  - {fileID: 46433418}
   m_Father: {fileID: 0}
   m_RootOrder: 10
 --- !u!1001 &20787661
@@ -2532,7 +2532,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.81944466
+  orthographic size: 4.48148155
   m_Depth: -3
   m_CullingMask:
     serializedVersion: 2
@@ -3746,7 +3746,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.81944466
+  orthographic size: 4.48148155
   m_Depth: -4
   m_CullingMask:
     serializedVersion: 2
@@ -6735,7 +6735,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.81944466
+  orthographic size: 4.48148155
   m_Depth: -2
   m_CullingMask:
     serializedVersion: 2
@@ -9390,7 +9390,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.81944466
+  orthographic size: 4.48148155
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

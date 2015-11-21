@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76317b3bc4f74c75b2edaaa0b681d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDeathSpeed: 3.5999999
+  minDeathSpeed: 2.5999999
   walkSpeed: 1
   jumpDistance: 1.20000005
   fromCarJumpDuration: .200000003
