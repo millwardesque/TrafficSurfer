@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour {
 				GetComponent<CircleCollider2D>().enabled = false;
 
 				GetComponent<SpriteRenderer>().sortingLayerName = "Roads";
-				GetComponent<SpriteRenderer>().sortingOrder = 1;
+				GetComponent<SpriteRenderer>().sortingOrder = -1;
 			}
             else if (m_state == PlayerState.Dead)
             {
