@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour {
 			}
 			else if (m_state == GameState.YouWin) {
 				Time.timeScale = 0f;
+				SoundFXManager.Instance.PlayYouWinSFX();
 				backgroundMusic.Stop();
 				
 				GUIManager.Instance.HideObjectivePanel();
