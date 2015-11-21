@@ -150,16 +150,12 @@ public class GameManager : MonoBehaviour {
 		int maxLoops = 1000;
 		int loopCount = 0;
 		while (cars[index] == oldCar || cars[index] == null || (cars[index].transform.position - Player.transform.position).magnitude < minTargetSpawnDistance) {
-			Debug.Log ((cars[index].transform.position - Player.transform.position).magnitude.ToString()); // @DEBUG
-
 			index = Random.Range(0, cars.Length);
 			loopCount++;
 			if (loopCount >= maxLoops) {
 				break;
 			}
 		}
-
-		Debug.Log ((cars[index].transform.position - Player.transform.position).magnitude.ToString()); // @DEBUG
 
         TargetCarIndicator.Instance.targetCar = cars[index];
         Player.TargetCar = cars[index];

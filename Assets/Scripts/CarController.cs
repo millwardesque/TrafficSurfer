@@ -22,6 +22,7 @@ public class CarController : MonoBehaviour {
 	public float stopDistance = 1f;
     public List<Color> carColours = new List<Color>();
 
+	RaycastHit2D[] hits = new RaycastHit2D[100];
     TurnIndicator turnIndicator = null;
 
 	float m_currentSpeed = 0f;
@@ -90,11 +91,11 @@ public class CarController : MonoBehaviour {
 
     void CheckForOtherCars()
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.up, stopDistance);
-        for (int i = 0; i < hits.Length; ++i)
+        int results = Physics2D.RaycastNonAlloc(transform.position, transform.up, hits, stopDistance);
+		bool willHitCar = false;
+        for (int i = 0; i < results; ++i)
         {
             CarController car = hits[i].collider.GetComponent<CarController>();
-            bool willHitCar = false;
             if (car != null && car != this)
             {
                 float angle = Vector2.Angle(transform.up, car.transform.up);
@@ -105,12 +106,12 @@ public class CarController : MonoBehaviour {
                     break;
                 }
             }
-            if (!willHitCar && m_currentSpeed < maxSpeed)
-            {
-				m_currentSpeed += maxAcceleration * Time.deltaTime;
-				m_currentSpeed = Mathf.Clamp(m_currentSpeed, 0f, maxSpeed);
-            }
         }
+		if (!willHitCar && m_currentSpeed < maxSpeed)
+		{
+			m_currentSpeed += maxAcceleration * Time.deltaTime;
+			m_currentSpeed = Mathf.Clamp(m_currentSpeed, 0f, maxSpeed);
+		}
     }
 
 	public void StopCar() {
