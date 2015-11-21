@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Com.LuisPedroFonseca.ProCamera2D;
 
 public enum PlayerState {
 	OnGround,
@@ -116,6 +117,8 @@ public class PlayerController : MonoBehaviour {
 				transform.Rotate(new Vector3(0f, 0f, 180f + Random.Range(-22.5f, 22.5f)));
 				GetComponent<SpriteRenderer>().sortingLayerName = "Roads";
 				GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+				ProCamera2D.Instance.GetComponent<ProCamera2DShake>().Shake();
 			}
 			else if (m_state == PlayerState.FallingOffPlatform) {
 				audioSource.Stop();
