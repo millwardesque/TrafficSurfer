@@ -3,6 +3,7 @@ using System.Collections;
 using Com.LuisPedroFonseca.ProCamera2D;
 
 public enum GameState {
+	LevelIntro,
 	IsRunning,
 	IsPaused,
 	GameOver,
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour {
 	public Transform playerStart;
 	public string playerName = "";
 	public float minTargetSpawnDistance = 5f;
+	float levelIntroDuration = 5f;
+	float levelIntroRemaining = 0f;
     AudioSource backgroundMusic;
 
 	PlayerController m_player;
@@ -20,7 +23,7 @@ public class GameManager : MonoBehaviour {
 		get { return m_player; }
 	}
 
-	GameState m_state = GameState.IsRunning;
+	GameState m_state = GameState.LevelIntro;
 	public GameState State {
 		get { return m_state; }
 		set {
@@ -32,10 +35,19 @@ public class GameManager : MonoBehaviour {
 				GUIManager.Instance.OpenPausePanel();
                 backgroundMusic.Pause();
 			}
+			else if (m_state == GameState.LevelIntro) {
+				Time.timeScale = 0f;
+				levelIntroRemaining = levelIntroDuration;
+				ObjectiveManager.Instance.ShowLevelObjectives();
+				backgroundMusic.Pause();
+			}
 			else if (m_state == GameState.IsRunning) {
                 backgroundMusic.Play();
                 Time.timeScale = 1f;
-				if (oldState == GameState.IsPaused) {
+				if (oldState == GameState.LevelIntro) {
+					GUIManager.Instance.CloseLevelObjectivesPanel();
+				}
+				else if (oldState == GameState.IsPaused) {
 					GUIManager.Instance.ClosePausePanel();
 				}
 				else if (oldState == GameState.GameOver) {
@@ -92,6 +104,12 @@ public class GameManager : MonoBehaviour {
 				Pause();
 			}
 		}
+		else if (State == GameState.LevelIntro) {
+			levelIntroRemaining -= Time.unscaledDeltaTime;
+			if (levelIntroRemaining < 0f) {
+				State = GameState.IsRunning;
+			}
+		}
 		else if (State == GameState.IsPaused) {
 			if (Input.GetKeyDown(KeyCode.P)) {
 				Unpause();
@@ -135,7 +153,7 @@ public class GameManager : MonoBehaviour {
 
 		MessageManager.Instance.SendMessage(new Message(this, "RestartGame", null));
 
-		State = GameState.IsRunning;
+		State = GameState.LevelIntro;
 	}
 
 	public void OnReachedTargetCar() {

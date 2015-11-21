@@ -7,6 +7,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject youWinPanel;
 	public GameObject pausePanel;
 	public GameObject highScoreNamePanel;
+	public UIObjectivePanel levelObjectivesPanel;
 	public UIObjectivePanel objectivePanel;
 	public UIHighScore highScoreUI;
 	public Text scoreLabel;
@@ -27,6 +28,10 @@ public class GUIManager : MonoBehaviour {
 
 			if (pausePanel == null) {
 				Debug.LogError("GUI Manager: No Pause panel is set.");
+			}
+
+			if (levelObjectivesPanel == null) {
+				Debug.LogError("GUI Manager: No level-objectives is set.");
 			}
 
 			if (highScoreNamePanel == null) {
@@ -62,6 +67,7 @@ public class GUIManager : MonoBehaviour {
 		CloseYouWinPanel();
 		CloseHighScoreNamePanel();
 		HideObjectivePanel();
+		CloseLevelObjectivesPanel();
 	}
 
 	public void OpenPausePanel() {
@@ -87,6 +93,15 @@ public class GUIManager : MonoBehaviour {
 	
 	public void CloseYouWinPanel() {
 		youWinPanel.SetActive(false);
+	}
+
+	public void OpenLevelObjectivesPanel(string objectiveName) {
+		levelObjectivesPanel.gameObject.SetActive(true);
+		levelObjectivesPanel.ShowObjective(objectiveName);
+	}
+	
+	public void CloseLevelObjectivesPanel() {
+		levelObjectivesPanel.gameObject.SetActive(false);
 	}
 
 	public void UpdateScoreLabel(int newScore) {

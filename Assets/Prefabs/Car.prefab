@@ -227,7 +227,7 @@ MonoBehaviour:
   - {r: .860527396, g: .956862748, b: .419607788, a: 1}
   - {r: .133679375, g: .956862748, b: .884228826, a: 1}
   - {r: .956862748, g: .956862748, b: .956862748, a: 1}
-  - {r: .224137917, g: .224137917, b: .224137917, a: 1}
+  - {r: .341379315, g: .341379315, b: .341379315, a: 1}
   - {r: .133679375, g: .448426068, b: .956862748, a: 1}
 --- !u!212 &21216278
 SpriteRenderer:
@@ -504,15 +504,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: carColours.Array.data[8].r
-      value: .224137917
+      value: .341379315
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: carColours.Array.data[8].g
-      value: .224137917
+      value: .341379315
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: carColours.Array.data[8].b
-      value: .224137917
+      value: .341379315
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: carColours.Array.data[9].r

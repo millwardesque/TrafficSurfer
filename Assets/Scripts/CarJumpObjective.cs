@@ -29,18 +29,16 @@ public class CarJumpObjective : Objective {
 		}
 	}
 
-	protected override void OnObjectiveComplete() {
-		m_isComplete = true;
-		string plural = (requiredJumps > 1 ? "s" : "");
-		GUIManager.Instance.ShowObjectivePanel(string.Format ("Jump on {0} car{1}.", requiredJumps, plural));
-		MessageManager.Instance.SendMessage(new Message(this, "ObjectiveComplete", null));
-	}
-
 	void OnRestartGame(Message message) {
 		ResetObjective();
 	}
 
 	void ResetObjective() {
 		m_jumps = 0;
+	}
+
+	public override string GetObjectiveDescription() {
+		string plural = (requiredJumps > 1 ? "s" : "");
+		return string.Format ("Jump on {0} car{1}.", requiredJumps, plural);
 	}
 }

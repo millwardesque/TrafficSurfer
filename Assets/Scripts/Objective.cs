@@ -7,5 +7,13 @@ public class Objective : MonoBehaviour {
 		get { return m_isComplete; }
 	}
 
-	protected virtual void OnObjectiveComplete() { }
+	public virtual string GetObjectiveDescription() {
+		return name;
+	}
+
+	protected virtual void OnObjectiveComplete() {
+		m_isComplete = true;
+		GUIManager.Instance.ShowObjectivePanel(GetObjectiveDescription());
+		MessageManager.Instance.SendMessage(new Message(this, "ObjectiveComplete", null));
+	}
 }
