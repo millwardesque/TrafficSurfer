@@ -41,8 +41,6 @@ public class TargetCarIndicator : MonoBehaviour {
 		float cameraWidth = cameraHeight * mainCamera.aspect;     	
 
 		Bounds cameraBounds = new Bounds(mainCamera.transform.position, new Vector3(cameraWidth, cameraHeight, 100f));
-		Debug.Log (string.Format("{0} {1}", TargetCar.GetComponent<SpriteRenderer>().bounds, cameraBounds));
-
 		if (onlyShowIfPlayerOnCar && GameManager.Instance.Player.State != PlayerState.OnCar) {
 			sprite.enabled = false;
 		}
