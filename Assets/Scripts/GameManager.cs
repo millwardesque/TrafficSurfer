@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-        TargetCarIndicator.Instance.targetCar = cars[index];
+        TargetCarIndicator.Instance.TargetCar = cars[index];
         Player.TargetCar = cars[index];
 	}
 
