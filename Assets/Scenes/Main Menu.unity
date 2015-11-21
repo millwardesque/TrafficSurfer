@@ -1049,7 +1049,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22435144, guid: 58e8b42308c695a499d7b61e3a2d23e2, type: 2}
       propertyPath: m_SizeDelta.y
-      value: -210
+      value: -150
       objectReference: {fileID: 0}
     - target: {fileID: 22435144, guid: 58e8b42308c695a499d7b61e3a2d23e2, type: 2}
       propertyPath: m_AnchorMin.x
@@ -1253,11 +1253,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11441400, guid: 58e8b42308c695a499d7b61e3a2d23e2, type: 2}
       propertyPath: m_Color.r
-      value: .592156887
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11441400, guid: 58e8b42308c695a499d7b61e3a2d23e2, type: 2}
       propertyPath: m_Color.b
-      value: .603921592
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11441400, guid: 58e8b42308c695a499d7b61e3a2d23e2, type: 2}
+      propertyPath: m_Color.g
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 58e8b42308c695a499d7b61e3a2d23e2, type: 2}
@@ -1730,7 +1734,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1280, y: 800}
+  m_ReferenceResolution: {x: 1280, y: 720}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: .5
   m_PhysicalUnit: 3
