@@ -7,6 +7,11 @@ public class Objective : MonoBehaviour {
 		get { return m_isComplete; }
 	}
 
+
+	void Awake() {
+		Debug.Log ("Awake");
+	}
+
 	public virtual string GetObjectiveDescription() {
 		return name;
 	}

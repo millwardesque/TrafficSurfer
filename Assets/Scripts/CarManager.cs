@@ -4,6 +4,7 @@ using System.Collections;
 public class CarManager : MonoBehaviour {
 	public CarController[] carPrefabs;
 	public int maxCars = 20;
+	int generationNumber = 0;
 
 	public static CarManager Instance = null;
 
@@ -49,7 +50,7 @@ public class CarManager : MonoBehaviour {
 			if (makeRightLaneCar) {
 				int carType = Random.Range(0, carPrefabs.Length);
 				CarController newCar1 = Instantiate<CarController>(carPrefabs[carType]);
-				newCar1.name = "Car " + carCount;
+				newCar1.name = "Car " + generationNumber + "." + carCount;
 				newCar1.transform.SetParent(transform);
 				newCar1.transform.Rotate(new Vector3(0f, 0f, -90f + roads[i].transform.rotation.eulerAngles.z));
 
@@ -69,7 +70,7 @@ public class CarManager : MonoBehaviour {
 			if (makeLeftLaneCar) {
 				int carType = Random.Range(0, carPrefabs.Length);
 				CarController newCar2 = Instantiate<CarController>(carPrefabs[carType]);
-				newCar2.name = "Car " + carCount;
+				newCar2.name = "Car " + generationNumber + "." + carCount;
 				newCar2.transform.SetParent(transform);
 				newCar2.transform.Rotate(new Vector3(0f, 0f, -180f - 90f + roads[i].transform.rotation.eulerAngles.z));
 				
@@ -85,12 +86,16 @@ public class CarManager : MonoBehaviour {
 				}
 			}
 		}
+
+		generationNumber++;
 	}
 
 	public void CleanupCars() {
 		CarController[] cars = this.Cars;
 		for (int i = 0; i < cars.Length; i++) {
 			GameObject.Destroy(cars[i].gameObject);
+			cars[i] = null;
 		}
+		TargetCarIndicator.Instance.TargetCar = null;
 	}
 }

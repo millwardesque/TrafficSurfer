@@ -53,12 +53,14 @@ public class GUIManager : MonoBehaviour {
 			if (timeRemainingLabel == null) {
 				Debug.LogError("GUI Manager: No Time-Remaining label is set.");
 			}
-
-			MessageManager.Instance.AddListener("RestartGame", OnRestartGame);
 		}
 		else {
 			Destroy(gameObject);
 		}
+	}
+
+	void Start() {
+		MessageManager.Instance.AddListener("RestartGame", OnRestartGame);
 	}
 
 	public void OnRestartGame(Message message) {

@@ -7,7 +7,7 @@ public class TargetCarIndicator : MonoBehaviour {
 	public CarController TargetCar {
 		get { return m_targetCar; }
 		set { 
-			Debug.Log ("Setting target car to " + value.name);
+			Debug.Log ("Setting target car to " + (value == null ? "<null>" : value.name));
 			m_targetCar = value;
 		}
 	}
@@ -41,10 +41,10 @@ public class TargetCarIndicator : MonoBehaviour {
 
 		Bounds cameraBounds = new Bounds(mainCamera.transform.position, new Vector3(cameraWidth, cameraHeight, 1f));
 
-		if (GameManager.Instance.Player.State != PlayerState.OnCar) {
+		/*if (GameManager.Instance.Player.State != PlayerState.OnCar) {
 			sprite.enabled = false;
 		}
-		else if (!TargetCar.GetComponent<SpriteRenderer>().bounds.Intersects(cameraBounds))
+		else */ if (!TargetCar.GetComponent<SpriteRenderer>().bounds.Intersects(cameraBounds))
         {
 			sprite.enabled = true;
 			if (sprite.sortingLayerName != "Player") {

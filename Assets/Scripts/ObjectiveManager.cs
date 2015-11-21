@@ -9,6 +9,7 @@ public class ObjectiveManager : MonoBehaviour {
 	void Awake() {
 		if (Instance == null) {
 			Instance = this;
+			objectives = GetComponentsInChildren<Objective>(true);
 		}
 		else {
 			Destroy(gameObject);
@@ -16,8 +17,6 @@ public class ObjectiveManager : MonoBehaviour {
 	}
 
 	void Start() {
-		objectives = GetComponentsInChildren<Objective>();
-
 		MessageManager.Instance.AddListener("ObjectiveComplete", OnObjectiveComplete);
 	}
 
