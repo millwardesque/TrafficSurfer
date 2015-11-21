@@ -7,7 +7,6 @@ public class TargetCarIndicator : MonoBehaviour {
 	public CarController TargetCar {
 		get { return m_targetCar; }
 		set { 
-			Debug.Log ("Setting target car to " + (value == null ? "<null>" : value.name));
 			m_targetCar = value;
 		}
 	}

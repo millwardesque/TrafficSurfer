@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CarManager : MonoBehaviour {
 	public CarController[] carPrefabs;
 	public int maxCars = 20;
-	int generationNumber = 0;
-
+	public int generationNumber = 0;
+	
 	public static CarManager Instance = null;
 
 	void Awake() {
@@ -17,8 +18,9 @@ public class CarManager : MonoBehaviour {
 		}
 	}
 
-	public CarController[] Cars { 
-		get { return GameObject.FindObjectsOfType<CarController>(); }
+	List<CarController> m_cars = new List<CarController>();
+	public List<CarController> Cars { 
+		get { return m_cars; }
 	}
 	
 	public void GenerateCars(bool cleanupOldCars) {
@@ -60,6 +62,8 @@ public class CarManager : MonoBehaviour {
 				newCar1.transform.position += newCar1.transform.up * Random.Range(-0.25f, 0.25f);
 
 				newCar1.ResetCar();
+				m_cars.Add(newCar1);
+
 				carCount++;
 				if (carCount >= maxCars) {
 					break;
@@ -80,6 +84,8 @@ public class CarManager : MonoBehaviour {
 				newCar2.transform.position += newCar2.transform.up * Random.Range(-0.25f, 0.25f);
 
 				newCar2.ResetCar();
+				m_cars.Add(newCar2);
+
 				carCount++;
 				if (carCount >= maxCars) {
 					break;
@@ -91,11 +97,11 @@ public class CarManager : MonoBehaviour {
 	}
 
 	public void CleanupCars() {
-		CarController[] cars = this.Cars;
-		for (int i = 0; i < cars.Length; i++) {
-			GameObject.Destroy(cars[i].gameObject);
-			cars[i] = null;
+		for (int i = 0; i < m_cars.Count; i++) {
+			GameObject.Destroy(m_cars[i].gameObject);
+			m_cars[i] = null;
 		}
 		TargetCarIndicator.Instance.TargetCar = null;
+		Cars.Clear();
 	}
 }

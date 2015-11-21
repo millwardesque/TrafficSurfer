@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Com.LuisPedroFonseca.ProCamera2D;
 
 public enum GameState {
@@ -169,12 +170,13 @@ public class GameManager : MonoBehaviour {
 
 	void ChooseTargetCar() {
 		CarController oldCar = Player.TargetCar;
-		CarController[] cars = FindObjectsOfType<CarController>();
-		int index = Random.Range(0, cars.Length);
+		List<CarController> cars = CarManager.Instance.Cars;
+
+		int index = Random.Range(0, cars.Count);
 		int maxLoops = 1000;
 		int loopCount = 0;
 		while (cars[index] == oldCar || cars[index] == null || (cars[index].transform.position - Player.transform.position).magnitude < minTargetSpawnDistance) {
-			index = Random.Range(0, cars.Length);
+			index = Random.Range(0, cars.Count);
 			loopCount++;
 			if (loopCount >= maxLoops) {
 				break;
