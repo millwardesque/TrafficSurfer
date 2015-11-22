@@ -123,6 +123,8 @@ public class GUIManager : MonoBehaviour {
 
 	public void OpenHighScoreNamePanel() {
 		highScoreNamePanel.SetActive(true);
+		highScoreNamePanel.GetComponentInChildren<InputField>().ActivateInputField();
+		highScoreNamePanel.GetComponentInChildren<InputField>().Select();
 	}
 
 	public void CloseHighScoreNamePanel() {
