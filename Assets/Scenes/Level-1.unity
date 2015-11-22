@@ -6363,6 +6363,10 @@ Prefab:
       propertyPath: playerStart
       value: 
       objectReference: {fileID: 1531133675}
+    - target: {fileID: 8253428, guid: afe72580fc030463dab8c1b61e63b38c, type: 2}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: cf009aa303526410fa548bb5f5a6579f, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: afe72580fc030463dab8c1b61e63b38c, type: 2}
   m_IsPrefabParent: 0
