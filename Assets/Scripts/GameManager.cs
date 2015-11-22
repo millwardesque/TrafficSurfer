@@ -71,8 +71,8 @@ public class GameManager : MonoBehaviour {
 				Time.timeScale = 0f;
 				SoundFXManager.Instance.PlayYouWinSFX();
 				backgroundMusic.Stop();
-
 				ObjectiveManager.Instance.IncreaseDifficulty();
+
 				GUIManager.Instance.HideObjectivePanel();
 				GUIManager.Instance.OpenYouWinPanel();
 			}

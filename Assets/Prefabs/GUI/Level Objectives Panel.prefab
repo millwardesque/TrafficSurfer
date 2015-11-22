@@ -63,14 +63,14 @@ GameObject:
   - 222: {fileID: 22229142}
   - 114: {fileID: 11431830}
   - 114: {fileID: 11474246}
-  - 114: {fileID: 11452918}
+  - 114: {fileID: 11481312}
   m_Layer: 5
   m_Name: Level Objectives Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &173234
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,19 +163,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11452918
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 171028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cb482619a77149f3ac2f4f7bf4543f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectiveName: {fileID: 11427882}
-  showObjectiveDuration: 3
 --- !u!114 &11454660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -264,6 +251,18 @@ MonoBehaviour:
   m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
+--- !u!114 &11481312
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9de1a4a00e0a47d4a3d124c6b66334b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectiveName: {fileID: 11427882}
 --- !u!114 &11482334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -460,10 +459,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 22435774}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 389.834717, y: -270}
+  m_SizeDelta: {x: 739.669434, y: 180}
   m_Pivot: {x: .5, y: 0}
 --- !u!1001 &100100000
 Prefab:

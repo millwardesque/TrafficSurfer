@@ -7,7 +7,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject youWinPanel;
 	public GameObject pausePanel;
 	public GameObject highScoreNamePanel;
-	public UIObjectivePanel levelObjectivesPanel;
+	public UILevelObjectivesPanel levelObjectivesPanel;
 	public UIObjectivePanel objectivePanel;
 	public UIHighScore highScoreUI;
 	public Text scoreLabel;
@@ -99,7 +99,7 @@ public class GUIManager : MonoBehaviour {
 
 	public void OpenLevelObjectivesPanel(string objectiveName) {
 		levelObjectivesPanel.gameObject.SetActive(true);
-		levelObjectivesPanel.ShowObjective(objectiveName);
+		levelObjectivesPanel.SetObjective(objectiveName);
 	}
 	
 	public void CloseLevelObjectivesPanel() {

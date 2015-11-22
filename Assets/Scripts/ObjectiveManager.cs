@@ -31,7 +31,7 @@ public class ObjectiveManager : MonoBehaviour {
 		}
 	}
 
-	public void ShowLevelObjectives() {
+	public string GetLevelObjectiveString() {
 		string objectiveText = "";
 		for (int i = 0; i < objectives.Length; ++i) {
 			objectiveText = objectives[i].GetObjectiveDescription();
@@ -39,7 +39,12 @@ public class ObjectiveManager : MonoBehaviour {
 				objectiveText += "\n";
 			}
 		}
-		GUIManager.Instance.OpenLevelObjectivesPanel(objectiveText);
+
+		return objectiveText;
+	}
+
+	public void ShowLevelObjectives() {
+		GUIManager.Instance.OpenLevelObjectivesPanel(GetLevelObjectiveString());
 	}
 
 	public void IncreaseDifficulty() {
