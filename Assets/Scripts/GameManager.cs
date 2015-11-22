@@ -15,8 +15,6 @@ public class GameManager : MonoBehaviour {
 	public Transform playerStart;
 	public string playerName = "";
 	public float minTargetSpawnDistance = 5f;
-	public float levelIntroDuration = 3f;
-	float levelIntroRemaining = 0f;
     AudioSource backgroundMusic;
 
 	PlayerController m_player;
@@ -38,7 +36,6 @@ public class GameManager : MonoBehaviour {
 			}
 			else if (m_state == GameState.LevelIntro) {
 				Time.timeScale = 0f;
-				levelIntroRemaining = levelIntroDuration;
 				ObjectiveManager.Instance.ShowLevelObjectives();
 				backgroundMusic.Pause();
 			}
@@ -107,9 +104,13 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		else if (State == GameState.LevelIntro) {
-			levelIntroRemaining -= Time.unscaledDeltaTime;
-			if (levelIntroRemaining < 0f) {
-				State = GameState.IsRunning;
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				CloseObjectiveAndStart();
+			}
+		}
+		else if (State == GameState.YouWin) {
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				RestartGame();
 			}
 		}
 		else if (State == GameState.IsPaused) {
@@ -189,6 +190,10 @@ public class GameManager : MonoBehaviour {
 
 	public void OnAllObjectivesComplete(Message message) {
 		State = GameState.YouWin;
+	}
+
+	public void CloseObjectiveAndStart() {
+		State = GameState.IsRunning;
 	}
 
     public void GoToMainMenu()
