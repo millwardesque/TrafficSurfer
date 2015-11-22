@@ -301,24 +301,16 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Vector2 newDirection = new Vector2(horizontalAxis, verticalAxis);
-		Quaternion rotation = transform.rotation;
-		float rotationAngle = Vector2.Angle(Vector2.up, newDirection.normalized);
-		Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)newDirection.normalized);
-		if (cross.z < 0f) {
-			rotationAngle *= -1f;
+		if (newDirection.magnitude > float.Epsilon) {
+			Quaternion rotation = transform.rotation;
+			float rotationAngle = Vector2.Angle(Vector2.up, newDirection.normalized);
+			Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)newDirection.normalized);
+			if (cross.z < 0f) {
+				rotationAngle *= -1f;
+			}
+			rotation.eulerAngles = new Vector3(0f, 0f, rotationAngle);
+			transform.rotation = rotation;
 		}
-		rotation.eulerAngles = new Vector3(0f, 0f, rotationAngle);
-
-		/*if (Mathf.Abs(horizontalAxis) > float.Epsilon) {			
-			float sign = Mathf.Sign(horizontalAxis);
-			rotation.eulerAngles = new Vector3(0, 0, -sign * 90f);
-		}
-		else if (Mathf.Abs(verticalAxis) > float.Epsilon) {
-			float sign = Mathf.Sign(verticalAxis);
-			rotation.eulerAngles = new Vector3(0, 0, (sign > 0 ? 0f : 180f));
-		}*/
-
-		transform.rotation = rotation;
 		
 		if (jumpCooldownRemaining > 0f) {
 			jumpCooldownRemaining -= Time.deltaTime;
