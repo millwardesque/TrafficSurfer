@@ -99,22 +99,22 @@ public class GameManager : MonoBehaviour {
 
 	void Update() {
 		if (State == GameState.IsRunning) {
-			if (Input.GetKeyDown(KeyCode.P)) {
+			if (Input.GetButtonDown ("Pause")) {
 				Pause();
 			}
 		}
 		else if (State == GameState.LevelIntro) {
-			if (Input.GetKeyDown(KeyCode.Space)) {
+			if (Input.GetButtonDown("Submit")) {
 				CloseObjectiveAndStart();
 			}
 		}
 		else if (State == GameState.YouWin) {
-			if (Input.GetKeyDown(KeyCode.Space)) {
+			if (Input.GetButtonDown("Submit")) {
 				RestartGame();
 			}
 		}
 		else if (State == GameState.IsPaused) {
-			if (Input.GetKeyDown(KeyCode.P)) {
+			if (Input.GetButtonDown ("Pause")) {
 				Unpause();
 			}
 		}

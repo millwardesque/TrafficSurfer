@@ -173,42 +173,37 @@ public class PlayerController : MonoBehaviour {
 		if (jumpCooldownRemaining > 0f) {
 			jumpCooldownRemaining -= Time.deltaTime;
 		}
-		
-		Quaternion rotation = transform.rotation;
+
 		Vector2 offset = Vector2.zero;
-		float rotationAngle = rotation.eulerAngles.z;
-		bool movedLeftOrRight = false;
-		
+		float horizontalAxis = Input.GetAxis("Horizontal");
 		if (Input.GetKey(KeyCode.LeftArrow)) {
-			offset += new Vector2(-walkSpeed * Time.deltaTime, 0f);
-			rotationAngle = 90f;
-			movedLeftOrRight = true;
+			horizontalAxis = -1f;
 		}
 		else if (Input.GetKey(KeyCode.RightArrow)) {
-			offset += new Vector2(walkSpeed * Time.deltaTime, 0f);
-			rotationAngle = -90f;
-			movedLeftOrRight = true;
+			horizontalAxis = 1f;
 		}
-		
+
+		if (Mathf.Abs(horizontalAxis) > float.Epsilon) {
+			offset += new Vector2(horizontalAxis * walkSpeed * Time.deltaTime, 0f);
+		}
+
+		float verticalAxis = Input.GetAxis("Vertical");
 		if (Input.GetKey(KeyCode.UpArrow)) {
-			offset += new Vector2(0f, walkSpeed * Time.deltaTime);
-			
-			if (movedLeftOrRight) {
-				rotationAngle = rotationAngle / 2f;
-			}
-			else {
-				rotationAngle = 0f;
-			}
+			verticalAxis = 1f;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow)) {
-			offset += new Vector2(0f, -walkSpeed * Time.deltaTime);
-			
-			if (movedLeftOrRight) {
-				rotationAngle = 180f - rotationAngle / 2f;
-			}
-			else {
-				rotationAngle = 180f;
-			}
+			verticalAxis = -1f;
+		}
+
+		if (Mathf.Abs(verticalAxis) > float.Epsilon) {
+			offset += new Vector2(0f, verticalAxis * walkSpeed * Time.deltaTime);
+		}
+
+		Quaternion rotation = transform.rotation;
+		float rotationAngle = Vector2.Angle(Vector2.up, offset.normalized);
+		Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)offset.normalized);
+		if (cross.z < 0f) {
+			rotationAngle *= -1f;
 		}
 
 		if (offset.magnitude > 0.00001f) {
@@ -228,7 +223,7 @@ public class PlayerController : MonoBehaviour {
 		
 		rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
 		transform.rotation = rotation;
-		if (Input.GetKeyDown(KeyCode.Space) && jumpCooldownRemaining <= 0f) {
+		if (Input.GetButtonDown("Jump") && jumpCooldownRemaining <= 0f) {
 			State = PlayerState.Jumping;
 		}
 		else {
@@ -247,40 +242,35 @@ public class PlayerController : MonoBehaviour {
 	void OnUpdateJumping() {
 		Vector2 positionChange = transform.up * Time.deltaTime * distanceToJump / activeJumpDuration;
 
-		Quaternion rotation = transform.rotation;
-		float rotationAngle = rotation.eulerAngles.z;
-		bool movedLeftOrRight = false;
-		
+		float horizontalAxis = Input.GetAxis("Horizontal");
 		if (Input.GetKey(KeyCode.LeftArrow)) {
-			positionChange += new Vector2(-walkSpeed * Time.deltaTime, 0f);
-			rotationAngle = 90f;
-			movedLeftOrRight = true;
+			horizontalAxis = -1f;
 		}
 		else if (Input.GetKey(KeyCode.RightArrow)) {
-			positionChange += new Vector2(walkSpeed * Time.deltaTime, 0f);
-			rotationAngle = -90f;
-			movedLeftOrRight = true;
+			horizontalAxis = 1f;
 		}
 		
+		if (Mathf.Abs(horizontalAxis) > float.Epsilon) {
+			positionChange += new Vector2(horizontalAxis * walkSpeed * Time.deltaTime, 0f);
+		}
+
+		float verticalAxis = Input.GetAxis("Vertical");
 		if (Input.GetKey(KeyCode.UpArrow)) {
-			positionChange += new Vector2(0f, walkSpeed * Time.deltaTime);
-			
-			if (movedLeftOrRight) {
-				rotationAngle = rotationAngle / 2f;
-			}
-			else {
-				rotationAngle = 0f;
-			}
+			verticalAxis = 1f;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow)) {
-			positionChange += new Vector2(0f, -walkSpeed * Time.deltaTime);
-			
-			if (movedLeftOrRight) {
-				rotationAngle = 180f - rotationAngle / 2f;
-			}
-			else {
-				rotationAngle = 180f;
-			}
+			verticalAxis = -1f;
+		}
+		
+		if (Mathf.Abs(verticalAxis) > float.Epsilon) {
+			positionChange += new Vector2(0f, verticalAxis * walkSpeed * Time.deltaTime);
+		}
+
+		Quaternion rotation = transform.rotation;
+		float rotationAngle = Vector2.Angle(Vector2.up, positionChange.normalized);
+		Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)positionChange.normalized);
+		if (cross.z < 0f) {
+			rotationAngle *= -1f;
 		}
 
 		rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
@@ -294,25 +284,46 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnUpdateOnCar() {
-		Quaternion rotation = transform.rotation;
+		float horizontalAxis = Input.GetAxis("Horizontal");
 		if (Input.GetKey(KeyCode.LeftArrow)) {
-			rotation.eulerAngles = new Vector3(0, 0, 90.0f);
+			horizontalAxis = -1f;
 		}
 		else if (Input.GetKey(KeyCode.RightArrow)) {
-			rotation.eulerAngles = new Vector3(0, 0, -90.0f);
-		}
-		else if (Input.GetKey(KeyCode.UpArrow)) {
-			rotation.eulerAngles = new Vector3(0, 0, 0.0f);
+			horizontalAxis = 1f;
+		}		
+
+		float verticalAxis = Input.GetAxis("Vertical");
+		if (Input.GetKey(KeyCode.UpArrow)) {
+			verticalAxis = 1f;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow)) {
-			rotation.eulerAngles = new Vector3(0, 0, 180.0f);
+			verticalAxis = -1f;
 		}
+
+		Vector2 newDirection = new Vector2(horizontalAxis, verticalAxis);
+		Quaternion rotation = transform.rotation;
+		float rotationAngle = Vector2.Angle(Vector2.up, newDirection.normalized);
+		Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)newDirection.normalized);
+		if (cross.z < 0f) {
+			rotationAngle *= -1f;
+		}
+		rotation.eulerAngles = new Vector3(0f, 0f, rotationAngle);
+
+		/*if (Mathf.Abs(horizontalAxis) > float.Epsilon) {			
+			float sign = Mathf.Sign(horizontalAxis);
+			rotation.eulerAngles = new Vector3(0, 0, -sign * 90f);
+		}
+		else if (Mathf.Abs(verticalAxis) > float.Epsilon) {
+			float sign = Mathf.Sign(verticalAxis);
+			rotation.eulerAngles = new Vector3(0, 0, (sign > 0 ? 0f : 180f));
+		}*/
+
 		transform.rotation = rotation;
 		
 		if (jumpCooldownRemaining > 0f) {
 			jumpCooldownRemaining -= Time.deltaTime;
 		}
-		if (Input.GetKeyDown (KeyCode.Space) && jumpCooldownRemaining <= 0f) {
+		if (Input.GetButtonDown ("Jump") && jumpCooldownRemaining <= 0f) {
 			State = PlayerState.Jumping;
 		}
 	}
