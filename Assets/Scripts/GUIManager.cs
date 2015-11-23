@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class GUIManager : MonoBehaviour {
@@ -115,7 +116,8 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void SubmitHighScoreName() {
-		GameManager.Instance.playerName = highScoreNamePanel.GetComponentInChildren<InputField>().text;
+		InputField nameField = highScoreNamePanel.GetComponentInChildren<InputField>();
+		GameManager.Instance.playerName = nameField.text;
 		highScoreNamePanel.SetActive(false);
 
 		GameManager.Instance.OnHighScoreNameSet();
@@ -123,6 +125,7 @@ public class GUIManager : MonoBehaviour {
 
 	public void OpenHighScoreNamePanel() {
 		highScoreNamePanel.SetActive(true);
+		highScoreNamePanel.GetComponentInChildren<InputField>().enabled = true;
 		highScoreNamePanel.GetComponentInChildren<InputField>().ActivateInputField();
 		highScoreNamePanel.GetComponentInChildren<InputField>().Select();
 	}
