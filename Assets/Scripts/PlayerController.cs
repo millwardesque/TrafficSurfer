@@ -199,11 +199,16 @@ public class PlayerController : MonoBehaviour {
 			offset += new Vector2(0f, verticalAxis * walkSpeed * Time.deltaTime);
 		}
 
-		Quaternion rotation = transform.rotation;
-		float rotationAngle = Vector2.Angle(Vector2.up, offset.normalized);
-		Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)offset.normalized);
-		if (cross.z < 0f) {
-			rotationAngle *= -1f;
+		if (offset.magnitude > float.Epsilon) {
+			Quaternion rotation = transform.rotation;
+			float rotationAngle = Vector2.Angle(Vector2.up, offset.normalized);
+			Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)offset.normalized);
+			if (cross.z < 0f) {
+				rotationAngle *= -1f;
+			}
+
+			rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
+			transform.rotation = rotation;
 		}
 
 		if (offset.magnitude > 0.00001f) {
@@ -220,9 +225,7 @@ public class PlayerController : MonoBehaviour {
 				audioSource.Stop();
 			}
 		}	
-		
-		rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
-		transform.rotation = rotation;
+
 		if (Input.GetButtonDown("Jump") && jumpCooldownRemaining <= 0f) {
 			State = PlayerState.Jumping;
 		}
@@ -266,16 +269,18 @@ public class PlayerController : MonoBehaviour {
 			positionChange += new Vector2(0f, verticalAxis * walkSpeed * Time.deltaTime);
 		}
 
-		Quaternion rotation = transform.rotation;
-		float rotationAngle = Vector2.Angle(Vector2.up, positionChange.normalized);
-		Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)positionChange.normalized);
-		if (cross.z < 0f) {
-			rotationAngle *= -1f;
-		}
+		if (positionChange.magnitude > float.Epsilon) {
+			Quaternion rotation = transform.rotation;
+			float rotationAngle = Vector2.Angle(Vector2.up, positionChange.normalized);
+			Vector3 cross = Vector3.Cross((Vector3)Vector2.up, (Vector3)positionChange.normalized);
+			if (cross.z < 0f) {
+				rotationAngle *= -1f;
+			}
 
-		rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
-		transform.rotation = rotation;
-		transform.position += (Vector3)positionChange;
+			rotation.eulerAngles = new Vector3(0, 0, rotationAngle);
+			transform.rotation = rotation;
+			transform.position += (Vector3)positionChange;
+		}
 		
 		jumpRemaining -= Time.deltaTime;
 		if (jumpRemaining <= 0f) {
