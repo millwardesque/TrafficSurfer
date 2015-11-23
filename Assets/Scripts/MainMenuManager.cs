@@ -7,6 +7,7 @@ public class MainMenuManager : MonoBehaviour {
     public UIHighScore highScoreUI;
     public GameObject highScorePanel;
 	public GameObject creditsPanel;
+	public GameObject howToPlayPanel;
 
     void Awake()
     {
@@ -41,7 +42,12 @@ public class MainMenuManager : MonoBehaviour {
     {
         highScorePanel.SetActive(false);
 		creditsPanel.SetActive(false);
+		howToPlayPanel.SetActive(false);
     }
+
+	public void OnHowToPlay() {
+		howToPlayPanel.SetActive(true);
+	}
 
 	public void OnCredits() {
 		creditsPanel.SetActive(true);
