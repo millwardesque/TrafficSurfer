@@ -2186,89 +2186,13 @@ Prefab:
       propertyPath: m_Pivot.y
       value: .5
       objectReference: {fileID: 0}
-    - target: {fileID: 117090, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_Name
-      value: Credits Panel Container
-      objectReference: {fileID: 0}
     - target: {fileID: 11417066, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 245485474}
-    - target: {fileID: 22451844, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22451844, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22451844, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 279.913818
-      objectReference: {fileID: 0}
-    - target: {fileID: 22451844, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 1.52587891e-05
-      objectReference: {fileID: 0}
-    - target: {fileID: 22451844, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 559.827637
-      objectReference: {fileID: 0}
-    - target: {fileID: 22451844, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 76.6823349
-      objectReference: {fileID: 0}
-    - target: {fileID: 22431610, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22431610, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22431610, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 279.913818
-      objectReference: {fileID: 0}
-    - target: {fileID: 22431610, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -133.341171
-      objectReference: {fileID: 0}
-    - target: {fileID: 22431610, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 559.827637
-      objectReference: {fileID: 0}
-    - target: {fileID: 22431610, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 113.317665
-      objectReference: {fileID: 0}
-    - target: {fileID: 22459574, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22459574, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22459574, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 289.913818
-      objectReference: {fileID: 0}
-    - target: {fileID: 22459574, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -40
-      objectReference: {fileID: 0}
-    - target: {fileID: 22459574, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 579.827637
-      objectReference: {fileID: 0}
-    - target: {fileID: 22459574, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 80
-      objectReference: {fileID: 0}
     - target: {fileID: 117090, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_Name
+      value: Credits Panel Container
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b0e1ed24cef364a88be4bb3b7bfa9599, type: 2}
