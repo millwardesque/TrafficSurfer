@@ -117,6 +117,14 @@ public class GUIManager : MonoBehaviour {
 
 	public void SubmitHighScoreName() {
 		InputField nameField = highScoreNamePanel.GetComponentInChildren<InputField>();
+
+		// This is a hack for hiding the carat. It doesn't really work, but I'll take it for now...
+		GameObject carat = GameObject.Find("InputField Input Caret");
+		if (carat != null) {
+			carat.GetComponent<RectTransform>().localScale = Vector3.zero;
+			carat.SetActive(false);
+		}
+
 		GameManager.Instance.playerName = nameField.text;
 		highScoreNamePanel.SetActive(false);
 
@@ -127,6 +135,13 @@ public class GUIManager : MonoBehaviour {
 		highScoreNamePanel.SetActive(true);
 		highScoreNamePanel.GetComponentInChildren<InputField>().ActivateInputField();
 		highScoreNamePanel.GetComponentInChildren<InputField>().Select();
+
+		// This is a hack for hiding the carat. It doesn't really work, but I'll take it for now...
+		GameObject carat = GameObject.Find("InputField Input Caret");
+		if (carat != null) {
+			carat.SetActive(true);
+			carat.GetComponent<RectTransform>().localScale = Vector3.one;
+		}
 	}
 
 	public void CloseHighScoreNamePanel() {
