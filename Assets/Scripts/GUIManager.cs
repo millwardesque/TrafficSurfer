@@ -8,6 +8,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject youWinPanel;
 	public GameObject pausePanel;
 	public GameObject highScoreNamePanel;
+	public GameObject howToPlayPanel;
 	public UILevelObjectivesPanel levelObjectivesPanel;
 	public UIObjectivePanel objectivePanel;
 	public UIHighScore highScoreUI;
@@ -33,6 +34,10 @@ public class GUIManager : MonoBehaviour {
 
 			if (levelObjectivesPanel == null) {
 				Debug.LogError("GUI Manager: No level-objectives is set.");
+			}
+
+			if (howToPlayPanel == null) {
+				Debug.LogError("GUI Manager: No how-to-play panel is set.");
 			}
 
 			if (highScoreNamePanel == null) {
@@ -71,6 +76,7 @@ public class GUIManager : MonoBehaviour {
 		CloseHighScoreNamePanel();
 		HideObjectivePanel();
 		CloseLevelObjectivesPanel();
+		CloseHowToPlayPanel();
 	}
 
 	public void OpenPausePanel() {
@@ -155,5 +161,13 @@ public class GUIManager : MonoBehaviour {
 
 	public void HideObjectivePanel() {
 		objectivePanel.HideObjective();
+	}
+
+	public void OpenHowToPlayPanel() {
+		howToPlayPanel.SetActive(true);
+	}
+
+	public void CloseHowToPlayPanel() {
+		howToPlayPanel.SetActive(false);
 	}
 }
