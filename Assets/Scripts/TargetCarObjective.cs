@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class TargetCarObjective : Objective {
 	public int requiredJumps = 1;
 	public int scorePerCompletedJump = 20;
+
 	int originalRequiredJumps;
 	
 	private int m_jumps = 0;

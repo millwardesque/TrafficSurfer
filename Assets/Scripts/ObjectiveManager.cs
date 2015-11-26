@@ -43,8 +43,17 @@ public class ObjectiveManager : MonoBehaviour {
 		return objectiveText;
 	}
 
+	public Sprite GetLevelObjectiveSprite() {
+		Sprite objectiveSprite = null;
+
+		if (objectives.Length > 0) {
+			objectiveSprite = objectives[0].GetObjectiveSprite();
+		}
+		return objectiveSprite;
+	}
+
 	public void ShowLevelObjectives() {
-		GUIManager.Instance.OpenLevelObjectivesPanel(GetLevelObjectiveString());
+		GUIManager.Instance.OpenLevelObjectivesPanel(GetLevelObjectiveString(), GetLevelObjectiveSprite());
 	}
 
 	public void IncreaseDifficulty() {

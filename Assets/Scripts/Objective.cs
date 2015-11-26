@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Objective : MonoBehaviour {
+	public Sprite objectiveSprite;
+
 	protected bool m_isComplete = false;
 	public bool IsComplete {
 		get { return m_isComplete; }
@@ -14,6 +16,10 @@ public class Objective : MonoBehaviour {
 
 	public virtual string GetObjectiveDescription() {
 		return name;
+	}
+
+	public virtual Sprite GetObjectiveSprite() {
+		return objectiveSprite;
 	}
 
 	protected virtual void OnObjectiveComplete() {

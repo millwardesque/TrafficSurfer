@@ -104,9 +104,9 @@ public class GUIManager : MonoBehaviour {
 		youWinPanel.SetActive(false);
 	}
 
-	public void OpenLevelObjectivesPanel(string objectiveName) {
+	public void OpenLevelObjectivesPanel(string objectiveName, Sprite objectiveSprite) {
 		levelObjectivesPanel.gameObject.SetActive(true);
-		levelObjectivesPanel.SetObjective(objectiveName);
+		levelObjectivesPanel.SetObjective(objectiveName, objectiveSprite);
 	}
 	
 	public void CloseLevelObjectivesPanel() {
