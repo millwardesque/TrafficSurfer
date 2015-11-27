@@ -55,9 +55,15 @@ public class PlayerController : MonoBehaviour {
                 GetComponent<SpriteRenderer>().sortingOrder = 0;
             }
 
+			if (oldState == PlayerState.Jumping) {
+				transform.localScale -= new Vector3(0.2f, 0.2f, 0f);
+			}
+
 			if (m_state == PlayerState.Jumping) {
 				TriggerJumpAnimation();
 				directionIndicator.SetActive(false);
+
+				transform.localScale += new Vector3(0.2f, 0.2f, 0f);
 
 				if (oldState == PlayerState.OnGround) {
 					audioSource.Stop();
