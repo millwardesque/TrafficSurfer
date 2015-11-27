@@ -100,7 +100,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8e745c4c472ca164b8af01defa6adf7c, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1.5
@@ -199,6 +199,7 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: 34bfa69656a2a40b8834c0123ad980e4, type: 3}
   landOnCarSound: {fileID: 8300000, guid: b7f13c17b88bc478ead9fbf0f9be3068, type: 3}
   deathDuration: 1
+  directionIndicator: {fileID: 170826}
   m_targetCar: {fileID: 0}
 --- !u!212 &21250962
 SpriteRenderer:

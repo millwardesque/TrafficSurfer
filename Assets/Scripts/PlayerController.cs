@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip jumpSound;
 	public AudioClip landOnCarSound;
     public float deathDuration = 2f;
+	public GameObject directionIndicator;
     float currentDeathDuration = 0f;
 
 	public CarController m_targetCar = null;
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour {
 
 			if (m_state == PlayerState.Jumping) {
 				TriggerJumpAnimation();
+				directionIndicator.SetActive(false);
 
 				if (oldState == PlayerState.OnGround) {
 					audioSource.Stop();
@@ -77,6 +79,7 @@ public class PlayerController : MonoBehaviour {
 				wasMoving = false;
 			}
 			else if (m_state == PlayerState.OnGround) {
+				directionIndicator.SetActive(false);
 				TriggerIdleAnimation();
 				lastCar = null;
 
@@ -89,6 +92,7 @@ public class PlayerController : MonoBehaviour {
 				wasMoving = false;
 			}
 			else if (m_state == PlayerState.OnCar) {
+				directionIndicator.SetActive(true);
 				TriggerIdleAnimation();
 				lastCar = null;
 
@@ -109,6 +113,7 @@ public class PlayerController : MonoBehaviour {
 				wasMoving = false;
 			}
 			else if (m_state == PlayerState.HitByCar) {
+				directionIndicator.SetActive(false);
 				audioSource.Stop();
 				TriggerDeadAnimation();
 				currentDeathDuration = deathDuration;
@@ -121,6 +126,7 @@ public class PlayerController : MonoBehaviour {
 				ProCamera2D.Instance.GetComponent<ProCamera2DShake>().Shake();
 			}
 			else if (m_state == PlayerState.FallingOffPlatform) {
+				directionIndicator.SetActive(false);
 				audioSource.Stop();
 				TriggerDeadAnimation();
 				currentDeathDuration = deathDuration;
@@ -131,6 +137,7 @@ public class PlayerController : MonoBehaviour {
 			}
             else if (m_state == PlayerState.Dead)
             {
+				directionIndicator.SetActive(false);
 				GameManager.Instance.GameOver();
             }
 		}
