@@ -42,11 +42,13 @@ MonoBehaviour:
   gameOverPanel: {fileID: 0}
   youWinPanel: {fileID: 0}
   pausePanel: {fileID: 0}
-  highScoreNamePanel: {fileID: 0}
+  howToPlayPanel: {fileID: 0}
+  levelObjectivesPanel: {fileID: 0}
   objectivePanel: {fileID: 0}
   highScoreUI: {fileID: 0}
   scoreLabel: {fileID: 0}
   timeRemainingLabel: {fileID: 0}
+  highScoreNamePrefab: {fileID: 160810, guid: 84006c07cb2f94982a974b479fc746f6, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

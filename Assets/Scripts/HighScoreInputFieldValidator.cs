@@ -4,12 +4,6 @@ using System.Collections;
 
 public class HighScoreInputFieldValidator : MonoBehaviour {
 	public Button submitButton;
-	
-	void Update() {
-		if (Input.GetButtonDown("Submit") && submitButton.interactable) {
-			GUIManager.Instance.SubmitHighScoreName();
-		}
-	}
 
 	public void OnValueChangeCheck(string content) {
 		// Disable the submit button if the input field is empty.
@@ -19,5 +13,9 @@ public class HighScoreInputFieldValidator : MonoBehaviour {
 		else {
 			submitButton.interactable = true;
 		}
+	}
+
+	public void OnUserSubmit() {
+		GUIManager.Instance.SubmitHighScoreName();
 	}
 }

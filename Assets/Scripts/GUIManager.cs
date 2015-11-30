@@ -7,14 +7,18 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public GameObject youWinPanel;
 	public GameObject pausePanel;
-	public GameObject highScoreNamePanel;
+
 	public GameObject howToPlayPanel;
 	public UILevelObjectivesPanel levelObjectivesPanel;
 	public UIObjectivePanel objectivePanel;
 	public UIHighScore highScoreUI;
 	public Text scoreLabel;
 	public Text timeRemainingLabel;
-	
+
+
+	public GameObject highScoreNamePrefab;
+	GameObject highScoreNamePanel;
+
 	public static GUIManager Instance = null;
 
 	void Awake () {
@@ -40,8 +44,8 @@ public class GUIManager : MonoBehaviour {
 				Debug.LogError("GUI Manager: No how-to-play panel is set.");
 			}
 
-			if (highScoreNamePanel == null) {
-				Debug.LogError("GUI Manager: No high-score name panel is set.");
+			if (highScoreNamePrefab == null) {
+				Debug.LogError("GUI Manager: No high-score name prefab is set.");
 			}
 
 			if (objectivePanel == null) {
@@ -122,36 +126,28 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void SubmitHighScoreName() {
-		InputField nameField = highScoreNamePanel.GetComponentInChildren<InputField>();
+		GameManager.Instance.playerName = highScoreNamePanel.GetComponentInChildren<InputField>().text;
 
-		// This is a hack for hiding the carat. It doesn't really work, but I'll take it for now...
-		GameObject carat = GameObject.Find("InputField Input Caret");
-		if (carat != null) {
-			carat.GetComponent<RectTransform>().localScale = Vector3.zero;
-			carat.SetActive(false);
-		}
-
-		GameManager.Instance.playerName = nameField.text;
-		highScoreNamePanel.SetActive(false);
-
+		CloseHighScoreNamePanel();
+	
 		GameManager.Instance.OnHighScoreNameSet();
 	}
 
 	public void OpenHighScoreNamePanel() {
-		highScoreNamePanel.SetActive(true);
-		highScoreNamePanel.GetComponentInChildren<InputField>().ActivateInputField();
-		highScoreNamePanel.GetComponentInChildren<InputField>().Select();
+		if (null != highScoreNamePanel) {
+			CloseHighScoreNamePanel();
+		}
+
+		Canvas mainCanvas = FindObjectOfType<Canvas>();
+		highScoreNamePanel = Instantiate<GameObject>(highScoreNamePrefab);
+		highScoreNamePanel.transform.SetParent(mainCanvas.transform, false);
 	}
 
 	public void CloseHighScoreNamePanel() {
-		// This is a hack for hiding the carat. It doesn't really work, but I'll take it for now...
-		GameObject carat = GameObject.Find("InputField Input Caret");
-		if (carat != null) {
-			carat.SetActive(false);
-			carat.GetComponent<RectTransform>().localScale = Vector3.zero;
+		if (null != highScoreNamePanel) {
+			Destroy (highScoreNamePanel);
+			highScoreNamePanel = null;
 		}
-
-		highScoreNamePanel.SetActive(false);
 	}
 
 	public void ShowObjectivePanel(string objectiveName) {
