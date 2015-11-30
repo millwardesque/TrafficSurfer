@@ -141,16 +141,16 @@ public class GUIManager : MonoBehaviour {
 		highScoreNamePanel.SetActive(true);
 		highScoreNamePanel.GetComponentInChildren<InputField>().ActivateInputField();
 		highScoreNamePanel.GetComponentInChildren<InputField>().Select();
-
-		// This is a hack for hiding the carat. It doesn't really work, but I'll take it for now...
-		GameObject carat = GameObject.Find("InputField Input Caret");
-		if (carat != null) {
-			carat.SetActive(true);
-			carat.GetComponent<RectTransform>().localScale = Vector3.one;
-		}
 	}
 
 	public void CloseHighScoreNamePanel() {
+		// This is a hack for hiding the carat. It doesn't really work, but I'll take it for now...
+		GameObject carat = GameObject.Find("InputField Input Caret");
+		if (carat != null) {
+			carat.SetActive(false);
+			carat.GetComponent<RectTransform>().localScale = Vector3.zero;
+		}
+
 		highScoreNamePanel.SetActive(false);
 	}
 

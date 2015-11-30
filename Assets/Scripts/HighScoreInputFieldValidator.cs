@@ -13,7 +13,7 @@ public class HighScoreInputFieldValidator : MonoBehaviour {
 
 	public void OnValueChangeCheck(string content) {
 		// Disable the submit button if the input field is empty.
-		if (content == "") {
+		if (content.Trim() == "") {
 			submitButton.interactable = false;
 		}
 		else {
