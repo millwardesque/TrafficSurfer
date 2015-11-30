@@ -41,6 +41,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carPrefabs:
   - {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+  - {fileID: 11474168, guid: 979f93303c148475f9c5f9c37e33b075, type: 2}
+  maxCars: 50
+  generationNumber: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

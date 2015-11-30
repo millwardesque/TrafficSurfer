@@ -1824,6 +1824,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11470036, guid: 17ab8fa0185834c91a414c007dac5483, type: 2}
+      propertyPath: carPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 473454, guid: 17ab8fa0185834c91a414c007dac5483, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1860,6 +1864,11 @@ Prefab:
       propertyPath: maxCars
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 11470036, guid: 17ab8fa0185834c91a414c007dac5483, type: 2}
+      propertyPath: carPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 11474168, guid: 979f93303c148475f9c5f9c37e33b075,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 17ab8fa0185834c91a414c007dac5483, type: 2}
   m_IsPrefabParent: 0
