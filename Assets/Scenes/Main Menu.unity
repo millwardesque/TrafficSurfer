@@ -1209,9 +1209,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 8ee7397224e754c5f80f0ddde96238a6, type: 3}
     m_FontSize: 36
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 50
     m_Alignment: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -3366,15 +3366,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22452288, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -35
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 22452288, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 22452288, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
       propertyPath: m_SizeDelta.y
-      value: -70
+      value: 225
       objectReference: {fileID: 0}
     - target: {fileID: 22452288, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
       propertyPath: m_AnchorMin.x
@@ -3382,7 +3382,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22452288, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22452288, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
       propertyPath: m_AnchorMax.x
@@ -3398,7 +3398,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22452288, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
       propertyPath: m_Pivot.y
-      value: .5
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e21a43daa6e4e4a7a829e49add3c53a2, type: 2}
