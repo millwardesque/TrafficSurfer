@@ -39,6 +39,10 @@ public class CarManager : MonoBehaviour {
 			}
 		}
 
+		if (validRoadCount == 0) {
+			Debug.LogError ("Unable to generate cars: There aren't any roads to spawn cars on.");
+		}
+
 		int roadsPerCar = Mathf.CeilToInt(validRoadCount / maxCars);
 		for (int i = 0; i < roads.Length; ++i) {
 			// Skip roads with intersections, we only want to make cars on straight sections of road.

@@ -10203,30 +10203,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 2096264, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
-      propertyPath: orthographic size
-      value: 4.883333
-      objectReference: {fileID: 0}
-    - target: {fileID: 2048880, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
-      propertyPath: orthographic size
-      value: 4.883333
-      objectReference: {fileID: 0}
-    - target: {fileID: 2087748, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
-      propertyPath: orthographic size
-      value: 4.883333
-      objectReference: {fileID: 0}
-    - target: {fileID: 2085516, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
-      propertyPath: orthographic size
-      value: 4.883333
-      objectReference: {fileID: 0}
-    - target: {fileID: 8226706, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
-      propertyPath: panLevelCustomCurve.m_RotationOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8226706, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
-      propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
   m_IsPrefabParent: 0
