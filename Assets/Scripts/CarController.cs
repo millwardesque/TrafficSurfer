@@ -17,6 +17,8 @@ enum TurnIndex
 
 public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
+	public CarData carData;
+
 	public float maxSpeed = 1f;
 	public float maxAcceleration = 0.8f;
 	public float stopDistance = 1f;
@@ -53,11 +55,15 @@ public class CarController : MonoBehaviour {
 		}
 	}
 
-	void Awake() {
-        turnIndicator = GetComponentInChildren<TurnIndicator>();
+	void Start() {
+		if (carData != null) {
+			carData.Initialize (this);
+		}
+
+		turnIndicator = GetComponentInChildren<TurnIndicator>();
 		maxSpeed = Random.Range (maxSpeed - 1f, maxSpeed + 1f);
-		maxAcceleration = Random.Range (maxAcceleration - 1f, maxAcceleration + 1f);
-    }
+		maxAcceleration = Random.Range (maxAcceleration - 1f, maxAcceleration + 1f);	
+	}
 
 	// Update is called once per frame
 	void Update () {

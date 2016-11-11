@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CarManager : MonoBehaviour {
-	public CarController[] carPrefabs;
+	public CarController carPrefab;
+	public CarData[] carTemplates;
 	public int maxCars = 20;
 	public int generationNumber = 0;
 	
@@ -50,8 +51,9 @@ public class CarManager : MonoBehaviour {
 
 			// Create the car in the right lane
 			if (makeRightLaneCar) {
-				int carType = Random.Range(0, carPrefabs.Length);
-				CarController newCar1 = Instantiate<CarController>(carPrefabs[carType]);
+				int carType = Random.Range(0, carTemplates.Length);
+				CarController newCar1 = Instantiate<CarController> (carPrefab);
+				newCar1.carData = carTemplates [carType];
 				newCar1.name = "Car " + generationNumber + "." + carCount;
 				newCar1.transform.SetParent(transform);
 				newCar1.transform.Rotate(new Vector3(0f, 0f, -90f + roads[i].transform.rotation.eulerAngles.z));
@@ -72,8 +74,9 @@ public class CarManager : MonoBehaviour {
 
 			// Create the car in the left lane
 			if (makeLeftLaneCar) {
-				int carType = Random.Range(0, carPrefabs.Length);
-				CarController newCar2 = Instantiate<CarController>(carPrefabs[carType]);
+				int carType = Random.Range(0, carTemplates.Length);
+				CarController newCar2 = Instantiate<CarController> (carPrefab);
+				newCar2.carData = carTemplates [carType];
 				newCar2.name = "Car " + generationNumber + "." + carCount;
 				newCar2.transform.SetParent(transform);
 				newCar2.transform.Rotate(new Vector3(0f, 0f, -180f - 90f + roads[i].transform.rotation.eulerAngles.z));
