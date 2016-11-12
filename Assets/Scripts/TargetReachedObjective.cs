@@ -5,7 +5,7 @@ public class TargetReachedObjective : Objective {
     public int completionScore = 50;
 
     public override string GetObjectiveDescription() {
-        return "Reach the exit!";
+        return "Reach the exit on a car";
     }
 
     protected override int GetCompletionScore() {
