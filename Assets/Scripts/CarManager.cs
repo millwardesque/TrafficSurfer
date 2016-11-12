@@ -44,6 +44,10 @@ public class CarManager : MonoBehaviour {
 		}
 
 		int roadsPerCar = Mathf.CeilToInt(validRoadCount / maxCars);
+		if (roadsPerCar == 0) {
+			roadsPerCar = 1;
+		}
+
 		for (int i = 0; i < roads.Length; ++i) {
 			// Skip roads with intersections, we only want to make cars on straight sections of road.
 			if (roads[i].GetComponent<IntersectionManager>() != null || i % roadsPerCar != 0) {
