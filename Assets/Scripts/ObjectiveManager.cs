@@ -9,8 +9,8 @@ public class ObjectiveManager : MonoBehaviour {
 	void Awake() {
 		if (Instance == null) {
 			Instance = this;
-			objectives = GetComponentsInChildren<Objective>(true);
-		}
+			objectives = FindObjectsOfType<Objective>();
+        }
 		else {
 			Destroy(gameObject);
 		}

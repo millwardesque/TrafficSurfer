@@ -112,7 +112,10 @@ public class CarManager : MonoBehaviour {
 			GameObject.Destroy(m_cars[i].gameObject);
 			m_cars[i] = null;
 		}
-		TargetCarIndicator.Instance.TargetCar = null;
+
+        if (TargetCarIndicator.Instance != null) {
+            TargetCarIndicator.Instance.TargetCar = null;
+        }		
 		Cars.Clear();
 	}
 }
