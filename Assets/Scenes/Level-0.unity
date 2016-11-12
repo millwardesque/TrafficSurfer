@@ -1693,7 +1693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93083ece1983a84db0d3375b50e861c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveSprite: {fileID: 0}
+  objectiveSprite: {fileID: 21300000, guid: 4b0ebe3a2d53c674ca6163cf3d360321, type: 3}
   completionScore: 50
 --- !u!1 &788218787
 GameObject:
@@ -2081,6 +2081,14 @@ Prefab:
     - target: {fileID: 2087748, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
       propertyPath: orthographic size
       value: 4.285714
+      objectReference: {fileID: 0}
+    - target: {fileID: 453662, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 485256, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
