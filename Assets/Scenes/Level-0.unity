@@ -1220,7 +1220,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_Name
-      value: Straight road (11)
+      value: Non-spawn Straight road (11)
       objectReference: {fileID: 0}
     - target: {fileID: 442244, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_LocalScale.x
@@ -1229,6 +1229,10 @@ Prefab:
     - target: {fileID: 442244, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_LocalScale.y
       value: 1.0000029
+      objectReference: {fileID: 0}
+    - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
@@ -1357,7 +1361,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_Name
-      value: Straight road (8)
+      value: Non-spawn Straight road (8)
       objectReference: {fileID: 0}
     - target: {fileID: 442244, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_LocalScale.x
@@ -1366,6 +1370,10 @@ Prefab:
     - target: {fileID: 442244, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_LocalScale.y
       value: 1.0000007
+      objectReference: {fileID: 0}
+    - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
@@ -1693,8 +1701,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b93083ece1983a84db0d3375b50e861c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectiveSprite: {fileID: 21300000, guid: 4b0ebe3a2d53c674ca6163cf3d360321, type: 3}
+  objectiveSprite: {fileID: 21300000, guid: ef6164a78c365406ba8c68c37e53af2e, type: 3}
   completionScore: 50
+  objectiveDescription: Catch the target car!
 --- !u!1 &788218787
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,6 +1759,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23fa417ccfe154c0dafd1007cb0d27dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &795662817 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 142842, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+  m_PrefabInternal: {fileID: 1897365758}
 --- !u!1 &883075510
 GameObject:
   m_ObjectHideFlags: 0
@@ -2517,7 +2530,7 @@ Prefab:
         type: 2}
       propertyPath: target
       value: 
-      objectReference: {fileID: 250953932}
+      objectReference: {fileID: 795662817}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c78b4a87f1778e143bf3eb5bfda55465, type: 2}
   m_IsPrefabParent: 0
@@ -3147,7 +3160,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1302153869}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.11, y: 0, z: 0}
+  m_LocalPosition: {x: -6.66, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -3728,6 +3741,11 @@ Prefab:
       propertyPath: playerStart
       value: 
       objectReference: {fileID: 1302153870}
+    - target: {fileID: 114000012455897490, guid: afe72580fc030463dab8c1b61e63b38c,
+        type: 2}
+      propertyPath: maxCars
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: afe72580fc030463dab8c1b61e63b38c, type: 2}
   m_IsPrefabParent: 0
@@ -4455,7 +4473,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_Name
-      value: Straight road (4)
+      value: Non-spawn Straight road (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
@@ -4760,6 +4782,104 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9
+--- !u!1001 &1897365758
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: turnInstructions.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -2.923
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.421
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 442514, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 142842, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_Name
+      value: Target Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 21216278, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21216278, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 21216278, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 21226968, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21226968, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21226968, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: turnInstructions.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: turnInstructions.Array.data[2]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: turnInstructions.Array.data[4]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: maxSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+      propertyPath: maxAcceleration
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1938747693
 Prefab:
   m_ObjectHideFlags: 0
@@ -4801,7 +4921,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_Name
-      value: Straight road (5)
+      value: Non-spawn Straight road (5)
       objectReference: {fileID: 0}
     - target: {fileID: 442244, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_LocalScale.x
@@ -4810,6 +4930,10 @@ Prefab:
     - target: {fileID: 442244, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
       propertyPath: m_LocalScale.y
       value: 1.0000007
+      objectReference: {fileID: 0}
+    - target: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fc767e101821415194c6e80b808fac0, type: 2}

@@ -3,9 +3,15 @@ using System.Collections;
 
 public class TargetReachedObjective : Objective {
     public int completionScore = 50;
+    public string objectiveDescription;
 
     public override string GetObjectiveDescription() {
-        return "Reach the exit on a car";
+        if (objectiveDescription.Length > 0) {
+            return objectiveDescription;
+        }
+        else {
+            return "Reach the exit on a car";
+        }        
     }
 
     protected override int GetCompletionScore() {

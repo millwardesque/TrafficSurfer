@@ -21,7 +21,7 @@ public class CarData : ScriptableObject
 		SpriteRenderer colourizableRenderer = car.GetComponent<SpriteRenderer>();
 		colourizableRenderer.sprite = colourizableSprite;
 		foreach (SpriteRenderer renderer in car.GetComponentsInChildren<SpriteRenderer>()) {
-			if (renderer == colourizableRenderer || renderer.GetComponent<TurnIndex>() != null) {
+			if (renderer == colourizableRenderer || renderer.GetComponent<TurnIndicator>() != null) {
 				continue;
 			}
 			else {

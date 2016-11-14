@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Com.LuisPedroFonseca.ProCamera2D;
+using UnityEngine.SceneManagement;
 
 public enum GameState {
 	LevelIntro,
@@ -201,7 +202,7 @@ public class GameManager : MonoBehaviour {
 
     public void GoToMainMenu()
     {
-        Application.LoadLevel("Main Menu");
+        SceneManager.LoadScene("Main Menu");
     }
 
 	public void ChangeMusicPitch(float pitch) {

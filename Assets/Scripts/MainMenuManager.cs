@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class MainMenuManager : MonoBehaviour {
@@ -23,7 +24,7 @@ public class MainMenuManager : MonoBehaviour {
     
     public void OnNewGame()
     {
-        Application.LoadLevel("Level-1");
+        SceneManager.LoadScene("Level-1");
     }
 	
     public void OnHighScores()

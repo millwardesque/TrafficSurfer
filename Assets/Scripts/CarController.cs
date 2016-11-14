@@ -8,7 +8,7 @@ public enum DrivingState {
 	Stopped
 };
 
-enum TurnIndex
+public enum TurnIndex
 {
     LeftTurn = 0,
     Straight = 1,
@@ -23,6 +23,8 @@ public class CarController : MonoBehaviour {
 	public float maxAcceleration = 0.8f;
 	public float stopDistance = 1f;
     public List<Color> carColours = new List<Color>();
+
+    public List<TurnIndex> turnInstructions;
 
 	RaycastHit2D[] hits = new RaycastHit2D[100];
     TurnIndicator turnIndicator = null;
@@ -127,39 +129,56 @@ public class CarController : MonoBehaviour {
 	}
 
 	public void ChooseDirection(StopLine stopLine) {
-		List<Vector2> possibleDestinations = new List<Vector2>(3);
-		if (stopLine.CanTurnLeft()) {
-            possibleDestinations.Add(stopLine.GetLeftTurnDestination());
-		}
-        else
-        {
-            possibleDestinations.Add(Vector2.zero);
+        int myTurnIndex = 0;
+        if (turnInstructions != null && turnInstructions.Count > 0) {
+            myTurnIndex = (int)turnInstructions[0];
+            turnInstructions.RemoveAt(0);
+
+            switch (myTurnIndex) {
+                case (int)TurnIndex.LeftTurn:
+                    turnDestination = stopLine.GetLeftTurnDestination();
+                    break;
+                case (int)TurnIndex.Straight:
+                    turnDestination = stopLine.GetStraightDestination();
+                    break;
+                case (int)TurnIndex.RightTurn:
+                    turnDestination = stopLine.GetRightTurnDestination();
+                    break;
+                default:
+                    break;
+            }
+        }
+		else {
+            List<Vector2> possibleDestinations = new List<Vector2>(3);
+            if (stopLine.CanTurnLeft()) {
+                possibleDestinations.Add(stopLine.GetLeftTurnDestination());
+            }
+            else {
+                possibleDestinations.Add(Vector2.zero);
+            }
+
+            if (stopLine.CanGoStraight()) {
+                possibleDestinations.Add(stopLine.GetStraightDestination());
+            }
+            else {
+                possibleDestinations.Add(Vector2.zero);
+            }
+
+            if (stopLine.CanTurnRight()) {
+                possibleDestinations.Add(stopLine.GetRightTurnDestination());
+            }
+            else {
+                possibleDestinations.Add(Vector2.zero);
+            }
+
+            myTurnIndex = Random.Range(0, possibleDestinations.Count);
+            while (possibleDestinations[myTurnIndex] == Vector2.zero) {
+                myTurnIndex = Random.Range(0, possibleDestinations.Count);
+            }
+            turnDestination = possibleDestinations[myTurnIndex];
         }
 
-		if (stopLine.CanGoStraight()) {
-            possibleDestinations.Add(stopLine.GetStraightDestination());
-        }
-        else
-        {
-            possibleDestinations.Add(Vector2.zero);
-        }
-
-        if (stopLine.CanTurnRight()) {
-            possibleDestinations.Add(stopLine.GetRightTurnDestination());
-        }
-        else
-        {
-            possibleDestinations.Add(Vector2.zero);
-        }
-
-        int i = Random.Range(0, possibleDestinations.Count);
-        while (possibleDestinations[i] == Vector2.zero)
-        {
-            i = Random.Range(0, possibleDestinations.Count);
-        }
-        turnDestination = possibleDestinations[i];
-
-        switch (i)
+        switch (myTurnIndex)
         {
             case (int)TurnIndex.LeftTurn:
                 turnIndicator.TurnLeft();
