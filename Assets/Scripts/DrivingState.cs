@@ -101,22 +101,35 @@ public class DrivingStateStopped : DrivingState {
  * State for when the car is turning.
  */
 public class DrivingStateTurning : DrivingState {
+	float m_turnSpeed = 0f;
+	float m_totalTurnAngle = 0f;
+	float m_degreesPerSecond = 0f;
+	float m_turnLength = 1f;
+
+	public override void Enter(CarController car) {
+		Vector2 turnVector = car.TurnDestination - (Vector2)car.transform.position;
+		Vector2 turnDirection = turnVector.normalized;
+		m_totalTurnAngle = Vector2.Angle(car.transform.right, turnDirection);
+		Vector3 cross = Vector3.Cross((Vector3)car.transform.right, (Vector3)turnDirection);
+		if (cross.z < 0f) {
+			m_totalTurnAngle *= -1f;
+		}
+		m_degreesPerSecond = m_totalTurnAngle / m_turnLength;
+		turnVector /= m_turnLength;
+
+		// @TODO Switch to using arclength for turn vector calculations?
+		m_turnSpeed = turnVector.magnitude / 2f;
+
+		Debug.Log (string.Format ("Starting turn in direction {0} ({1} total degrees) at {2} degrees / second", turnDirection, m_totalTurnAngle, m_degreesPerSecond));
+	}
+
 	public override void Update(CarController car) {
 		car.CheckForOtherCars();
 
-		Vector2 turnDirection = (car.TurnDestination - (Vector2)car.transform.position).normalized;
+		Debug.Log ("Rotating by " + m_degreesPerSecond * Time.deltaTime);
+		car.RotateBy(m_degreesPerSecond * Time.deltaTime);
 
-		float angle = Vector2.Angle(car.transform.right, turnDirection);
-		angle = Mathf.Clamp(angle, 0f, 1f);
-		Vector3 cross = Vector3.Cross((Vector3)car.transform.right, (Vector3)turnDirection);
-		if (cross.z < 0f)
-		{
-			angle *= -1f;
-		}
-
-		car.RotateBy(angle);
-
-		Vector2 distance = car.transform.right * car.CurrentSpeed * Time.deltaTime;
+		Vector2 distance = car.transform.right * m_turnSpeed * Time.deltaTime;
 		car.transform.position += (Vector3)distance;
 
 		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
