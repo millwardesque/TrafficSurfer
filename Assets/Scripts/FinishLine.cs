@@ -13,18 +13,11 @@ public class FinishLine : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		CarController car = col.GetComponent<CarController>();
-		if (car != null && car.State == DrivingState.Turning) {
-			float angle = Vector2.Angle(car.transform.up, transform.up);
+		if (car != null && car.State.GetType () == typeof(DrivingStateTurning)) {
+			float angle = Vector2.Angle(car.transform.right, transform.up);
 			if (Mathf.Abs(angle) < 90f + 5f) {
-				car.RotateTo (transform.up);
-	
-				// Correct the lateral position of the car to line up with the center of the finish line.
-				Vector2 distance = transform.position - car.transform.position;
-				Vector3 lateralOffset = new Vector3(Mathf.Abs (transform.right.x) * distance.x, Mathf.Abs (transform.right.y) * distance.y, 0f);
-				car.transform.position += lateralOffset;
-
-                intersection.SignalCarFinished();
-                car.State = DrivingState.Driving;
+				car.FinishTurn (transform);
+				intersection.SignalCarFinished();
 			}
 		}
 	}

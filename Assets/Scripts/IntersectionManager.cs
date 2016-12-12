@@ -74,7 +74,8 @@ public class IntersectionManager : MonoBehaviour {
 				WaitingCar waitingCar = cars.Dequeue();
                 m_waitingOnCar = waitingCar;
                 CarController car = waitingCar.car;
-				car.State = DrivingState.Turning;
+
+				car.StartTurn ();
                 
                 State = IntersectionState.WaitingForCar;
 			}

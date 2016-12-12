@@ -29,7 +29,7 @@ public class StopLine : MonoBehaviour {
 
 	public bool VerifyCarTrigger(CarController car) {
 		// Ignore this trigger enter if the car hits a stop line on the other lane (e.g. while turning at an intersection).
-		float angle = Vector2.Angle(car.transform.up, this.transform.up);
+		float angle = Vector2.Angle(car.transform.right, this.transform.up);
 		return (Mathf.Abs(angle) < 45f);
 	}
 

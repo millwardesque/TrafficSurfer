@@ -392,8 +392,6 @@ public class PlayerController : MonoBehaviour {
 					car.GetComponent<AudioSource>().Play ();
 					GameManager.Instance.OnReachedTargetCar();
 				}
-
-				car.Colourize();
 			}
 		}
 	}

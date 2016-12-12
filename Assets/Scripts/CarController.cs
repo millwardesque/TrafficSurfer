@@ -2,12 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum DrivingState {
-	Driving,
-	Turning,
-	Stopped
-};
-
 public enum TurnIndex
 {
     LeftTurn = 0,
@@ -27,34 +21,26 @@ public class CarController : MonoBehaviour {
     public List<TurnIndex> turnInstructions;
 
 	RaycastHit2D[] hits = new RaycastHit2D[100];
-    TurnIndicator turnIndicator = null;
+    public TurnIndicator turnIndicator = null;
 
 	float m_currentSpeed = 0f;
 	public float CurrentSpeed {
 		get { return m_currentSpeed; }
+		set { m_currentSpeed = value; }
 	}
 	
 	Vector2 turnDestination;
+	public Vector2 TurnDestination {
+		get { return turnDestination; }
+	}
 
-	DrivingState m_state;
+	DrivingStateMachine m_drivingState;
 	public DrivingState State {
-		get { return m_state; }
-		set {
-            DrivingState oldState = m_state;
-			m_state = value;
+		get { return m_drivingState != null ? m_drivingState.State : null; }
+	}
 
-            if (oldState == DrivingState.Turning)
-            {
-                turnIndicator.DoneTurn();
-            }
-
-			if (m_state == DrivingState.Stopped) {
-				m_currentSpeed = 0f;
-			}
-			else if (m_state == DrivingState.Turning) {
-
-			}
-		}
+	void Awake() {
+		m_drivingState = new DrivingStateMachine (this);
 	}
 
 	void Start() {
@@ -63,43 +49,15 @@ public class CarController : MonoBehaviour {
 		}
 
 		turnIndicator = GetComponentInChildren<TurnIndicator>();
-		maxSpeed = Random.Range (maxSpeed - 1f, maxSpeed + 1f);
-		maxAcceleration = Random.Range (maxAcceleration - 1f, maxAcceleration + 1f);	
+		ResetCar ();
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (State == DrivingState.Driving) {
-            CheckForOtherCars();
-
-            Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
-			transform.position += (Vector3)distance;
-
-            Debug.DrawLine(transform.position, transform.position + transform.up * stopDistance, Color.red);
-        }
-		else if (State == DrivingState.Turning) {
-            CheckForOtherCars();
-
-            Vector2 turnDirection = (turnDestination - (Vector2)transform.position).normalized;
-            float angle = Vector2.Angle(transform.up, turnDirection);
-
-            angle = Mathf.Clamp(angle, 0f, 1f);
-            Vector3 cross = Vector3.Cross((Vector3)transform.up, (Vector3)turnDirection);
-            if (cross.z < 0f)
-            {
-                angle *= -1f;
-            }
-
-            RotateBy(angle);
-
-            Vector2 distance = transform.up * m_currentSpeed * Time.deltaTime;
-			transform.position += (Vector3)distance;
-
-			Debug.DrawLine(transform.position, transform.position + transform.up * stopDistance, Color.red);
-		}
+		m_drivingState.State.Update (this);
 	}
 
-    void CheckForOtherCars()
+    public void CheckForOtherCars()
     {
         int results = Physics2D.RaycastNonAlloc(transform.position, transform.up, hits, stopDistance);
 		bool willHitCar = false;
@@ -125,7 +83,7 @@ public class CarController : MonoBehaviour {
     }
 
 	public void StopCar() {
-		State = DrivingState.Stopped;
+		m_drivingState.ReplaceState (new DrivingStateStopped());
 	}
 
 	public void ChooseDirection(StopLine stopLine) {
@@ -180,7 +138,7 @@ public class CarController : MonoBehaviour {
 
         switch (myTurnIndex)
         {
-            case (int)TurnIndex.LeftTurn:
+           case (int)TurnIndex.LeftTurn:
                 turnIndicator.TurnLeft();
                 break;
             case (int)TurnIndex.Straight:
@@ -195,8 +153,8 @@ public class CarController : MonoBehaviour {
 	}
 	
 	public void RotateTo(Vector2 direction) {
-		float angle = Vector2.Angle(transform.up, direction);
-		Vector3 cross = Vector3.Cross((Vector3)transform.up, (Vector3)direction);
+		float angle = Vector2.Angle(transform.right, direction);
+		Vector3 cross = Vector3.Cross((Vector3)transform.right, (Vector3)direction);
 		if (cross.z < 0f) {
 			angle *= -1f;
 		}
@@ -212,24 +170,39 @@ public class CarController : MonoBehaviour {
     }
 	
 	public void ResetCar() {
-        if (carColours.Count > 0) {
-            GetComponent<SpriteRenderer>().color = carColours[Random.Range(0, carColours.Count)];
-        }
-        else
-        {
-            GetComponent<SpriteRenderer>().color = Color.white;
-        }
+		maxSpeed = Random.Range (maxSpeed - 1f, maxSpeed + 1f);
+		maxAcceleration = Random.Range (maxAcceleration - 1f, maxAcceleration + 1f);
+		Colourize ();
 
-		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
-		State = DrivingState.Driving;
+		m_drivingState.ClearStates ();
+		m_drivingState.PushState (new DrivingStateDriving());
 	}
 
-	public void Colourize() {
+	void Colourize() {
+		if (carColours.Count > 0) {
+			GetComponent<SpriteRenderer>().color = carColours[Random.Range(0, carColours.Count)];
+		}
+		else
+		{
+			GetComponent<SpriteRenderer>().color = Color.white;
+		}
+
 		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
 	}
 
-	public void Colourize(Color color) {
-		GetComponent<SpriteRenderer>().color = color;
-		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
+	public void StartTurn() {
+		m_drivingState.ReplaceState (new DrivingStateTurning());
+	}
+
+	public void FinishTurn(Transform finishLine) {
+		RotateTo (finishLine.transform.up);
+
+		// Correct the lateral position of the car to line up with the center of the finish line.
+		Vector2 distance = finishLine.transform.position - transform.position;
+		Vector3 lateralDistance = new Vector3(Mathf.Abs (finishLine.transform.up.y), Mathf.Abs (finishLine.transform.up.x), 0f);
+		Vector3 lateralOffset = new Vector3(lateralDistance.x * distance.x, lateralDistance.y * distance.y, 0f);
+		transform.position += lateralOffset;
+
+		m_drivingState.ReplaceState (new DrivingStateDriving());
 	}
 }

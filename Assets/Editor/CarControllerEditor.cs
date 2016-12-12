@@ -10,7 +10,7 @@ public class CarControllerEditor : Editor
         CarController myTarget = (CarController)target;
 
         DrawDefaultInspector();
-        EditorGUILayout.LabelField("State", myTarget.State.ToString());
+		EditorGUILayout.LabelField("State", myTarget.State == null ? "<unknown>" : myTarget.State.ToString());
 		EditorGUILayout.LabelField("Speed", myTarget.CurrentSpeed.ToString());
     }
 }
