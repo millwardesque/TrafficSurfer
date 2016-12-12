@@ -5,15 +5,15 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 489454}
-  - 212: {fileID: 21250962}
-  - 58: {fileID: 5883746}
-  - 114: {fileID: 11415436}
-  - 50: {fileID: 5033992}
-  - 82: {fileID: 8296626}
-  - 95: {fileID: 9529372}
+  - component: {fileID: 489454}
+  - component: {fileID: 21250962}
+  - component: {fileID: 5883746}
+  - component: {fileID: 11415436}
+  - component: {fileID: 5033992}
+  - component: {fileID: 8296626}
+  - component: {fileID: 9529372}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -33,18 +33,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &5033992
 Rigidbody2D:
-  serializedVersion: 2
+  serializedVersion: 4
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 162652}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_IsKinematic: 1
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -56,12 +61,13 @@ CircleCollider2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 162652}
   m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: -.0199999996, y: -.0199999996}
+  m_Offset: {x: -0.02, y: -0.02}
   serializedVersion: 2
-  m_Radius: .100000001
+  m_Radius: 0.1
 --- !u!82 &8296626
 AudioSource:
   m_ObjectHideFlags: 1
@@ -78,6 +84,7 @@ AudioSource:
   Loop: 1
   Mute: 0
   Spatialize: 0
+  SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -90,48 +97,57 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &9529372
 Animator:
   serializedVersion: 3
@@ -160,12 +176,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76317b3bc4f74c75b2edaaa0b681d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDeathSpeed: 2.5999999
+  minDeathSpeed: 2.6
   walkSpeed: 1
-  jumpDistance: 1.20000005
-  fromCarJumpDuration: .200000003
-  fromGroundJumpDuration: .5
-  jumpCooldown: .100000001
+  jumpDistance: 1.2
+  fromCarJumpDuration: 0.2
+  fromGroundJumpDuration: 0.5
+  jumpCooldown: 0.1
   walkSound: {fileID: 8300000, guid: c91a1f0b382724ed0965e3b26acd5162, type: 3}
   jumpSound: {fileID: 8300000, guid: 34bfa69656a2a40b8834c0123ad980e4, type: 3}
   landOnCarSound: {fileID: 8300000, guid: b7f13c17b88bc478ead9fbf0f9be3068, type: 3}
@@ -180,25 +196,32 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: .5
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1088593085
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d1b395d9a07074bf2be03b3c96676f7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
