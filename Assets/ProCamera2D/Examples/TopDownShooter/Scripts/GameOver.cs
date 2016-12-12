@@ -21,7 +21,12 @@ namespace Com.LuisPedroFonseca.ProCamera2D.TopDownShooter
         public void PlayAgain()
         {
             Time.timeScale = 1;
+
+            #if UNITY_5_3_OR_NEWER
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            #else
             Application.LoadLevel(Application.loadedLevel);
+            #endif
         }
     }
 }

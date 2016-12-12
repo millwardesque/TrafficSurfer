@@ -37,7 +37,7 @@ public class TargetCarIndicator : MonoBehaviour {
 			return;
 		}
 		Camera mainCamera = ProCamera2D.Instance.GameCamera;
-		float cameraHeight = 2 * ProCamera2D.Instance.GameCameraSize;
+		float cameraHeight = 2 * mainCamera.orthographicSize;
 		float cameraWidth = cameraHeight * mainCamera.aspect;     	
 
 		Bounds cameraBounds = new Bounds(mainCamera.transform.position, new Vector3(cameraWidth, cameraHeight, 100f));

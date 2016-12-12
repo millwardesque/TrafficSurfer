@@ -2,126 +2,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Com.LuisPedroFonseca.ProCamera2D
 {
     /// <summary>
-    /// Main class of the plugin. Everything starts and happens here.
-    /// All plugins and helpers will need a reference to an instance of this class.
+    /// Core class of the plugin. Everything starts and happens through here.
+    /// All extensions and triggers have a reference to an instance of this class.
     /// </summary>
+    #if UNITY_5_3_OR_NEWER
+    [HelpURL("http://www.procamera2d.com/user-guide/core/")]
+    #endif
     [RequireComponent(typeof(Camera))]
-    public class ProCamera2D : MonoBehaviour
+    public class ProCamera2D : MonoBehaviour, ISerializationCallbackReceiver
     {
-        public const string VERSION = "1.6.1";
+        public static readonly Version Version = new Version("2.2.4");
 
-        public bool Enabled = true;
-
-        public Action OnExclusiveFocusStarted;
-        public Action OnExclusiveFocusFinished;
-
-        public Action OnBoundariesTransitionStarted;
-        public Action OnBoundariesTransitionFinished;
-
-        public MovementAxis Axis;
-        Func<Vector3, float> Vector3H;
-        Func<Vector3, float> Vector3V;
-        Func<Vector3, float> Vector3D;
-        Func<float, float, Vector3> VectorHV;
-        Func<float, float, float, Vector3> VectorHVD;
-
-        public bool FollowHorizontal = true;
-        public bool FollowVertical = true;
-        
-        public Camera GameCamera;
-
-        public float HorizontalFollowSmoothness = 0.15f;
-        public float VerticalFollowSmoothness = 0.15f;
-
-        public bool LimitMaxHorizontalSpeed;
-        public float MaxHorizontalSpeed = .2f;
-        
-        public bool LimitMaxVerticalSpeed;
-        public float MaxVerticalSpeed = .2f;
+        #region Inspector Variables
 
         public List<CameraTarget> CameraTargets = new List<CameraTarget>();
 
-        public Vector2 ScreenSizeInWorldCoordinates { get; set; }
+        public bool CenterTargetOnStart;
 
-        public Vector2 OverallOffset;
+        public MovementAxis Axis;
 
         public UpdateType UpdateType;
 
-        Coroutine _updateScreenSizeCoroutine;
+        public bool FollowHorizontal = true;
+        public float HorizontalFollowSmoothness = 0.15f;
 
-        public Vector3 PreviousTargetsMidPoint { get { return _previousTargetsMidPoint; } }
+        public bool FollowVertical = true;
+        public float VerticalFollowSmoothness = 0.15f;
 
-        Vector3 _previousTargetsMidPoint;
+        public Vector2 OverallOffset;
 
-        public Vector3 TargetsMidPoint { get { return _targetsMidPoint; } }
+        public bool ZoomWithFOV;
 
-        Vector3 _targetsMidPoint;
+        #endregion
 
-        List<Vector3> _influences = new List<Vector3>();
-        Vector3 _influencesSum = Vector3.zero;
 
-        public Vector3 CameraTargetPosition { get { return _cameraTargetPosition; } }
+        #region Properties
 
-        Vector3 _cameraTargetPosition;
-
-        float _cameraTargetHorizontalPositionSmoothed;
-        float _previousCameraTargetHorizontalPositionSmoothed;
-        float _cameraTargetVerticalPositionSmoothed;
-        float _previousCameraTargetVerticalPositionSmoothed;
-
-        public Vector2 CameraTargetPositionSmoothed { get { return new Vector2(_cameraTargetHorizontalPositionSmoothed, _cameraTargetVerticalPositionSmoothed); } }
-
-        public Vector3 CameraPosition { get { return _transform.localPosition; } set { _transform.localPosition = value; } }
-
-        float _originalCameraDepthSign;
-
-        public float CameraDepthPos { get { return _cameraDepthPos; } }
-        float _cameraDepthPos;
-
-        public Vector3? ExclusiveTargetPosition;
-
-        public bool LimitHorizontalCameraDistance;
-        public float MaxHorizontalTargetDistance = .8f;
-        public bool LimitVerticalCameraDistance;
-        public float MaxVerticalTargetDistance = .8f;
-
-        public bool CenterTargetOnStart;
-
-        public int CurrentZoomTriggerID;
-
-        Transform _transform;
-
-        #if PC2D_TK2D_SUPPORT
-        public tk2dCamera Tk2dCam;
-        #endif
-
-        Vector3 _deltaMovement;
-        public Vector3 DeltaMovement { get { return _deltaMovement; } }
-
-        public float GameCameraSize
-        {
-            get
-            {
-                if (GameCamera.orthographic)
-                {
-                    #if PC2D_TK2D_SUPPORT
-                    if (Tk2dCam != null)
-                        return Tk2dCam.CameraSettings.orthographicSize / Tk2dCam.ZoomFactor;
-                    #endif
-
-                    return GameCamera.orthographicSize;
-                }
-                else
-                    return Mathf.Abs(Vector3D(CameraPosition)) * Mathf.Tan(GameCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-            }
-        }
-
-        static ProCamera2D _instance;
-
+        /// <summary>Get ProCamera2D's static instance</summary>
         public static ProCamera2D Instance
         {
             get
@@ -138,10 +60,145 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             }
         }
 
+        static ProCamera2D _instance;
+
+        /// <summary>Update ProCamera2D's camera rect</summary>
+        public Rect Rect
+        {
+            get
+            {
+                return GameCamera.rect;
+            }
+
+            set
+            {
+                GameCamera.rect = value;
+                ProCamera2DParallax parallax = GetComponentInChildren<ProCamera2DParallax>();
+                if (parallax != null)
+                {
+                    for (int i = 0; i < parallax.ParallaxLayers.Count; i++)
+                    {
+                        parallax.ParallaxLayers[i].ParallaxCamera.rect = value;
+                    }
+                }
+            }
+        }
+
+        public Vector2 CameraTargetPositionSmoothed
+        { 
+            get
+            { 
+                return new Vector2(_cameraTargetHorizontalPositionSmoothed, _cameraTargetVerticalPositionSmoothed); 
+            }
+
+            set
+            { 
+                _cameraTargetHorizontalPositionSmoothed = value.x;
+                _cameraTargetVerticalPositionSmoothed = value.y;
+            }
+        }
+
+        float _cameraTargetHorizontalPositionSmoothed;
+        float _cameraTargetVerticalPositionSmoothed;
+
+        public Vector3 LocalPosition { get { return _transform.localPosition; } set { _transform.localPosition = value; } }
+
+        public Vector2 ScreenSizeInWorldCoordinates { get { return _screenSizeInWorldCoordinates; } }
+
+        Vector2 _screenSizeInWorldCoordinates;
+
+        public Vector3 PreviousTargetsMidPoint { get { return _previousTargetsMidPoint; } }
+
+        Vector3 _previousTargetsMidPoint;
+
+        public Vector3 TargetsMidPoint { get { return _targetsMidPoint; } }
+
+        Vector3 _targetsMidPoint;
+
+        public Vector3 CameraTargetPosition { get { return _cameraTargetPosition; } }
+
+        Vector3 _cameraTargetPosition;
+
+        public float DeltaTime { get { return _deltaTime; } }
+
+        float _deltaTime;
+
+        public Vector3 ParentPosition { get { return _parentPosition; } }
+
+        Vector3 _parentPosition;
+
+        #endregion
+
+
+        #region Public Variables
+
+        public Action<float> PreMoveUpdate;
+        public Action<float> PostMoveUpdate;
+        
+        public Action OnReset;
+
+        public Vector3? ExclusiveTargetPosition;
+
+        public int CurrentZoomTriggerID;
+
+        public bool IsCameraPositionLeftBounded;
+        public bool IsCameraPositionRightBounded;
+        public bool IsCameraPositionTopBounded;
+        public bool IsCameraPositionBottomBounded;
+
+        public Camera GameCamera;
+
+        #if PC2D_TK2D_SUPPORT
+        public tk2dCamera Tk2dCam;
+        #endif
+
+        #endregion
+
+
+        #region Private Variables
+
+        Func<Vector3, float> Vector3H;
+        Func<Vector3, float> Vector3V;
+        Func<Vector3, float> Vector3D;
+        Func<float, float, Vector3> VectorHV;
+        Func<float, float, float, Vector3> VectorHVD;
+
+        Vector2 _startScreenSizeInWorldCoordinates;
+
+        Coroutine _updateScreenSizeCoroutine;
+        Coroutine _dollyZoomRoutine;
+
+        List<Vector3> _influences = new List<Vector3>();
+        Vector3 _influencesSum = Vector3.zero;
+
+        float _originalCameraDepthSign;
+
+        float _previousCameraTargetHorizontalPositionSmoothed;
+        float _previousCameraTargetVerticalPositionSmoothed;
+
+        WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
+
+        Transform _transform;
+
+        List<IPreMover> _preMovers = new List<IPreMover>();
+        List<IPositionDeltaChanger> _positionDeltaChangers = new List<IPositionDeltaChanger>();
+        List<IPositionOverrider> _positionOverriders = new List<IPositionOverrider>();
+        List<ISizeDeltaChanger> _sizeDeltaChangers = new List<ISizeDeltaChanger>();
+        List<ISizeOverrider> _sizeOverriders = new List<ISizeOverrider>();
+        List<IPostMover> _postMovers = new List<IPostMover>();
+
+        #endregion
+
+        #region MonoBehaviour
+
         void Awake()
         {
             _instance = this;
             _transform = transform;
+
+            // Get parent position
+            if (_transform.parent != null)
+                _parentPosition = _transform.parent.position;
 
             if (GameCamera == null)
                 GameCamera = GetComponent<Camera>();
@@ -152,30 +209,8 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             Tk2dCam = GetComponent<tk2dCamera>();
             #endif
 
-            switch (Axis)
-            {
-                case MovementAxis.XY:
-                    Vector3H = vector => vector.x;
-                    Vector3V = vector => vector.y;
-                    Vector3D = vector => vector.z;
-                    VectorHV = (h, v) => new Vector3(h, v, 0);
-                    VectorHVD = (h, v, d) => new Vector3(h, v, d);
-                    break;
-                case MovementAxis.XZ:
-                    Vector3H = vector => vector.x;
-                    Vector3V = vector => vector.z;
-                    Vector3D = vector => vector.y;
-                    VectorHV = (h, v) => new Vector3(h, 0, v);
-                    VectorHVD = (h, v, d) => new Vector3(h, d, v);
-                    break;
-                case MovementAxis.YZ:
-                    Vector3H = vector => vector.z;
-                    Vector3V = vector => vector.y;
-                    Vector3D = vector => vector.x;
-                    VectorHV = (h, v) => new Vector3(0, v, h);
-                    VectorHVD = (h, v, d) => new Vector3(d, v, h);
-                    break;
-            }
+            // Reset the axis functions
+            ResetAxisFunctions();
 
             // Remove empty targets
             for (int i = 0; i < CameraTargets.Count; i++)
@@ -186,24 +221,39 @@ namespace Com.LuisPedroFonseca.ProCamera2D
                 }
             }
 
-            ScreenSizeInWorldCoordinates = Utils.GetScreenSizeInWorldCoords(GameCamera, Mathf.Abs(Vector3D(_transform.localPosition)));
+            _screenSizeInWorldCoordinates = _startScreenSizeInWorldCoordinates = Utils.GetScreenSizeInWorldCoords(GameCamera, Mathf.Abs(Vector3D(_transform.localPosition)));
 
-            _cameraDepthPos = Vector3D(_transform.localPosition);
-            _originalCameraDepthSign = Mathf.Sign(_cameraDepthPos);
+            _originalCameraDepthSign = Mathf.Sign(Vector3D(_transform.localPosition));
+        }
+
+        void Start()
+        {
+            SortPreMovers();
+            SortPositionDeltaChangers();
+            SortPositionOverriders();
+            SortSizeDeltaChangers();
+            SortSizeOverriders();
+            SortPostMovers();
+
+            // Set some values ahead of the update loop so that other extensions can use them on Awake/Start
+            _targetsMidPoint = GetTargetsWeightedMidPoint(CameraTargets);
+            _cameraTargetHorizontalPositionSmoothed = Vector3H(_targetsMidPoint);
+            _cameraTargetVerticalPositionSmoothed = Vector3V(_targetsMidPoint);
+            _deltaTime = Time.deltaTime;
 
             // Center on target
             if (CenterTargetOnStart && CameraTargets.Count > 0)
             {
-                var targetPos = GetTargetsWeightedMidPoint(CameraTargets);
-                var cameraTargetPositionX = FollowHorizontal ? Vector3H(targetPos) : Vector3H(_transform.localPosition);
-                var cameraTargetPositionY = FollowVertical ? Vector3V(targetPos) : Vector3V(_transform.localPosition);
-                targetPos = VectorHV(cameraTargetPositionX, cameraTargetPositionY);
-                targetPos += VectorHV(OverallOffset.x, OverallOffset.y);
-                MoveCameraInstantlyToPosition(targetPos);
+                var targetsMidPoint = GetTargetsWeightedMidPoint(CameraTargets);
+                var cameraTargetPositionX = FollowHorizontal ? Vector3H(targetsMidPoint) : Vector3H(_transform.localPosition);
+                var cameraTargetPositionY = FollowVertical ? Vector3V(targetsMidPoint) : Vector3V(_transform.localPosition);
+                var finalPos = new Vector2(cameraTargetPositionX, cameraTargetPositionY);
+                finalPos += new Vector2(OverallOffset.x - Vector3H(_parentPosition), OverallOffset.y - Vector3V(_parentPosition));
+                MoveCameraInstantlyToPosition(finalPos);
             }
             else
             {
-                _cameraTargetPosition = _transform.localPosition;
+                _cameraTargetPosition = _transform.position - _parentPosition;
                 _cameraTargetHorizontalPositionSmoothed = Vector3H(_cameraTargetPosition);
                 _previousCameraTargetHorizontalPositionSmoothed = _cameraTargetHorizontalPositionSmoothed;
                 _cameraTargetVerticalPositionSmoothed = Vector3V(_cameraTargetPosition);
@@ -213,20 +263,25 @@ namespace Com.LuisPedroFonseca.ProCamera2D
 
         void LateUpdate()
         {
-            if (Enabled && UpdateType == UpdateType.LateUpdate)
-                Move();
+            if (UpdateType == UpdateType.LateUpdate)
+                Move(Time.deltaTime);
         }
 
         void FixedUpdate()
         {
-            if (Enabled && UpdateType == UpdateType.FixedUpdate)
-                Move();
+            if (UpdateType == UpdateType.FixedUpdate)
+                Move(Time.fixedDeltaTime);
         }
 
         void OnApplicationQuit()
         {
             _instance = null;
         }
+
+        #endregion
+
+
+        #region Public Methods
 
         /// <summary>Apply the given influence to the camera during this frame.</summary>
         /// <param name="influence">The vector representing the influence to be applied</param>
@@ -251,13 +306,15 @@ namespace Com.LuisPedroFonseca.ProCamera2D
         /// <param name="targetInfluenceH">The influence this target horizontal position should have when calculating the average position of all the targets</param>
         /// <param name="targetInfluenceV">The influence this target vertical position should have when calculating the average position of all the targets</param>
         /// <param name="duration">The time it takes for this target to reach it's influence. Use for a more progressive transition.</param>
-        public CameraTarget AddCameraTarget(Transform targetTransform, float targetInfluenceH = 1f, float targetInfluenceV = 1f, float duration = 0f)
+        /// <param name="targetOffset">A vector that offsets the target position that the camera will follow</param>
+        public CameraTarget AddCameraTarget(Transform targetTransform, float targetInfluenceH = 1f, float targetInfluenceV = 1f, float duration = 0f, Vector2 targetOffset = default(Vector2))
         {
             var newCameraTarget = new CameraTarget
             {
                 TargetTransform = targetTransform,
                 TargetInfluenceH = targetInfluenceH,
                 TargetInfluenceV = targetInfluenceV,
+                TargetOffset = targetOffset
             };
 
             CameraTargets.Add(newCameraTarget);
@@ -269,6 +326,20 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             }
 
             return newCameraTarget;
+        }
+
+        /// <summary>Add multiple targets for the camera to follow.</summary>
+        /// <param name="targetsTransforms">An array or list with the new targets</param>
+        /// <param name="targetsInfluenceH">The influence the targets horizontal position should have when calculating the average position of all the targets</param>
+        /// <param name="targetsInfluenceV">The influence the targets vertical position should have when calculating the average position of all the targets</param>
+        /// <param name="duration">The time it takes for the targets to reach their influence. Use for a more progressive transition.</param>
+        /// <param name="targetOffset">A vector that offsets the target position that the camera will follow</param>
+        public void AddCameraTargets(IList<Transform> targetsTransforms, float targetsInfluenceH = 1f, float targetsInfluenceV = 1f, float duration = 0f, Vector2 targetOffset = default(Vector2))
+        {
+            for (int i = 0; i < targetsTransforms.Count; i++)
+            {
+                AddCameraTarget(targetsTransforms[i], targetsInfluenceH, targetsInfluenceV, duration, targetOffset);
+            }
         }
 
         /// <summary>Gets the corresponding CameraTarget from an object's transform.</summary>
@@ -304,6 +375,23 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             }
         }
 
+        /// <summary>Removes all targets from the camera.</summary>
+        /// <param name="duration">The time it takes for all targets to reach a zero influence. Use for a more progressive transition.</param>
+        public void RemoveAllCameraTargets(float duration = 0f)
+        {
+            if (duration == 0)
+            {
+                CameraTargets.Clear();
+            }
+            else
+            {
+                for (int i = 0; i < CameraTargets.Count; i++)
+                {
+                    StartCoroutine(AdjustTargetInfluenceRoutine(CameraTargets[i], 0, 0, duration, true));
+                }
+            }
+        }
+
         /// <summary>Adjusts a target influence</summary>
         /// <param name="cameraTarget">The CameraTarget of the target</param>
         /// <param name="targetInfluenceH">The influence this target horizontal position should have when calculating the average position of all the targets</param>
@@ -316,7 +404,7 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             else
             {
                 cameraTarget.TargetInfluenceH = targetInfluenceH;
-                cameraTarget.TargetInfluenceV = targetInfluenceH;
+                cameraTarget.TargetInfluenceV = targetInfluenceV;
 
                 return null;
             }
@@ -339,67 +427,119 @@ namespace Com.LuisPedroFonseca.ProCamera2D
 
         /// <summary>Moves the camera instantly to the supplied position</summary>
         /// <param name="cameraPos">The final position of the camera</param>
-        public void MoveCameraInstantlyToPosition(Vector3 cameraPos)
+        public void MoveCameraInstantlyToPosition(Vector2 cameraPos)
         {
-            _transform.localPosition = VectorHVD(Vector3H(cameraPos), Vector3V(cameraPos), Vector3D(_transform.localPosition));
+            _transform.localPosition = VectorHVD(cameraPos.x, cameraPos.y, Vector3D(_transform.localPosition));
 
-            _cameraTargetPosition = _transform.localPosition;
+            ResetMovement();
+        }
 
-            _cameraTargetHorizontalPositionSmoothed = Vector3H(_cameraTargetPosition);
-            _cameraTargetVerticalPositionSmoothed = Vector3V(_cameraTargetPosition);
+        /// <summary>Resets the camera movement and size and also all of its extensions to their start values.
+        /// This could be useful if, for example, your player dies and respawns somewhere else on the level</summary>
+        /// <param name="centerOnTargets">If true, the camera will move to the "final" targets position</param>
+        public void Reset(bool centerOnTargets = true)
+        {
+            if (centerOnTargets)
+            {
+                var targetsMidPoint = GetTargetsWeightedMidPoint(CameraTargets);
+                var finalPos = new Vector2(Vector3H(targetsMidPoint), Vector3V(targetsMidPoint));
+                finalPos += new Vector2(OverallOffset.x, OverallOffset.y);
+                MoveCameraInstantlyToPosition(finalPos);
+            }
+            else
+                ResetMovement();
 
-            _previousCameraTargetHorizontalPositionSmoothed = _cameraTargetHorizontalPositionSmoothed;
-            _previousCameraTargetVerticalPositionSmoothed = _cameraTargetVerticalPositionSmoothed;
+            ResetSize();
+
+            if (OnReset != null)
+                OnReset();
         }
 
         /// <summary>Resize the camera to the supplied size</summary>
         /// <param name="newSize">Half of the wanted size in world units</param>
-        /// <param name="duration">How long it should take to reach the provided size</param>
-        /// <param name="easeType">The easing method to apply when the duration is bigger than 0</param>
-        public void UpdateScreenSize(float newSize, float duration = 0, EaseType easeType = EaseType.Linear)
+        /// <param name="duration">How long it should take to reach the provided size. Use 0 if instant or calling repeatedly</param>
+        /// <param name="easeType">The easing method to apply. Only used when the duration is bigger than 0</param>
+        public void UpdateScreenSize(float newSize, float duration = 0f, EaseType easeType = EaseType.EaseInOut)
         {
+            if (!enabled)
+                return;
+
+            if (_updateScreenSizeCoroutine != null)
+                StopCoroutine(_updateScreenSizeCoroutine);
+
             if (duration > 0)
-            {
-                if (_updateScreenSizeCoroutine != null)
-                    StopCoroutine(_updateScreenSizeCoroutine);
-                
                 _updateScreenSizeCoroutine = StartCoroutine(UpdateScreenSizeRoutine(newSize, duration, easeType));
+            else
+                SetScreenSize(newSize);
+        }
+
+        /// <summary>Zoom in or out the camera by the supplied amount</summary>
+        /// <param name="zoomAmount">The amount to zoom in world units</param>
+        /// <param name="duration">How long it should take to reach the new zoom. Use 0 if instant or calling repeatedly</param>
+        /// <param name="easeType">The easing method to apply. Only used when the duration is bigger than 0</param>
+        public void Zoom(float zoomAmount, float duration = 0f, EaseType easeType = EaseType.EaseInOut)
+        {
+            UpdateScreenSize(_screenSizeInWorldCoordinates.y * .5f + zoomAmount, duration, easeType);
+        }
+
+
+        /// <summary>Creates a dolly zoom effect, also known as the Hitchcock effect</summary>
+        /// <param name="targetFOV">The final field of view</param>
+        /// <param name="duration">The duration of the effect</param>
+        /// <param name="easeType">The ease type of the transition</param>
+        public void DollyZoom(float targetFOV, float duration = 1f, EaseType easeType = EaseType.EaseInOut)
+        {
+            if (!enabled)
+                return;
+            
+            if (GameCamera.orthographic)
+            {
+                Debug.LogWarning("Dolly zooming is only supported on perspective cameras");
                 return;
             }
 
-            if (GameCamera.orthographic)
+            if (_dollyZoomRoutine != null)
+                StopCoroutine(_dollyZoomRoutine);
+
+            targetFOV = Mathf.Clamp(targetFOV, 0.1f, 179.9f);
+
+            if (duration <= 0)
             {
-                GameCamera.orthographicSize = newSize;
-                _cameraDepthPos = Vector3D(_transform.localPosition);
+                GameCamera.fieldOfView = targetFOV;
+
+                _transform.localPosition = VectorHVD(
+                    Vector3H(_transform.localPosition), 
+                    Vector3V(_transform.localPosition), 
+                    GetCameraDistanceForFOV(GameCamera.fieldOfView, _screenSizeInWorldCoordinates.y) * _originalCameraDepthSign);
             }
             else
             {
-                _cameraDepthPos = (newSize / Mathf.Tan(GameCamera.fieldOfView * 0.5f * Mathf.Deg2Rad)) * _originalCameraDepthSign;
-                _transform.localPosition = VectorHVD(Vector3H(_transform.localPosition), Vector3V(_transform.localPosition), _cameraDepthPos);
+                StartCoroutine(DollyZoomRoutine(targetFOV, duration, easeType));
             }
-
-            ScreenSizeInWorldCoordinates = new Vector2(newSize * 2 * GameCamera.aspect, newSize * 2);
-
-            #if PC2D_TK2D_SUPPORT
-            if (Tk2dCam == null)
-                return;
-            
-            if (Tk2dCam.CameraSettings.projection == tk2dCameraSettings.ProjectionType.Orthographic)
-                Tk2dCam.ZoomFactor = Tk2dCam.CameraSettings.orthographicSize / newSize;
-            #endif
         }
 
         /// <summary>
         /// Move the camera to the average position of all the targets.
-        /// This method is automatically called every frame on LateUpdate/FixedUpdate.
-        /// Use only if you want to manually control the update frequency.
+        /// This method is automatically called when using LateUpdate or FixedUpdate.
+        /// If using ManualUpdate, you have to call it yourself.
         /// </summary>
-        public void Move()
+        /// <param name="deltaTime">The time in seconds it took to complete the last frame</param>
+        public void Move(float deltaTime)
         {
             // Delta time
-            var deltaTime = UpdateType == UpdateType.LateUpdate ? Time.deltaTime : Time.fixedDeltaTime;
-            if (deltaTime < .0001f)
+            _deltaTime = deltaTime;
+            if (_deltaTime < .0001f)
                 return;
+                
+            // Pre-Move update
+            if (PreMoveUpdate != null)
+                PreMoveUpdate(_deltaTime);
+
+            // Cycle through the pre movers
+            for (int i = 0; i < _preMovers.Count; i++)
+            {
+                _preMovers[i].PreMove(deltaTime);
+            }
 
             // Calculate targets mid point
             _previousTargetsMidPoint = _targetsMidPoint;
@@ -414,12 +554,12 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             // Follow only on selected axis
             var cameraTargetPositionX = FollowHorizontal ? Vector3H(_cameraTargetPosition) : Vector3H(_transform.localPosition);
             var cameraTargetPositionY = FollowVertical ? Vector3V(_cameraTargetPosition) : Vector3V(_transform.localPosition);
-            _cameraTargetPosition = VectorHV(cameraTargetPositionX, cameraTargetPositionY);
+            _cameraTargetPosition = VectorHV(cameraTargetPositionX - Vector3H(_parentPosition), cameraTargetPositionY - Vector3V(_parentPosition));
 
             // Ignore targets and influences if exclusive position is set
             if (ExclusiveTargetPosition.HasValue)
             {
-                _cameraTargetPosition = ExclusiveTargetPosition.Value;
+                _cameraTargetPosition = VectorHV(Vector3H(ExclusiveTargetPosition.Value) - Vector3H(_parentPosition), Vector3V(ExclusiveTargetPosition.Value) - Vector3V(_parentPosition));
                 ExclusiveTargetPosition = null;
             }
 
@@ -427,56 +567,119 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             _cameraTargetPosition += VectorHV(FollowHorizontal ? OverallOffset.x : 0, FollowVertical ? OverallOffset.y : 0);
 
             // Tween camera final position
-            _cameraTargetHorizontalPositionSmoothed = Utils.SmoothApproach(_cameraTargetHorizontalPositionSmoothed, _previousCameraTargetHorizontalPositionSmoothed, Vector3H(_cameraTargetPosition), 1f / HorizontalFollowSmoothness, deltaTime);
+            _cameraTargetHorizontalPositionSmoothed = Utils.SmoothApproach(_cameraTargetHorizontalPositionSmoothed, _previousCameraTargetHorizontalPositionSmoothed, Vector3H(_cameraTargetPosition), 1f / HorizontalFollowSmoothness, _deltaTime);
             _previousCameraTargetHorizontalPositionSmoothed = _cameraTargetHorizontalPositionSmoothed;
 
-            _cameraTargetVerticalPositionSmoothed = Utils.SmoothApproach(_cameraTargetVerticalPositionSmoothed, _previousCameraTargetVerticalPositionSmoothed, Vector3V(_cameraTargetPosition), 1f / VerticalFollowSmoothness, deltaTime);
+            _cameraTargetVerticalPositionSmoothed = Utils.SmoothApproach(_cameraTargetVerticalPositionSmoothed, _previousCameraTargetVerticalPositionSmoothed, Vector3V(_cameraTargetPosition), 1f / VerticalFollowSmoothness, _deltaTime);
             _previousCameraTargetVerticalPositionSmoothed = _cameraTargetVerticalPositionSmoothed;
-
-            // Limit camera distance to target
-            if (LimitHorizontalCameraDistance)
-            {
-                var horizontalCompensation = Vector3H(_cameraTargetPosition) - Vector3H(_transform.localPosition) - (ScreenSizeInWorldCoordinates.x / 2) * MaxHorizontalTargetDistance;
-                if (horizontalCompensation > 0)
-                {
-                    _cameraTargetHorizontalPositionSmoothed += horizontalCompensation;
-                    _previousCameraTargetHorizontalPositionSmoothed = _cameraTargetHorizontalPositionSmoothed;
-                }
-                else if (horizontalCompensation < -ScreenSizeInWorldCoordinates.x * MaxHorizontalTargetDistance)
-                {
-                    _cameraTargetHorizontalPositionSmoothed += horizontalCompensation + ScreenSizeInWorldCoordinates.x * MaxHorizontalTargetDistance;
-                    _previousCameraTargetHorizontalPositionSmoothed = _cameraTargetHorizontalPositionSmoothed;
-                }
-            }
-            if (LimitVerticalCameraDistance)
-            {
-                var verticalCompensation = Vector3V(_cameraTargetPosition) - Vector3V(_transform.localPosition) - (ScreenSizeInWorldCoordinates.y / 2) * MaxVerticalTargetDistance;
-                if (verticalCompensation > 0)
-                {
-                    _cameraTargetVerticalPositionSmoothed += verticalCompensation;
-                    _previousCameraTargetVerticalPositionSmoothed = _cameraTargetVerticalPositionSmoothed;
-                }
-                else if (verticalCompensation < -ScreenSizeInWorldCoordinates.y * MaxVerticalTargetDistance)
-                {
-                    _cameraTargetVerticalPositionSmoothed += verticalCompensation + ScreenSizeInWorldCoordinates.y * MaxVerticalTargetDistance;
-                    _previousCameraTargetVerticalPositionSmoothed = _cameraTargetVerticalPositionSmoothed;
-                }
-            }
 
             // Movement this step
             var horizontalDeltaMovement = _cameraTargetHorizontalPositionSmoothed - Vector3H(_transform.localPosition);
             var verticalDeltaMovement = _cameraTargetVerticalPositionSmoothed - Vector3V(_transform.localPosition);
 
-            // Limit max speed
-            if (LimitMaxHorizontalSpeed)
-                horizontalDeltaMovement = Mathf.Clamp(horizontalDeltaMovement, -MaxHorizontalSpeed, MaxHorizontalSpeed);
-                
-            if (LimitMaxVerticalSpeed)
-                verticalDeltaMovement = Mathf.Clamp(verticalDeltaMovement, -MaxVerticalSpeed, MaxVerticalSpeed);
+            // Calculate the base delta movement
+            var deltaMovement = VectorHV(horizontalDeltaMovement, verticalDeltaMovement);
 
-            // Apply the delta movement
-            _deltaMovement = VectorHV(horizontalDeltaMovement, verticalDeltaMovement);
-            _transform.Translate(_deltaMovement, Space.World);
+
+
+            // Cycle through the size delta changers
+            var deltaSize = 0f;
+            for (int i = 0; i < _sizeDeltaChangers.Count; i++)
+            {
+                deltaSize = _sizeDeltaChangers[i].AdjustSize(deltaTime, deltaSize);
+            }
+
+            // Calculate the new size
+            var newSize = _screenSizeInWorldCoordinates.y * .5f + deltaSize;
+
+            // Cycle through the size overriders
+            for (int i = 0; i < _sizeOverriders.Count; i++)
+            {
+                newSize = _sizeOverriders[i].OverrideSize(deltaTime, newSize);
+            }
+
+            // Apply the new size
+            if (newSize != _screenSizeInWorldCoordinates.y * .5f)
+                SetScreenSize(newSize);
+
+
+
+            // Cycle through the position delta changers
+            for (int i = 0; i < _positionDeltaChangers.Count; i++)
+            {
+                deltaMovement = _positionDeltaChangers[i].AdjustDelta(deltaTime, deltaMovement);
+            }
+
+            // Calculate the new position
+            var newPos = LocalPosition + deltaMovement;
+
+            // Cycle through the position overriders
+            for (int i = 0; i < _positionOverriders.Count; i++)
+            {
+                newPos = _positionOverriders[i].OverridePosition(deltaTime, newPos);
+            }
+
+            // Apply the new position
+            _transform.localPosition = VectorHVD(Vector3H(newPos), Vector3V(newPos), Vector3D(_transform.localPosition));
+
+
+
+
+            // Cycle through the post movers
+            for (int i = 0; i < _postMovers.Count; i++)
+            {
+                _postMovers[i].PostMove(deltaTime);
+            }
+            
+            // Post-Move update
+            if (PostMoveUpdate != null)
+                PostMoveUpdate(_deltaTime);
+        }
+
+        /// <summary>For internal use</summary>
+        public YieldInstruction GetYield()
+        {
+            switch (UpdateType)
+            {
+                case UpdateType.FixedUpdate:
+                    return _waitForFixedUpdate;
+
+                default:
+                    return null;
+            }
+        }
+
+        #endregion
+
+
+        #region Private Methods
+
+        void ResetAxisFunctions()
+        {
+            switch (Axis)
+            {
+                case MovementAxis.XY:
+                    Vector3H = vector => vector.x;
+                    Vector3V = vector => vector.y;
+                    Vector3D = vector => vector.z;
+                    VectorHV = (h, v) => new Vector3(h, v, 0);
+                    VectorHVD = (h, v, d) => new Vector3(h, v, d);
+                    break;
+                case MovementAxis.XZ:
+                    Vector3H = vector => vector.x;
+                    Vector3V = vector => vector.z;
+                    Vector3D = vector => vector.y;
+                    VectorHV = (h, v) => new Vector3(h, 0, v);
+                    VectorHVD = (h, v, d) => new Vector3(h, d, v);
+                    break;
+                case MovementAxis.YZ:
+                    Vector3H = vector => vector.z;
+                    Vector3V = vector => vector.y;
+                    Vector3D = vector => vector.x;
+                    VectorHV = (h, v) => new Vector3(0, v, h);
+                    VectorHVD = (h, v, d) => new Vector3(d, v, h);
+                    break;
+            } 
         }
 
         Vector3 GetTargetsWeightedMidPoint(IList<CameraTarget> targets)
@@ -496,16 +699,16 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             {
                 if (targets[i] == null)
                     continue;
-                
+
                 midPointH += (Vector3H(targets[i].TargetPosition) + targets[i].TargetOffset.x) * targets[i].TargetInfluenceH;
                 midPointV += (Vector3V(targets[i].TargetPosition) + targets[i].TargetOffset.y) * targets[i].TargetInfluenceV;
-                    
+
                 totalInfluencesH += targets[i].TargetInfluenceH;
                 totalInfluencesV += targets[i].TargetInfluenceV;
 
                 if (targets[i].TargetInfluenceH > 0)
                     totalAccountableTargetsH++;
-                
+
                 if (targets[i].TargetInfluenceV > 0)
                     totalAccountableTargetsV++;
             }
@@ -539,14 +742,13 @@ namespace Com.LuisPedroFonseca.ProCamera2D
 
         IEnumerator ApplyInfluenceTimedRoutine(Vector2 influence, float duration)
         {
-            var waitForFixedUpdate = new WaitForFixedUpdate();
             while (duration > 0)
             {
-                duration -= UpdateType == UpdateType.LateUpdate ? Time.deltaTime : Time.fixedDeltaTime;
+                duration -= _deltaTime;
 
                 ApplyInfluence(influence);
 
-                yield return (UpdateType == UpdateType.FixedUpdate) ? waitForFixedUpdate : null;
+                yield return GetYield();
             }
         }
 
@@ -555,15 +757,14 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             var startInfluenceH = cameraTarget.TargetInfluenceH;
             var startInfluenceV = cameraTarget.TargetInfluenceV;
 
-            var waitForFixedUpdate = new WaitForFixedUpdate();
             var t = 0f;
             while (t <= 1.0f)
             {
-                t += (UpdateType == UpdateType.LateUpdate ? Time.deltaTime : Time.fixedDeltaTime) / duration;
+                t += _deltaTime / duration;
                 cameraTarget.TargetInfluenceH = Utils.EaseFromTo(startInfluenceH, influenceH, t, EaseType.Linear);
                 cameraTarget.TargetInfluenceV = Utils.EaseFromTo(startInfluenceV, influenceV, t, EaseType.Linear);
 
-                yield return (UpdateType == UpdateType.FixedUpdate) ? waitForFixedUpdate : null;
+                yield return GetYield();
             }
 
             if (removeIfZeroInfluence && cameraTarget.TargetInfluenceH <= 0 && cameraTarget.TargetInfluenceV <= 0)
@@ -572,34 +773,227 @@ namespace Com.LuisPedroFonseca.ProCamera2D
 
         IEnumerator UpdateScreenSizeRoutine(float finalSize, float duration, EaseType easeType)
         {
-            var startSize = 0f;
-            if (GameCamera.orthographic)
-            {
-                startSize = GameCamera.orthographicSize;
-
-                #if PC2D_TK2D_SUPPORT
-                if (Tk2dCam != null)
-                    startSize = Tk2dCam.CameraSettings.orthographicSize / Tk2dCam.ZoomFactor;
-                #endif
-            }
-            else
-                startSize = Mathf.Abs(Vector3D(CameraPosition)) * Mathf.Tan(GameCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-            
-            var waitForFixedUpdate = new WaitForFixedUpdate();
-            var t = 0f;
+            var startSize = _screenSizeInWorldCoordinates.y * .5f;
             var newSize = startSize;
+
+            var t = 0f;
             while (t <= 1.0f)
             {
-                t += (UpdateType == UpdateType.LateUpdate ? Time.deltaTime : Time.fixedDeltaTime) / duration;
+                t += _deltaTime / duration;
                 newSize = Utils.EaseFromTo(startSize, finalSize, t, easeType);
 
-                UpdateScreenSize(newSize);
+                SetScreenSize(newSize);
 
-                yield return (UpdateType == UpdateType.FixedUpdate) ? waitForFixedUpdate : null;
+                yield return GetYield();
             }
 
             _updateScreenSizeCoroutine = null;
         }
+
+        IEnumerator DollyZoomRoutine(float finalFOV, float duration, EaseType easeType)
+        {
+            var startFOV = GameCamera.fieldOfView;
+            var newFOV = startFOV;
+
+            var t = 0f;
+            while (t <= 1.0f)
+            {
+                t += _deltaTime / duration;
+
+                newFOV = Utils.EaseFromTo(startFOV, finalFOV, t, easeType);
+                GameCamera.fieldOfView = newFOV;
+
+                _transform.localPosition = VectorHVD(
+                    Vector3H(_transform.localPosition), 
+                    Vector3V(_transform.localPosition), 
+                    GetCameraDistanceForFOV(newFOV, _screenSizeInWorldCoordinates.y) * _originalCameraDepthSign);
+
+                yield return GetYield();
+            }
+
+            _dollyZoomRoutine = null;
+        }
+
+        void SetScreenSize(float newSize)
+        {
+            #if UNITY_EDITOR
+            if (_transform == null)
+                _transform = transform;
+            #endif
+
+            if (GameCamera.orthographic)
+            {
+                newSize = Mathf.Max(newSize, .1f);
+
+                GameCamera.orthographicSize = newSize;
+            }
+            else
+            {
+                if (ZoomWithFOV)
+                {
+                    var newFieldOfView = 2f * Mathf.Atan(newSize / Mathf.Abs(Vector3D(_transform.localPosition))) * Mathf.Rad2Deg;
+                    GameCamera.fieldOfView = Mathf.Clamp(newFieldOfView, .1f, 179.9f);
+                }
+                else
+                {
+                    _transform.localPosition = VectorHVD(
+                        Vector3H(_transform.localPosition), 
+                        Vector3V(_transform.localPosition), 
+                        (newSize / Mathf.Tan(GameCamera.fieldOfView * 0.5f * Mathf.Deg2Rad)) * _originalCameraDepthSign);
+                }
+            }
+
+            _screenSizeInWorldCoordinates = new Vector2(newSize * 2f * GameCamera.aspect, newSize * 2f);
+
+            #if PC2D_TK2D_SUPPORT
+            if (Tk2dCam == null)
+                return;
+
+            if (Tk2dCam.CameraSettings.projection == tk2dCameraSettings.ProjectionType.Orthographic)
+            {
+                if (Tk2dCam.CameraSettings.orthographicType == tk2dCameraSettings.OrthographicType.OrthographicSize)
+                    Tk2dCam.ZoomFactor = Tk2dCam.CameraSettings.orthographicSize / newSize;
+                else
+                {
+                    #if UNITY_EDITOR
+                    if (Application.isPlaying)
+                    #endif
+                        Tk2dCam.ZoomFactor = (_startScreenSizeInWorldCoordinates.y * .5f) / newSize;
+                }
+            }
+            #endif
+        }
+
+        void ResetMovement()
+        {
+            _cameraTargetPosition = _transform.localPosition;
+
+            _cameraTargetHorizontalPositionSmoothed = Vector3H(_cameraTargetPosition);
+            _cameraTargetVerticalPositionSmoothed = Vector3V(_cameraTargetPosition);
+
+            _previousCameraTargetHorizontalPositionSmoothed = _cameraTargetHorizontalPositionSmoothed;
+            _previousCameraTargetVerticalPositionSmoothed = _cameraTargetVerticalPositionSmoothed;
+        }
+
+        void ResetSize()
+        {
+            SetScreenSize(_startScreenSizeInWorldCoordinates.y / 2);
+        }
+
+        float GetCameraDistanceForFOV(float fov, float cameraHeight)
+        {
+            return cameraHeight / (2f * Mathf.Tan(0.5f * fov * Mathf.Deg2Rad));
+        }
+
+        #endregion
+
+        #region Extension Interfaces
+
+        public void AddPreMover(IPreMover mover)
+        {
+            _preMovers.Add(mover);
+        }
+
+        public void RemovePreMover(IPreMover mover)
+        {
+            _preMovers.Remove(mover);
+        }
+
+        public void SortPreMovers()
+        {
+            _preMovers = _preMovers.OrderBy(a => a.PrMOrder).ToList();
+        }
+
+        public void AddPositionDeltaChanger(IPositionDeltaChanger changer)
+        {
+            _positionDeltaChangers.Add(changer);
+        }
+
+        public void RemovePositionDeltaChanger(IPositionDeltaChanger changer)
+        {
+            _positionDeltaChangers.Remove(changer);
+        }
+
+        public void SortPositionDeltaChangers()
+        {
+            _positionDeltaChangers = _positionDeltaChangers.OrderBy(a => a.PDCOrder).ToList();
+        }
+
+        public void AddPositionOverrider(IPositionOverrider overrider)
+        {
+            _positionOverriders.Add(overrider);
+        }
+
+        public void RemovePositionOverrider(IPositionOverrider overrider)
+        {
+            _positionOverriders.Remove(overrider);
+        }
+
+        public void SortPositionOverriders()
+        {
+            _positionOverriders = _positionOverriders.OrderBy(a => a.POOrder).ToList();
+        }
+
+        public void AddSizeDeltaChanger(ISizeDeltaChanger changer)
+        {
+            _sizeDeltaChangers.Add(changer);
+        }
+
+        public void RemoveSizeDeltaChanger(ISizeDeltaChanger changer)
+        {
+            _sizeDeltaChangers.Remove(changer);
+        }
+
+        public void SortSizeDeltaChangers()
+        {
+            _sizeDeltaChangers = _sizeDeltaChangers.OrderBy(a => a.SDCOrder).ToList();
+        }
+
+        public void AddSizeOverrider(ISizeOverrider overrider)
+        {
+            _sizeOverriders.Add(overrider);
+        }
+
+        public void RemoveSizeOverrider(ISizeOverrider overrider)
+        {
+            _sizeOverriders.Remove(overrider);
+        }
+
+        public void SortSizeOverriders()
+        {
+            _sizeOverriders = _sizeOverriders.OrderBy(a => a.SOOrder).ToList();
+        }
+
+        public void AddPostMover(IPostMover mover)
+        {
+            _postMovers.Add(mover);
+        }
+
+        public void RemovePostMover(IPostMover mover)
+        {
+            _postMovers.Remove(mover);
+        }
+
+        public void SortPostMovers()
+        {
+            _postMovers = _postMovers.OrderBy(a => a.PMOrder).ToList();
+        }
+
+        #endregion
+
+
+        #region ISerializationCallbackReceiver implementation
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+            ResetAxisFunctions();
+        }
+
+        #endregion
 
         #if UNITY_EDITOR
         int _drawGizmosCounter;
@@ -611,30 +1005,8 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             if (_drawGizmosCounter < 5 && UnityEditor.EditorApplication.timeSinceStartup < 60f)
                 return;
 
-            switch (Axis)
-            {
-                case MovementAxis.XY:
-                    Vector3H = vector => vector.x;
-                    Vector3V = vector => vector.y;
-                    Vector3D = vector => vector.z;
-                    VectorHV = (h, v) => new Vector3(h, v, 0);
-                    VectorHVD = (h, v, d) => new Vector3(h, v, d);
-                    break;
-                case MovementAxis.XZ:
-                    Vector3H = vector => vector.x;
-                    Vector3V = vector => vector.z;
-                    Vector3D = vector => vector.y;
-                    VectorHV = (h, v) => new Vector3(h, 0, v);
-                    VectorHVD = (h, v, d) => new Vector3(h, d, v);
-                    break;
-                case MovementAxis.YZ:
-                    Vector3H = vector => vector.z;
-                    Vector3V = vector => vector.y;
-                    Vector3D = vector => vector.x;
-                    VectorHV = (h, v) => new Vector3(0, v, h);
-                    VectorHVD = (h, v, d) => new Vector3(d, v, h);
-                    break;
-            }
+            if (Vector3H == null)
+                ResetAxisFunctions();
 
             var gameCamera = GetComponent<Camera>();
 
@@ -643,9 +1015,9 @@ namespace Com.LuisPedroFonseca.ProCamera2D
                 ((UnityEditor.SceneView.lastActiveSceneView != null && Camera.current != UnityEditor.SceneView.lastActiveSceneView.camera) ||
                 (UnityEditor.SceneView.lastActiveSceneView == null)))
                 return;
-            
-            var cameraDimensions = Utils.GetScreenSizeInWorldCoords(gameCamera, Mathf.Abs(Vector3D(transform.localPosition)));
-            float cameraDepthOffset = Vector3D(transform.localPosition) + Mathf.Abs(Vector3D(transform.localPosition)) * Vector3D(transform.forward);
+
+            var cameraDimensions = Utils.GetScreenSizeInWorldCoords(gameCamera, Mathf.Abs(Vector3D(transform.position)));
+            float cameraDepthOffset = Vector3D(transform.position) + Mathf.Abs(Vector3D(transform.position)) * Vector3D(transform.forward);
 
             // Targets mid point
             Gizmos.color = EditorPrefsX.GetColor(PrefsData.TargetsMidPointColorKey, PrefsData.TargetsMidPointColorValue);
@@ -663,39 +1035,24 @@ namespace Com.LuisPedroFonseca.ProCamera2D
             if (OverallOffset != Vector2.zero)
                 Utils.DrawArrowForGizmo(targetsMidPoint, VectorHV(OverallOffset.x, OverallOffset.y), .04f * cameraDimensions.y);
 
-            // Limit cam distance
-            if (LimitHorizontalCameraDistance)
-            {
-                Gizmos.color = EditorPrefsX.GetColor(PrefsData.CamDistanceColorKey, PrefsData.CamDistanceColorValue);
-                Gizmos.DrawRay(VectorHVD(Vector3H(transform.position) + (cameraDimensions.x / 2) * MaxHorizontalTargetDistance, Vector3V(transform.position) - cameraDimensions.y / 2, cameraDepthOffset), transform.up * cameraDimensions.y); 
-                Gizmos.DrawRay(VectorHVD(Vector3H(transform.position) - (cameraDimensions.x / 2) * MaxHorizontalTargetDistance, Vector3V(transform.position) - cameraDimensions.y / 2, cameraDepthOffset), transform.up * cameraDimensions.y); 
-            }
-
-            if (LimitVerticalCameraDistance)
-            {
-                Gizmos.color = EditorPrefsX.GetColor(PrefsData.CamDistanceColorKey, PrefsData.CamDistanceColorValue);
-                Gizmos.DrawRay(VectorHVD(Vector3H(transform.position) - cameraDimensions.x / 2, Vector3V(transform.position) - (cameraDimensions.y / 2) * MaxVerticalTargetDistance, cameraDepthOffset), transform.right * cameraDimensions.x);
-                Gizmos.DrawRay(VectorHVD(Vector3H(transform.position) - cameraDimensions.x / 2, Vector3V(transform.position) + (cameraDimensions.y / 2) * MaxVerticalTargetDistance, cameraDepthOffset), transform.right * cameraDimensions.x);
-            }
-
             // Camera target position
             Gizmos.color = EditorPrefsX.GetColor(PrefsData.CamTargetPositionColorKey, PrefsData.CamTargetPositionColorValue);
             var cameraTargetPosition = targetsMidPoint + _influencesSum + VectorHV(OverallOffset.x, OverallOffset.y);
             var cameraTargetPos = VectorHVD(Vector3H(cameraTargetPosition), Vector3V(cameraTargetPosition), cameraDepthOffset);
             Gizmos.DrawWireSphere(cameraTargetPos, .015f * cameraDimensions.y);
-            
+
             // Camera target position smoothed
             if (Application.isPlaying)
             {
                 Gizmos.color = EditorPrefsX.GetColor(PrefsData.CamTargetPositionSmoothedColorKey, PrefsData.CamTargetPositionSmoothedColorValue);
-                var cameraTargetPosSmoothed = VectorHVD(_cameraTargetHorizontalPositionSmoothed, _cameraTargetVerticalPositionSmoothed, cameraDepthOffset);
+                var cameraTargetPosSmoothed = VectorHVD(_cameraTargetHorizontalPositionSmoothed + Vector3H(_parentPosition), _cameraTargetVerticalPositionSmoothed + Vector3V(_parentPosition), cameraDepthOffset);
                 Gizmos.DrawWireSphere(cameraTargetPosSmoothed, .02f * cameraDimensions.y);
                 Gizmos.DrawLine(cameraTargetPos, cameraTargetPosSmoothed);
             }
 
             // Current camera position
             Gizmos.color = EditorPrefsX.GetColor(PrefsData.CurrentCameraPositionColorKey, PrefsData.CurrentCameraPositionColorValue);
-            var currentCameraPos = VectorHVD(Vector3H(transform.localPosition), Vector3V(transform.localPosition), cameraDepthOffset);
+            var currentCameraPos = VectorHVD(Vector3H(transform.position), Vector3V(transform.position), cameraDepthOffset);
             Gizmos.DrawWireSphere(currentCameraPos, .025f * cameraDimensions.y);
         }
         #endif

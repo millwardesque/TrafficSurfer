@@ -9,15 +9,15 @@ namespace Com.LuisPedroFonseca.ProCamera2D.Platformer
 
         void OnGUI()
         {
-            if (GUI.Button(new Rect(5, 5, 180, 30), (Cinematics.IsActive ? "Stop" : "Start") + " Cinematics"))
+            if (GUI.Button(new Rect(5, 5, 180, 30), (Cinematics.IsPlaying ? "Stop" : "Start") + " Cinematics"))
             {
-                if (Cinematics.IsActive)
+                if (Cinematics.IsPlaying)
                     Cinematics.Stop();
                 else
                     Cinematics.Play();
             }
 
-            if (Cinematics.IsActive)
+            if (Cinematics.IsPlaying)
             {
                 if (GUI.Button(new Rect(195, 5, 40, 30), ">"))
                 {

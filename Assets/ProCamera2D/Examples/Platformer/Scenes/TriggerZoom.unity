@@ -37,9 +37,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
---- !u!127 &3
-LevelGameManager:
-  m_ObjectHideFlags: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -68,6 +65,7 @@ LightmapSettings:
     m_TextureCompression: 0
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
+    m_ReflectionCompression: 2
   m_LightmapSnapshot: {fileID: 0}
   m_RuntimeCPUUsage: 25
 --- !u!196 &5
@@ -343,7 +341,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 524903627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.51000023, y: 1.76999998, z: 0}
+  m_LocalPosition: {x: 4.51000023, y: 1.71000004, z: 0}
   m_LocalScale: {x: 6.00000286, y: 4.01000023, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -362,9 +360,14 @@ MonoBehaviour:
   ProCamera2D: {fileID: 1347611047}
   UpdateInterval: .100000001
   TriggerShape: 1
+  UseTargetsMidPoint: 1
+  TriggerTarget: {fileID: 0}
+  SetSizeAsMultiplier: 1
   TargetZoom: .600000024
   ZoomSmoothness: 1
   ExclusiveInfluencePercentage: .400000006
+  ResetSizeOnExit: 0
+  ResetSizeSmoothness: 1
 --- !u!1 &1269031627
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,9 +398,14 @@ MonoBehaviour:
   ProCamera2D: {fileID: 1347611047}
   UpdateInterval: .100000001
   TriggerShape: 1
+  UseTargetsMidPoint: 1
+  TriggerTarget: {fileID: 0}
+  SetSizeAsMultiplier: 1
   TargetZoom: 2
   ZoomSmoothness: 1
   ExclusiveInfluencePercentage: .400000006
+  ResetSizeOnExit: 1
+  ResetSizeSmoothness: 1
 --- !u!4 &1269031629
 Transform:
   m_ObjectHideFlags: 0
@@ -405,7 +413,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1269031627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.59000015, y: 1.76999998, z: 0}
+  m_LocalPosition: {x: -4.59000015, y: 1.71000004, z: 0}
   m_LocalScale: {x: 6.00000286, y: 4.01000023, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -492,6 +500,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -536,35 +545,8 @@ MonoBehaviour:
     TargetInfluenceH: 1
     TargetInfluenceV: 1
     TargetOffset: {x: 0, y: 0}
-  CameraWindowRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
   OverallOffset: {x: 0, y: 0}
   UpdateType: 0
-  UseGeometryBoundaries: 0
-  BoundariesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  UseNumericBoundaries: 0
-  UseTopBoundary: 0
-  TopBoundary: 10
-  TargetTopBoundary: 0
-  UseBottomBoundary: 0
-  BottomBoundary: -10
-  TargetBottomBoundary: 0
-  UseLeftBoundary: 0
-  LeftBoundary: -10
-  TargetLeftBoundary: 0
-  UseRightBoundary: 0
-  RightBoundary: 10
-  TargetRightBoundary: 0
-  IsCameraSizeBounded: 0
-  IsCameraPositionHorizontallyBounded: 0
-  IsCameraPositionVerticallyBounded: 0
-  CurrentBoundariesTriggerID: 0
   LimitHorizontalCameraDistance: 0
   MaxHorizontalTargetDistance: .800000012
   LimitVerticalCameraDistance: 0
