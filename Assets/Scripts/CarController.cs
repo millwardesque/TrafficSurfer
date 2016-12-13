@@ -13,8 +13,6 @@ public class CarController : MonoBehaviour {
 	public static float TurnAngleVariance = 0.0001f;
 	public CarData carData;
 
-	public float maxSpeed = 1f;
-	public float maxAcceleration = 0.8f;
 	public float stopDistance = 1f;
     public List<Color> carColours = new List<Color>();
 
@@ -23,10 +21,9 @@ public class CarController : MonoBehaviour {
 	RaycastHit2D[] hits = new RaycastHit2D[100];
     public TurnIndicator turnIndicator = null;
 
-	float m_currentSpeed = 0f;
-	public float CurrentSpeed {
-		get { return m_currentSpeed; }
-		set { m_currentSpeed = value; }
+	CarEngine m_carEngine;
+	public CarEngine Engine {
+		get { return m_carEngine ?? null; }
 	}
 	
 	Vector2 turnDestination;
@@ -40,6 +37,7 @@ public class CarController : MonoBehaviour {
 	}
 
 	void Awake() {
+		m_carEngine = new CarEngine (transform);
 		m_drivingState = new DrivingStateMachine (this);
 	}
 
@@ -60,7 +58,6 @@ public class CarController : MonoBehaviour {
     public void CheckForOtherCars()
     {
         int results = Physics2D.RaycastNonAlloc(transform.position, transform.up, hits, stopDistance);
-		bool willHitCar = false;
         for (int i = 0; i < results; ++i)
         {
             CarController car = hits[i].collider.GetComponent<CarController>();
@@ -69,17 +66,11 @@ public class CarController : MonoBehaviour {
                 float angle = Vector2.Angle(transform.up, car.transform.up);
                 if (angle <= 90f)
                 {
-                    m_currentSpeed = 0f;
-                    willHitCar = true;
+                    m_carEngine.CurrentSpeed = 0f;
                     break;
                 }
             }
         }
-		if (!willHitCar && m_currentSpeed < maxSpeed)
-		{
-			m_currentSpeed += maxAcceleration * Time.deltaTime;
-			m_currentSpeed = Mathf.Clamp(m_currentSpeed, 0f, maxSpeed);
-		}
     }
 
 	public void StopCar() {
@@ -151,27 +142,10 @@ public class CarController : MonoBehaviour {
                 break;
         }
 	}
-	
-	public void RotateTo(Vector2 direction) {
-		float angle = Vector2.Angle(transform.right, direction);
-		Vector3 cross = Vector3.Cross((Vector3)transform.right, (Vector3)direction);
-		if (cross.z < 0f) {
-			angle *= -1f;
-		}
 
-        RotateBy(angle);
-	}
-
-    public void RotateBy(float angle)
-    {
-        Quaternion newRotation = transform.rotation;
-        newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
-        transform.rotation = newRotation;
-    }
-	
 	public void ResetCar() {
-		maxSpeed = Random.Range (maxSpeed - 1f, maxSpeed + 1f);
-		maxAcceleration = Random.Range (maxAcceleration - 1f, maxAcceleration + 1f);
+		m_carEngine.MaxSpeed = Random.Range (m_carEngine.MaxSpeed - 1f, m_carEngine.MaxSpeed + 1f);
+		m_carEngine.MaxAcceleration = Random.Range (m_carEngine.MaxAcceleration - 1f, m_carEngine.MaxAcceleration + 1f);
 		Colourize ();
 
 		m_drivingState.ClearStates ();
@@ -195,7 +169,8 @@ public class CarController : MonoBehaviour {
 	}
 
 	public void FinishTurn(Transform finishLine) {
-		RotateTo (finishLine.transform.up);
+		// Correct the remaining rotation to line up with the road.
+		m_carEngine.RotateTo(finishLine.transform.up);
 
 		// Correct the lateral position of the car to line up with the center of the finish line.
 		Vector2 distance = finishLine.transform.position - transform.position;

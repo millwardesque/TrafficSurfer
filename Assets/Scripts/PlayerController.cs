@@ -367,7 +367,7 @@ public class PlayerController : MonoBehaviour {
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && car != lastCar) {
 			if (State == PlayerState.OnGround) {
-				if (car.CurrentSpeed >= minDeathSpeed ) {
+				if (car.Engine.CurrentSpeed >= minDeathSpeed ) {
                 	State = PlayerState.HitByCar;
 				}
 				else {
@@ -403,7 +403,7 @@ public class PlayerController : MonoBehaviour {
 
 		CarController car = col.GetComponent<CarController>();
 		if (car != null && State == PlayerState.OnGround) {
-			if (car.CurrentSpeed >= minDeathSpeed ) {
+			if (car.Engine.CurrentSpeed >= minDeathSpeed ) {
 				State = PlayerState.HitByCar;
 			}
 		}

@@ -77,12 +77,13 @@ public class DrivingState {
  * State for when the car is driving.
  */
 public class DrivingStateDriving : DrivingState {
+	public override void Enter(CarController car) {
+		car.Engine.DegreesPerSecond = 0f;
+	}
 
 	public override void Update(CarController car) {
 		car.CheckForOtherCars();
-
-		Vector2 distance = car.transform.right * car.CurrentSpeed * Time.deltaTime;
-		car.transform.position += (Vector3)distance;
+		car.Engine.UpdateCarPhysics ();
 
 		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
 	}
@@ -93,7 +94,15 @@ public class DrivingStateDriving : DrivingState {
  */
 public class DrivingStateStopped : DrivingState {
 	public override void Enter(CarController car) {
-		car.CurrentSpeed = 0f;
+		car.Engine.CurrentSpeed = 0f;
+		car.Engine.DegreesPerSecond = 0f;
+	}
+
+	public override void Update(CarController car) {
+		car.CheckForOtherCars();
+		car.Engine.UpdateCarPhysics ();
+
+		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
 	}
 }
 
@@ -101,51 +110,50 @@ public class DrivingStateStopped : DrivingState {
  * State for when the car is turning.
  */
 public class DrivingStateTurning : DrivingState {
-	float m_turnSpeed = 0f;
-	float m_totalTurnAngle = 0f;
-	float m_degreesPerSecond = 0f;
 	float m_turnLength = 2f;
 
 	public override void Enter(CarController car) {
-		Vector2 turnVector = car.TurnDestination - (Vector2)car.transform.position;
-		Vector2 turnDirection = turnVector.normalized;
-		m_totalTurnAngle = Vector2.Angle(car.transform.right, turnDirection);
-		Vector3 cross = Vector3.Cross((Vector3)car.transform.right, (Vector3)turnDirection);
+		Vector3 turnDirection = ((Vector3)car.TurnDestination - car.transform.position).normalized;
+		float totalTurnAngle = Vector3.Angle(car.transform.right, turnDirection);
+		Vector3 cross = Vector3.Cross(car.transform.right, turnDirection);
 		if (cross.z < 0f) {
-			m_totalTurnAngle *= -1f;
+			totalTurnAngle *= -1f;
 		}
 
 		// Locks all turns at 0, 90, or -90
 		// @TODO Replace this with some proper trig.
-		if (m_totalTurnAngle < -1f) {
-			m_totalTurnAngle = -90f;
-		} else if (m_totalTurnAngle > 1f) {
-			m_totalTurnAngle = 90f;
+		if (totalTurnAngle < -1f) {
+			totalTurnAngle = -90f;
+		} else if (totalTurnAngle > 1f) {
+			totalTurnAngle = 90f;
 		} else {
-			m_totalTurnAngle = 0f;
+			totalTurnAngle = 0f;
 		}
 
-		m_degreesPerSecond = m_totalTurnAngle / m_turnLength;
+		car.Engine.DegreesPerSecond = totalTurnAngle / m_turnLength;
 
 		float turnRadius = 2f;	// Approximate radius of the turn.  Taken from the top-corner of the intersection tile (which is 2x2 units)
-		float arcLength = turnRadius * 2f * Mathf.PI * m_totalTurnAngle / 360f; 
-		m_turnSpeed = arcLength / m_turnLength;
-
-		Debug.Log (string.Format ("Starting turn in direction {0} ({1} total degrees) at {2} degrees / second (arclength {3} vs. {4})", turnDirection, m_totalTurnAngle, m_degreesPerSecond, arcLength, turnVector.magnitude));
+		float arcLength = turnRadius * 2f * Mathf.PI * totalTurnAngle / 360f; 
+		car.Engine.CurrentSpeed = arcLength / m_turnLength;
 	}
 
 	public override void Update(CarController car) {
-		car.CheckForOtherCars();
-		car.RotateBy(m_degreesPerSecond * Time.deltaTime);
+		Vector2 towardNextTrigger = (car.TurnDestination - (Vector2)car.transform.position);
+		float targetRot = Vector2.Angle (Vector2.right, towardNextTrigger);
+		if (towardNextTrigger.y < 0.0f) {
+			targetRot *= -1f;
+		}
 
-		Vector2 distance = car.transform.right * m_turnSpeed * Time.deltaTime;
-		car.transform.position += (Vector3)distance;
+		float rot = Mathf.MoveTowardsAngle (car.transform.localEulerAngles.z, targetRot, 100f);
+		car.Engine.DegreesPerSecond = rot;
+
+		car.CheckForOtherCars();
+		car.Engine.UpdateCarPhysics ();
 
 		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
 	}
-	
+
 	public override void Exit(CarController car) {
-		car.CurrentSpeed = m_turnSpeed;
 		car.turnIndicator.DoneTurn();
 	}
 }
