@@ -13,8 +13,9 @@ public class CarData : ScriptableObject
 	public float stopDistance;
 
 	public void Initialize(CarController car) {
-		car.Engine.MaxSpeed = maxSpeed;
-		car.Engine.MaxAcceleration = maxAcceleration;
+		Debug.Log ("@TODO: Replace this with new engine coefficients.");
+		// car.Engine.MaxSpeed = maxSpeed;
+		// car.Engine.MaxAcceleration = maxAcceleration;
 		car.stopDistance = stopDistance;
 		car.carColours = new List<Color> (colourOptions);
 

@@ -76,5 +76,4 @@ Shader "Shader Forge/SpriteBW" {
         }
     }
     FallBack "Diffuse"
-    CustomEditor "ShaderForgeMaterialInspector"
 }

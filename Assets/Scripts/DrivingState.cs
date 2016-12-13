@@ -17,7 +17,7 @@ public class DrivingStateMachine {
 		m_states = new Stack<DrivingState> ();
 		m_car = car;
 
-		m_states.Push (new DrivingStateDriving());
+		m_states.Push (new DrivingStateStopped());
 	}
 
 	public void PushState(DrivingState state) {
@@ -78,14 +78,20 @@ public class DrivingState {
  */
 public class DrivingStateDriving : DrivingState {
 	public override void Enter(CarController car) {
-		car.Engine.DegreesPerSecond = 0f;
+		car.Engine.CurrentTireRotation = 0f;
+		car.Engine.CurrentThrottle = 1f;
+		car.Engine.CurrentBrake = 0f;
 	}
 
 	public override void Update(CarController car) {
-		car.CheckForOtherCars();
-		car.Engine.UpdateCarPhysics ();
-
 		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
+
+		car.CheckForOtherCars();
+		if (car.CollisionIsPossible) {
+			car.StopCar ();
+		} else {
+			car.Engine.UpdateCarPhysics ();
+		}
 	}
 }
 
@@ -94,15 +100,19 @@ public class DrivingStateDriving : DrivingState {
  */
 public class DrivingStateStopped : DrivingState {
 	public override void Enter(CarController car) {
-		car.Engine.CurrentSpeed = 0f;
-		car.Engine.DegreesPerSecond = 0f;
+		car.Engine.CurrentThrottle = 0f;
+		car.Engine.CurrentBrake = 1f;
 	}
 
 	public override void Update(CarController car) {
-		car.CheckForOtherCars();
-		car.Engine.UpdateCarPhysics ();
-
 		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
+
+		car.CheckForOtherCars();
+		if (car.CollisionIsPossible) {
+			car.StartDriving ();
+		} else {
+			car.Engine.UpdateCarPhysics ();
+		}
 	}
 }
 
@@ -113,40 +123,20 @@ public class DrivingStateTurning : DrivingState {
 	float m_turnLength = 2f;
 
 	public override void Enter(CarController car) {
+		car.Engine.CurrentThrottle = 1f;
+		car.Engine.CurrentBrake = 0f;
+
 		Vector3 turnDirection = ((Vector3)car.TurnDestination - car.transform.position).normalized;
 		float totalTurnAngle = Vector3.Angle(car.transform.right, turnDirection);
 		Vector3 cross = Vector3.Cross(car.transform.right, turnDirection);
-		if (cross.z < 0f) {
-			totalTurnAngle *= -1f;
-		}
-
-		// Locks all turns at 0, 90, or -90
-		// @TODO Replace this with some proper trig.
-		if (totalTurnAngle < -1f) {
-			totalTurnAngle = -90f;
-		} else if (totalTurnAngle > 1f) {
-			totalTurnAngle = 90f;
+		if (cross.z >= 0f) {
+			car.Engine.CurrentTireRotation = car.Engine.MaxTireRotation;
 		} else {
-			totalTurnAngle = 0f;
+			car.Engine.CurrentTireRotation = -1f * car.Engine.MaxTireRotation;
 		}
-
-		car.Engine.DegreesPerSecond = totalTurnAngle / m_turnLength;
-
-		float turnRadius = 2f;	// Approximate radius of the turn.  Taken from the top-corner of the intersection tile (which is 2x2 units)
-		float arcLength = turnRadius * 2f * Mathf.PI * totalTurnAngle / 360f; 
-		car.Engine.CurrentSpeed = arcLength / m_turnLength;
 	}
 
 	public override void Update(CarController car) {
-		Vector2 towardNextTrigger = (car.TurnDestination - (Vector2)car.transform.position);
-		float targetRot = Vector2.Angle (Vector2.right, towardNextTrigger);
-		if (towardNextTrigger.y < 0.0f) {
-			targetRot *= -1f;
-		}
-
-		float rot = Mathf.MoveTowardsAngle (car.transform.localEulerAngles.z, targetRot, 100f);
-		car.Engine.DegreesPerSecond = rot;
-
 		car.CheckForOtherCars();
 		car.Engine.UpdateCarPhysics ();
 

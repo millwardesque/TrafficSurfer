@@ -36,8 +36,21 @@ public class CarController : MonoBehaviour {
 		get { return m_drivingState != null ? m_drivingState.State : null; }
 	}
 
+	public float enginePower = 1f;
+	public float dragCoefficient = 0.426f;
+	public float brakingCoefficient = 0.5f;
+
+	bool m_collisionIsPossible = false;
+	public bool CollisionIsPossible {
+		get { return m_collisionIsPossible; }
+	}
+
 	void Awake() {
-		m_carEngine = new CarEngine (transform);
+		m_carEngine = new CarEngine (GetComponent<Rigidbody2D>());
+		m_carEngine.EnginePower = enginePower;
+		m_carEngine.DragCoefficient = dragCoefficient;
+		m_carEngine.BrakingCoefficient = brakingCoefficient;
+
 		m_drivingState = new DrivingStateMachine (this);
 	}
 
@@ -51,13 +64,22 @@ public class CarController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		m_drivingState.State.Update (this);
+	}
+
+	void Update() {
+		if (Input.GetKey (KeyCode.UpArrow)) {
+			m_drivingState.ReplaceState (new DrivingStateDriving ());
+		} else if (Input.GetKey (KeyCode.DownArrow)) {
+			m_drivingState.ReplaceState (new DrivingStateStopped ());
+		}
 	}
 
     public void CheckForOtherCars()
     {
         int results = Physics2D.RaycastNonAlloc(transform.position, transform.up, hits, stopDistance);
+		m_collisionIsPossible = false;
         for (int i = 0; i < results; ++i)
         {
             CarController car = hits[i].collider.GetComponent<CarController>();
@@ -66,8 +88,7 @@ public class CarController : MonoBehaviour {
                 float angle = Vector2.Angle(transform.up, car.transform.up);
                 if (angle <= 90f)
                 {
-                    m_carEngine.CurrentSpeed = 0f;
-                    break;
+					m_collisionIsPossible = true;
                 }
             }
         }
@@ -144,12 +165,10 @@ public class CarController : MonoBehaviour {
 	}
 
 	public void ResetCar() {
-		m_carEngine.MaxSpeed = Random.Range (m_carEngine.MaxSpeed - 1f, m_carEngine.MaxSpeed + 1f);
-		m_carEngine.MaxAcceleration = Random.Range (m_carEngine.MaxAcceleration - 1f, m_carEngine.MaxAcceleration + 1f);
 		Colourize ();
 
 		m_drivingState.ClearStates ();
-		m_drivingState.PushState (new DrivingStateDriving());
+		m_drivingState.PushState (new DrivingStateStopped());
 	}
 
 	void Colourize() {
@@ -164,13 +183,17 @@ public class CarController : MonoBehaviour {
 		GetComponent<SpriteRenderer>().material.SetInt("_IsColourized", 1);
 	}
 
+	public void StartDriving() {
+		m_drivingState.ReplaceState (new DrivingStateDriving());
+	}
+
 	public void StartTurn() {
 		m_drivingState.ReplaceState (new DrivingStateTurning());
 	}
 
 	public void FinishTurn(Transform finishLine) {
 		// Correct the remaining rotation to line up with the road.
-		m_carEngine.RotateTo(finishLine.transform.up);
+		RotateTo(finishLine.transform.up);
 
 		// Correct the lateral position of the car to line up with the center of the finish line.
 		Vector2 distance = finishLine.transform.position - transform.position;
@@ -179,5 +202,21 @@ public class CarController : MonoBehaviour {
 		transform.position += lateralOffset;
 
 		m_drivingState.ReplaceState (new DrivingStateDriving());
+	}
+
+	public void RotateTo(Vector2 direction) {
+		float angle = Vector2.Angle(transform.right, direction);
+		Vector3 cross = Vector3.Cross((Vector3)transform.right, (Vector3)direction);
+		if (cross.z < 0f) {
+			angle *= -1f;
+		}
+
+		RotateBy(angle);
+	}
+
+	public void RotateBy(float angle) {
+		Quaternion newRotation = transform.rotation;
+		newRotation.eulerAngles = new Vector3(0f, 0f, transform.rotation.eulerAngles.z + angle);
+		transform.rotation = newRotation;
 	}
 }
