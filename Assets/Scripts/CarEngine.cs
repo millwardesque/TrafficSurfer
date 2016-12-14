@@ -38,10 +38,10 @@ public class CarEngine {
 		set { m_currentBrake = Mathf.Clamp01 (value); }
 	}
 
-	float m_maxTireRotation = 20f;
+	float m_maxTireRotation = 45f;
 	public float MaxTireRotation {
 		get { return m_maxTireRotation; }
-		set { m_maxTireRotation = Mathf.Clamp (value, -90f, 90f); }	// Limit tire rotation to 90 degrees in either direction
+		set { m_maxTireRotation = Mathf.Clamp (value, 0, 90f); }	// Limit tire rotation to 90 degrees
 	}
 
 	float m_currentTireRotation = 0f;
@@ -89,9 +89,9 @@ public class CarEngine {
 		if (Mathf.Abs (CurrentTireRotation) < float.Epsilon) {
 			m_car.angularVelocity = 0f;
 		} else {
-			float radius = WheelbaseLength / Mathf.Sin (CurrentTireRotation);
+			float radius = WheelbaseLength / Mathf.Sin (CurrentTireRotation * Mathf.Deg2Rad);
 			float angularVelocityInRadians = m_car.velocity.magnitude / radius;
-			m_car.angularVelocity = angularVelocityInRadians * 180f / Mathf.PI;
+			m_car.angularVelocity = angularVelocityInRadians * Mathf.Rad2Deg;
 		}
 	}
 }

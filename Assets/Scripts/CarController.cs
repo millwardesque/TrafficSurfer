@@ -69,10 +69,18 @@ public class CarController : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKey (KeyCode.UpArrow)) {
+		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			m_drivingState.ReplaceState (new DrivingStateDriving ());
-		} else if (Input.GetKey (KeyCode.DownArrow)) {
+		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			m_drivingState.ReplaceState (new DrivingStateStopped ());
+		}
+
+		if (Input.GetKey (KeyCode.RightArrow)) {
+			m_carEngine.CurrentTireRotation = -m_carEngine.MaxTireRotation;
+		} else if (Input.GetKey (KeyCode.LeftArrow)) {
+			m_carEngine.CurrentTireRotation = m_carEngine.MaxTireRotation;
+		} else {
+			m_carEngine.CurrentTireRotation = 0f;
 		}
 	}
 
