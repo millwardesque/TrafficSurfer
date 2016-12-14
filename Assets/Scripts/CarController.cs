@@ -45,8 +45,13 @@ public class CarController : MonoBehaviour {
 		get { return m_collisionIsPossible; }
 	}
 
+
+	public Vector3 Heading {
+		get { return transform.right; }
+	}
+
 	void Awake() {
-		m_carEngine = new CarEngine (GetComponent<Rigidbody2D>());
+		m_carEngine = new CarEngine (this);
 		m_carEngine.EnginePower = enginePower;
 		m_carEngine.DragCoefficient = dragCoefficient;
 		m_carEngine.BrakingCoefficient = brakingCoefficient;

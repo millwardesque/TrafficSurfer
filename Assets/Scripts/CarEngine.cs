@@ -2,9 +2,10 @@
 using System.Collections;
 
 public class CarEngine {
-	Rigidbody2D m_car;
+	CarController m_car;
+	Rigidbody2D m_carRB;
 
-	float m_enginePower = 1f;
+	float m_enginePower = 40f;
 	public float EnginePower {
 		get { return m_enginePower; }
 		set { m_enginePower = Mathf.Clamp(value, 0f, value); }
@@ -20,7 +21,7 @@ public class CarEngine {
 		get { return 30f * m_dragCoefficient; }
 	}
 
-	float m_brakingCoefficient = 0.5f;
+	float m_brakingCoefficient = 0.3f;
 	public float BrakingCoefficient {
 		get { return m_brakingCoefficient; }
 		set { m_brakingCoefficient = Mathf.Clamp (value, 0f, value); }
@@ -57,41 +58,42 @@ public class CarEngine {
 	}
 
 	public float CurrentSpeed {
-		get { return m_car.velocity.magnitude; }
+		get { return m_carRB.velocity.magnitude; }
 	}
 
-	public CarEngine(Rigidbody2D car) {
+	public CarEngine(CarController car) {
 		m_car = car;
+		m_carRB = car.GetComponentInChildren<Rigidbody2D> ();
 	}
 
 	public void UpdateCarPhysics() {
-		bool isAtRest = Vector2.Dot (m_car.velocity, m_car.transform.right) < 0.1f;
-		Vector2 dragForce = -1f * DragCoefficient * m_car.velocity * m_car.velocity.magnitude;
-		Vector2 rollResistanceForce = -1f * RollResistanceCoefficient * m_car.velocity;
+		bool isAtRest = Vector2.Dot (m_carRB.velocity, m_car.Heading) < 0.1f;
+		Vector2 dragForce = -1f * DragCoefficient * m_carRB.velocity * m_carRB.velocity.magnitude;
+		Vector2 rollResistanceForce = -1f * RollResistanceCoefficient * m_carRB.velocity;
 
 		if (CurrentThrottle > Mathf.Epsilon) {
-			Vector2 tractionForce = CurrentThrottle * EnginePower * m_car.transform.right;
-			m_car.AddForce (tractionForce);
-			m_car.AddForce (dragForce);
-			m_car.AddForce (rollResistanceForce);
+			Vector2 tractionForce = CurrentThrottle * EnginePower * m_car.Heading;
+			m_carRB.AddForce (tractionForce);
+			m_carRB.AddForce (dragForce);
+			m_carRB.AddForce (rollResistanceForce);
 		}
 		else if (CurrentBrake > Mathf.Epsilon) {
 			if (!isAtRest) {
-				Vector2 brakingForce = CurrentBrake * -1f * BrakingCoefficient * m_car.transform.right;
-				m_car.AddForce (brakingForce);
-				m_car.AddForce (dragForce);
-				m_car.AddForce (rollResistanceForce);
+				Vector2 brakingForce = CurrentBrake * -1f * BrakingCoefficient * m_car.Heading;
+				m_carRB.AddForce (brakingForce);
+				m_carRB.AddForce (dragForce);
+				m_carRB.AddForce (rollResistanceForce);
 			} else {
-				m_car.velocity = Vector2.zero;
+				m_carRB.velocity = Vector2.zero;
 			}
 		}
 
 		if (Mathf.Abs (CurrentTireRotation) < float.Epsilon) {
-			m_car.angularVelocity = 0f;
+			m_carRB.angularVelocity = 0f;
 		} else {
 			float radius = WheelbaseLength / Mathf.Sin (CurrentTireRotation * Mathf.Deg2Rad);
-			float angularVelocityInRadians = m_car.velocity.magnitude / radius;
-			m_car.angularVelocity = angularVelocityInRadians * Mathf.Rad2Deg;
+			float angularVelocityInRadians = m_carRB.velocity.magnitude / radius;
+			m_carRB.angularVelocity = angularVelocityInRadians * Mathf.Rad2Deg;
 		}
 	}
 }

@@ -1430,7 +1430,7 @@ Prefab:
     - target: {fileID: 114000011175013838, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
         type: 2}
       propertyPath: enginePower
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114000011175013838, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
         type: 2}
@@ -1440,6 +1440,11 @@ Prefab:
     - target: {fileID: 50000012945898162, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
         type: 2}
       propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011175013838, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
+        type: 2}
+      propertyPath: brakingCoefficient
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

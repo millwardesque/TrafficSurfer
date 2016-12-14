@@ -84,7 +84,7 @@ public class DrivingStateDriving : DrivingState {
 	}
 
 	public override void Update(CarController car) {
-		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
+		Debug.DrawLine(car.transform.position, car.transform.position + car.Heading * car.stopDistance, Color.red);
 
 		car.CheckForOtherCars();
 		if (car.CollisionIsPossible) {
@@ -105,7 +105,7 @@ public class DrivingStateStopped : DrivingState {
 	}
 
 	public override void Update(CarController car) {
-		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
+		Debug.DrawLine(car.transform.position, car.transform.position + car.Heading * car.stopDistance, Color.red);
 
 		car.CheckForOtherCars();
 		if (car.CollisionIsPossible) {
@@ -127,8 +127,8 @@ public class DrivingStateTurning : DrivingState {
 		car.Engine.CurrentBrake = 0f;
 
 		Vector3 turnDirection = ((Vector3)car.TurnDestination - car.transform.position).normalized;
-		float totalTurnAngle = Vector3.Angle(car.transform.right, turnDirection);
-		Vector3 cross = Vector3.Cross(car.transform.right, turnDirection);
+		float totalTurnAngle = Vector3.Angle(car.Heading, turnDirection);
+		Vector3 cross = Vector3.Cross(car.Heading, turnDirection);
 		if (cross.z >= 0f) {
 			car.Engine.CurrentTireRotation = car.Engine.MaxTireRotation;
 		} else {
@@ -140,7 +140,7 @@ public class DrivingStateTurning : DrivingState {
 		car.CheckForOtherCars();
 		car.Engine.UpdateCarPhysics ();
 
-		Debug.DrawLine(car.transform.position, car.transform.position + car.transform.right * car.stopDistance, Color.red);
+		Debug.DrawLine(car.transform.position, car.transform.position + car.Heading * car.stopDistance, Color.red);
 	}
 
 	public override void Exit(CarController car) {
