@@ -1387,11 +1387,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4000013625215042, guid: 06f68b3edeaad48909d1dfa2972e2a2a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -3
+      value: 2.71
       objectReference: {fileID: 0}
     - target: {fileID: 4000013625215042, guid: 06f68b3edeaad48909d1dfa2972e2a2a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4.35
+      value: -0.414
       objectReference: {fileID: 0}
     - target: {fileID: 4000013625215042, guid: 06f68b3edeaad48909d1dfa2972e2a2a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1417,36 +1417,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 50000012945898162, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
-        type: 2}
-      propertyPath: m_BodyType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 50000012945898162, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
-        type: 2}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000011175013838, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
-        type: 2}
-      propertyPath: enginePower
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000011175013838, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
-        type: 2}
-      propertyPath: dragCoefficient
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 50000012945898162, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
-        type: 2}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000011175013838, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
-        type: 2}
-      propertyPath: brakingCoefficient
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 06f68b3edeaad48909d1dfa2972e2a2a, type: 2}
   m_IsPrefabParent: 0
@@ -1458,6 +1428,11 @@ GameObject:
 --- !u!1 &1235022267 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000012468647658, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1235022265}
+--- !u!4 &1235022270 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4000013625215042, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
     type: 2}
   m_PrefabInternal: {fileID: 1235022265}
 --- !u!1001 &1268939632
@@ -1784,6 +1759,7 @@ GameObject:
   - component: {fileID: 1679405718}
   - component: {fileID: 1679405717}
   - component: {fileID: 1679405716}
+  - component: {fileID: 1679405721}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1859,6 +1835,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1679405721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1679405715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8c96e2cdc154e848a3d9fe62464d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraTargets:
+  - TargetTransform: {fileID: 1235022270}
+    TargetInfluenceH: 1
+    TargetInfluenceV: 1
+    TargetOffset: {x: 0, y: 0}
+  CenterTargetOnStart: 1
+  Axis: 0
+  UpdateType: 0
+  FollowHorizontal: 1
+  HorizontalFollowSmoothness: 0.15
+  FollowVertical: 1
+  VerticalFollowSmoothness: 0.15
+  OverallOffset: {x: 0, y: 0}
+  ZoomWithFOV: 0
+  CurrentZoomTriggerID: 0
+  IsCameraPositionLeftBounded: 0
+  IsCameraPositionRightBounded: 0
+  IsCameraPositionTopBounded: 0
+  IsCameraPositionBottomBounded: 0
+  GameCamera: {fileID: 1679405719}
 --- !u!1 &1700956809 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 118732, guid: 7fc767e101821415194c6e80b808fac0, type: 2}

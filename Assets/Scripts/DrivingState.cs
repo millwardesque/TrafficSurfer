@@ -126,13 +126,26 @@ public class DrivingStateTurning : DrivingState {
 		car.Engine.CurrentThrottle = 1f;
 		car.Engine.CurrentBrake = 0f;
 
+		// Calculate the angular velocity needed to complete the turn.
+		// FPos(x,y) = (AngVel(x,y)/2)*T^2 + LinVel(x,y)*T + IPos(x,y)
+		// car.TurnDestination = (AngVel(x,y)/2) * (m_turnLength^2) + car.Engine.CurrentVelocity * m_turnLength + car.transform.position;
+		// (AngVel(x,y)/2) * (m_turnLength^2) = -car.TurnDestination + car.Engine.CurrentVelocity * m_turnLength + car.transform.position;
+		// AngVel(x, y) = 2f * (-car.TurnDestination + car.Engine.CurrentVelocity * m_turnLength + car.transform.position) / (m_turnLength^2)
+		float angularVelocityInRadians = 2f * (-car.TurnDestination + car.Engine.CurrentVelocity * m_turnLength + (Vector2)car.transform.position).magnitude / (m_turnLength * m_turnLength);
+
+		// Calculate the wheel angle needed to reach the required. angular velocity.
+		// car.Engine.CurrentSpeed / radius = angularVelocityInRadians
+		// radius = car.Engine.CurrentSpeed / angularVelocityInRadians
+		// Mathf.Sin (wheelAngle * Mathf.Deg2Rad) = WheelbaseLength / (car.Engine.CurrentSpeed / angularVelocityInRadians)
+		// wheelAngle = Arcsin(WheelbaseLength / (car.Engine.CurrentSpeed / angularVelocityInRadians)) * Mathf.Rad2Deg
+		float wheelAngle = Mathf.Asin(car.Engine.WheelbaseLength / (car.Engine.CurrentSpeed / angularVelocityInRadians)) * Mathf.Rad2Deg;
+
 		Vector3 turnDirection = ((Vector3)car.TurnDestination - car.transform.position).normalized;
-		float totalTurnAngle = Vector3.Angle(car.Heading, turnDirection);
 		Vector3 cross = Vector3.Cross(car.Heading, turnDirection);
 		if (cross.z >= 0f) {
-			car.Engine.CurrentTireRotation = car.Engine.MaxTireRotation;
+			car.Engine.CurrentTireRotation = wheelAngle;
 		} else {
-			car.Engine.CurrentTireRotation = -1f * car.Engine.MaxTireRotation;
+			car.Engine.CurrentTireRotation = -wheelAngle;
 		}
 	}
 

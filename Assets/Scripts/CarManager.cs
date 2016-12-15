@@ -64,7 +64,7 @@ public class CarManager : MonoBehaviour {
 				newCar1.carData = carTemplates [carType];
 				newCar1.name = "Car " + generationNumber + "." + carCount;
 				newCar1.transform.SetParent(transform);
-				newCar1.transform.Rotate(new Vector3(0f, 0f, -90f + roads[i].transform.rotation.eulerAngles.z));
+				newCar1.transform.Rotate(new Vector3(0f, 0f, roads[i].transform.rotation.eulerAngles.z));
 
 				Sprite car1Sprite = newCar1.GetComponent<SpriteRenderer>().sprite;
 				float spriteWidthOffset = car1Sprite.rect.width / 1.5f / car1Sprite.pixelsPerUnit;
@@ -87,8 +87,8 @@ public class CarManager : MonoBehaviour {
 				newCar2.carData = carTemplates [carType];
 				newCar2.name = "Car " + generationNumber + "." + carCount;
 				newCar2.transform.SetParent(transform);
-				newCar2.transform.Rotate(new Vector3(0f, 0f, -180f - 90f + roads[i].transform.rotation.eulerAngles.z));
-				
+				newCar2.transform.Rotate(new Vector3(0f, 0f, -180f + roads[i].transform.rotation.eulerAngles.z));
+
 				Sprite car2Sprite = newCar2.GetComponent<SpriteRenderer>().sprite;
 				float spriteWidthOffset = car2Sprite.rect.width / 1.5f / car2Sprite.pixelsPerUnit;
 				newCar2.transform.position = roads[i].transform.position + newCar2.transform.right * spriteWidthOffset;

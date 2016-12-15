@@ -61,6 +61,10 @@ public class CarEngine {
 		get { return m_carRB.velocity.magnitude; }
 	}
 
+	public Vector2 CurrentVelocity {
+		get { return m_carRB.velocity; }
+	}
+
 	public CarEngine(CarController car) {
 		m_car = car;
 		m_carRB = car.GetComponentInChildren<Rigidbody2D> ();

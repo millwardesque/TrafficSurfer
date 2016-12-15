@@ -79,14 +79,6 @@ public class CarController : MonoBehaviour {
 		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			m_drivingState.ReplaceState (new DrivingStateStopped ());
 		}
-
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			m_carEngine.CurrentTireRotation = -m_carEngine.MaxTireRotation;
-		} else if (Input.GetKey (KeyCode.LeftArrow)) {
-			m_carEngine.CurrentTireRotation = m_carEngine.MaxTireRotation;
-		} else {
-			m_carEngine.CurrentTireRotation = 0f;
-		}
 	}
 
     public void CheckForOtherCars()

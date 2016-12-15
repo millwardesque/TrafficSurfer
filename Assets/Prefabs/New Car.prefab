@@ -143,7 +143,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012468647658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.7798934, y: -4.35, z: 0}
+  m_LocalPosition: {x: -3, y: -4.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000012953866228}
@@ -331,9 +331,9 @@ MonoBehaviour:
   - {r: 0.9233266, g: 1, b: 0.20588237, a: 1}
   turnInstructions: 
   turnIndicator: {fileID: 114000013087306804}
-  enginePower: 40
+  enginePower: 20
   dragCoefficient: 0.3
-  brakingCoefficient: 0.3
+  brakingCoefficient: 0
 --- !u!114 &114000013087306804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -403,7 +403,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1890524629
+  randomSeed: -988491873
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3011,7 +3011,7 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -3083,7 +3083,7 @@ SpriteRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 06d5f8e637e8d400587049ccaaaa8718, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3118,7 +3118,7 @@ SpriteRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 06d5f8e637e8d400587049ccaaaa8718, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
