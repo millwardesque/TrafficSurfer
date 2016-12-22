@@ -5,15 +5,15 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 412968}
-  - 114: {fileID: 11458110}
-  - 82: {fileID: 8253428}
-  - 114: {fileID: 114000013856161846}
-  - 114: {fileID: 114000010343565744}
-  - 114: {fileID: 114000011612832314}
-  - 114: {fileID: 114000012455897490}
+  - component: {fileID: 412968}
+  - component: {fileID: 11458110}
+  - component: {fileID: 8253428}
+  - component: {fileID: 114000013856161846}
+  - component: {fileID: 114000010343565744}
+  - component: {fileID: 114000011612832314}
+  - component: {fileID: 114000012455897490}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -30,12 +30,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000011387362804}
   - {fileID: 4000012943726044}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8253428
 AudioSource:
   m_ObjectHideFlags: 1
@@ -52,6 +52,7 @@ AudioSource:
   Loop: 1
   Mute: 0
   Spatialize: 0
+  SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -64,12 +65,14 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -80,7 +83,8 @@ AudioSource:
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -91,7 +95,8 @@ AudioSource:
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -102,7 +107,8 @@ AudioSource:
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -140,11 +146,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011387362804}
-  - 82: {fileID: 82000012143810628}
-  - 114: {fileID: 114000011299410686}
+  - component: {fileID: 4000011387362804}
+  - component: {fileID: 82000012143810628}
+  - component: {fileID: 114000011299410686}
   m_Layer: 0
   m_Name: Sound FX Manager
   m_TagString: Untagged
@@ -157,10 +163,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012943726044}
-  - 114: {fileID: 114000010794641204}
+  - component: {fileID: 4000012943726044}
+  - component: {fileID: 114000010794641204}
   m_Layer: 0
   m_Name: Objective Manager
   m_TagString: Untagged
@@ -177,10 +183,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 412968}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012943726044
 Transform:
   m_ObjectHideFlags: 1
@@ -190,10 +196,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 412968}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &82000012143810628
 AudioSource:
   m_ObjectHideFlags: 1
@@ -210,6 +216,7 @@ AudioSource:
   Loop: 0
   Mute: 0
   Spatialize: 0
+  SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -222,12 +229,14 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -238,7 +247,8 @@ AudioSource:
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -249,7 +259,8 @@ AudioSource:
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -260,7 +271,8 @@ AudioSource:
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -327,9 +339,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carPrefab: {fileID: 11474168, guid: 4fde3b217e0fc422a9d2dd696f132cf7, type: 2}
   carTemplates:
-  - {fileID: 11400000, guid: 9fc6035bbb1724e818ecf8039a8a3567, type: 2}
   - {fileID: 11400000, guid: c2862b63e08bd4603b5468cdd5c65ee5, type: 2}
-  maxCars: 50
+  maxCars: 20
   generationNumber: 0
 --- !u!114 &114000013856161846
 MonoBehaviour:

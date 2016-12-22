@@ -67,11 +67,12 @@ public class CarManager : MonoBehaviour {
 				newCar1.transform.Rotate(new Vector3(0f, 0f, roads[i].transform.rotation.eulerAngles.z));
 
 				Sprite car1Sprite = newCar1.GetComponent<SpriteRenderer>().sprite;
-				float spriteWidthOffset = car1Sprite.rect.width / 1.5f / car1Sprite.pixelsPerUnit;
-				newCar1.transform.position = roads[i].transform.position + newCar1.transform.right * spriteWidthOffset;
-				newCar1.transform.position += newCar1.transform.up * Random.Range(-0.25f, 0.25f);
+				float spriteWidthOffset = car1Sprite.rect.width / 3f / car1Sprite.pixelsPerUnit;
+				newCar1.transform.position = roads[i].transform.position - newCar1.transform.up * spriteWidthOffset;
+				newCar1.transform.position += newCar1.transform.right * Random.Range(-0.25f, 0.25f);
 
 				newCar1.ResetCar();
+				newCar1.StartDriving ();
 				m_cars.Add(newCar1);
 
 				carCount++;
@@ -90,11 +91,12 @@ public class CarManager : MonoBehaviour {
 				newCar2.transform.Rotate(new Vector3(0f, 0f, -180f + roads[i].transform.rotation.eulerAngles.z));
 
 				Sprite car2Sprite = newCar2.GetComponent<SpriteRenderer>().sprite;
-				float spriteWidthOffset = car2Sprite.rect.width / 1.5f / car2Sprite.pixelsPerUnit;
-				newCar2.transform.position = roads[i].transform.position + newCar2.transform.right * spriteWidthOffset;
-				newCar2.transform.position += newCar2.transform.up * Random.Range(-0.25f, 0.25f);
+				float spriteWidthOffset = car2Sprite.rect.width / 3f / car2Sprite.pixelsPerUnit;
+				newCar2.transform.position = roads[i].transform.position - newCar2.transform.up * spriteWidthOffset;
+				newCar2.transform.position += newCar2.transform.right * Random.Range(-0.25f, 0.25f);
 
 				newCar2.ResetCar();
+				newCar2.StartDriving ();
 				m_cars.Add(newCar2);
 
 				carCount++;

@@ -31,6 +31,11 @@ public class CarController : MonoBehaviour {
 		get { return turnDestination; }
 	}
 
+	Vector2 m_targetHeading;
+	public Vector2 TargetHeading {
+		get { return m_targetHeading; }
+	}
+
 	DrivingStateMachine m_drivingState;
 	public DrivingState State {
 		get { return m_drivingState != null ? m_drivingState.State : null; }
@@ -74,10 +79,19 @@ public class CarController : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+		/*if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			m_targetHeading = this.Heading;
 			m_drivingState.ReplaceState (new DrivingStateDriving ());
 		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			m_drivingState.ReplaceState (new DrivingStateStopped ());
+		} */
+	}
+
+	void OnTriggerEnter2D(Collider2D col) {
+		RoadLaneTrigger trigger = col.GetComponent<RoadLaneTrigger> ();
+		if (trigger != null && trigger.type == RoadLaneTriggerType.Entry) {
+			m_targetHeading = (trigger.Lane.EndPoint - (Vector2)transform.position).normalized;
+			Debug.Log (name + " entered road lane " + trigger.Lane.Road.name + ":" + trigger.Lane.name + " => " + m_targetHeading);
 		}
 	}
 
@@ -206,6 +220,7 @@ public class CarController : MonoBehaviour {
 		Vector3 lateralOffset = new Vector3(lateralDistance.x * distance.x, lateralDistance.y * distance.y, 0f);
 		transform.position += lateralOffset;
 
+		m_targetHeading = this.Heading;
 		m_drivingState.ReplaceState (new DrivingStateDriving());
 	}
 

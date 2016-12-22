@@ -109,9 +109,9 @@ public class DrivingStateStopped : DrivingState {
 
 		car.CheckForOtherCars();
 		if (car.CollisionIsPossible) {
-			car.StartDriving ();
-		} else {
 			car.Engine.UpdateCarPhysics ();
+		} else {
+			car.StartDriving ();
 		}
 	}
 }
@@ -158,5 +158,68 @@ public class DrivingStateTurning : DrivingState {
 
 	public override void Exit(CarController car) {
 		car.turnIndicator.DoneTurn();
+	}
+}
+
+/**
+ * State for when the car is steering towards a heading.
+ */
+public class DrivingStateDrivingToHeading : DrivingState {
+	Vector2 m_targetHeading;
+	float m_turnDuration = 0.5f;
+
+	public override void Enter(CarController car) {
+		car.Engine.CurrentThrottle = 1f;
+		car.Engine.CurrentBrake = 0f;
+
+		m_targetHeading = car.TargetHeading;
+		CalculateUpdatedHeading (car);
+	}
+
+	public override void Update(CarController car) {
+		car.CheckForOtherCars();
+		if (car.CollisionIsPossible) {
+			car.StopCar ();
+		} else {
+			// Adjust tire angle to turn if necessary.
+			if (m_targetHeading != car.TargetHeading) {
+				m_targetHeading = car.TargetHeading;
+			}
+
+			CalculateUpdatedHeading (car);
+			car.Engine.UpdateCarPhysics ();
+		}
+		Debug.DrawLine(car.transform.position, car.transform.position + car.Heading * car.stopDistance, Color.red);
+	}
+
+	void CalculateUpdatedHeading(CarController car) {
+		// Don't attempt to turn if speed is zero.
+		if (car.Engine.CurrentSpeed < float.Epsilon) {
+			car.Engine.CurrentTireRotation = 0f;
+			return;
+		}
+
+		// Calculate the angular velocity needed to reach the target heading
+		// FPos(x,y) = (AngVel(x,y)/2)*T^2 + LinVel(x,y)*T + IPos(x,y)
+		// car.TurnDestination = (AngVel(x,y)/2) * (m_turnLength^2) + car.Engine.CurrentVelocity * m_turnLength + car.transform.position;
+		// (AngVel(x,y)/2) * (m_turnLength^2) = -car.TurnDestination + car.Engine.CurrentVelocity * m_turnLength + car.transform.position;
+		// AngVel(x, y) = 2f * (-car.TurnDestination + car.Engine.CurrentVelocity * m_turnLength + car.transform.position) / (m_turnLength^2)
+		float angularVelocityInRadians = 2f * (-m_targetHeading + car.Engine.CurrentVelocity * m_turnDuration + (Vector2)car.transform.position).magnitude / (m_turnDuration * m_turnDuration);
+
+		// Calculate the wheel angle needed to reach the required. angular velocity.
+		// car.Engine.CurrentSpeed / radius = angularVelocityInRadians
+		// radius = car.Engine.CurrentSpeed / angularVelocityInRadians
+		// Mathf.Sin (wheelAngle * Mathf.Deg2Rad) = WheelbaseLength / (car.Engine.CurrentSpeed / angularVelocityInRadians)
+		// wheelAngle = Arcsin(WheelbaseLength / (car.Engine.CurrentSpeed / angularVelocityInRadians)) * Mathf.Rad2Deg
+		float wheelAngle = Mathf.Asin(car.Engine.WheelbaseLength / (car.Engine.CurrentSpeed / angularVelocityInRadians)) * Mathf.Rad2Deg;
+		Vector3 headingDirection = ((Vector3)m_targetHeading - car.transform.position).normalized;
+		Vector3 cross = Vector3.Cross(car.Heading, headingDirection);
+		if (cross.z >= 0f) {
+			car.Engine.CurrentTireRotation = wheelAngle;
+		} else {
+			car.Engine.CurrentTireRotation = -wheelAngle;
+		}
+
+		Debug.Log (string.Format ("Wbl: {0}, Cs: {1}, Avr: {2}, Asin({3})", car.Engine.WheelbaseLength, car.Engine.CurrentSpeed, angularVelocityInRadians, car.Engine.WheelbaseLength / (car.Engine.CurrentSpeed / angularVelocityInRadians)));
 	}
 }

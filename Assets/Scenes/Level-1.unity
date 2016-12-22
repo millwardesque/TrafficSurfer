@@ -1,15 +1,15 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
-SceneSettings:
+OcclusionCullingSettings:
   m_ObjectHideFlags: 0
-  m_PVSData: 
-  m_PVSObjectsArray: []
-  m_PVSPortalsArray: []
+  serializedVersion: 2
   m_OcclusionBakeSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -79,25 +79,26 @@ NavMeshSettings:
   m_ObjectHideFlags: 0
   m_BuildSettings:
     serializedVersion: 2
+    agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
-    accuratePlacement: 0
     minRegionArea: 2
-    cellSize: 0.16666667
     manualCellSize: 0
+    cellSize: 0.16666667
+    accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &19103840
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 19103841}
+  - component: {fileID: 19103841}
   m_Layer: 0
   m_Name: Roads
   m_TagString: Untagged
@@ -114,7 +115,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1707590331}
   - {fileID: 634191226}
@@ -219,6 +219,7 @@ Transform:
   - {fileID: 46433418}
   m_Father: {fileID: 0}
   m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &20787661
 Prefab:
   m_ObjectHideFlags: 0
@@ -997,12 +998,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 137780550}
-  - 114: {fileID: 137780549}
-  - 114: {fileID: 137780548}
-  - 114: {fileID: 137780547}
+  - component: {fileID: 137780550}
+  - component: {fileID: 137780549}
+  - component: {fileID: 137780548}
+  - component: {fileID: 137780547}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1063,10 +1064,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &142746017
 Prefab:
   m_ObjectHideFlags: 0
@@ -1230,9 +1231,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 208155019}
+  - component: {fileID: 208155019}
   m_Layer: 0
   m_Name: Paths and walkways
   m_TagString: Untagged
@@ -1249,7 +1250,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1462873184}
   - {fileID: 342501485}
@@ -1289,6 +1289,7 @@ Transform:
   - {fileID: 1542877082}
   m_Father: {fileID: 0}
   m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &219336345
 Prefab:
   m_ObjectHideFlags: 0
@@ -3510,6 +3511,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114000012455897490, guid: afe72580fc030463dab8c1b61e63b38c,
+        type: 2}
+      propertyPath: carTemplates.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 412968, guid: afe72580fc030463dab8c1b61e63b38c, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3546,6 +3552,29 @@ Prefab:
       propertyPath: playerStart
       value: 
       objectReference: {fileID: 1531133675}
+    - target: {fileID: 114000012455897490, guid: afe72580fc030463dab8c1b61e63b38c,
+        type: 2}
+      propertyPath: carPrefab
+      value: 
+      objectReference: {fileID: 114000011175013838, guid: 06f68b3edeaad48909d1dfa2972e2a2a,
+        type: 2}
+    - target: {fileID: 114000012455897490, guid: afe72580fc030463dab8c1b61e63b38c,
+        type: 2}
+      propertyPath: carTemplates.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b5ea6766a765c4a23bbbb2afbf28f814,
+        type: 2}
+    - target: {fileID: 114000012455897490, guid: afe72580fc030463dab8c1b61e63b38c,
+        type: 2}
+      propertyPath: carTemplates.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: c2862b63e08bd4603b5468cdd5c65ee5,
+        type: 2}
+    - target: {fileID: 114000012455897490, guid: afe72580fc030463dab8c1b61e63b38c,
+        type: 2}
+      propertyPath: maxCars
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: afe72580fc030463dab8c1b61e63b38c, type: 2}
   m_IsPrefabParent: 0
@@ -4951,10 +4980,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 992587072}
-  - 212: {fileID: 992587071}
+  - component: {fileID: 992587072}
+  - component: {fileID: 992587071}
   m_Layer: 9
   m_Name: Clouds
   m_TagString: Untagged
@@ -4976,7 +5005,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -4984,7 +5015,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -5004,10 +5035,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.17, y: 2.89, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &996127607
 Prefab:
   m_ObjectHideFlags: 0
@@ -7700,12 +7731,12 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 1486925779}
-  - 33: {fileID: 1486925778}
-  - 23: {fileID: 1486925777}
-  - 114: {fileID: 1486925776}
+  - component: {fileID: 1486925779}
+  - component: {fileID: 1486925778}
+  - component: {fileID: 1486925777}
+  - component: {fileID: 1486925776}
   m_Layer: 0
   m_Name: '##SnazzyGrid##(Clone)'
   m_TagString: EditorOnly
@@ -7877,7 +7908,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 10e50d5752fc03340bcf70a051181eb8, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -7885,7 +7918,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -7908,10 +7941,10 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 8, y: 8, z: 8}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1489914768
 Prefab:
   m_ObjectHideFlags: 0
@@ -8141,9 +8174,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 1531133675}
+  - component: {fileID: 1531133675}
   m_Layer: 0
   m_Name: Player Start
   m_TagString: Untagged
@@ -8160,10 +8193,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1532238162
 Prefab:
   m_ObjectHideFlags: 0
@@ -9318,10 +9351,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 1769246773}
-  - 212: {fileID: 1769246772}
+  - component: {fileID: 1769246773}
+  - component: {fileID: 1769246772}
   m_Layer: 8
   m_Name: Map
   m_TagString: Untagged
@@ -9343,7 +9376,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -9351,7 +9386,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -9371,10 +9406,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.17, y: 2.89, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1788593488
 Prefab:
   m_ObjectHideFlags: 0
@@ -10247,11 +10282,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2096264, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
       propertyPath: orthographic size
-      value: 8.197917
+      value: 4.285714
       objectReference: {fileID: 0}
     - target: {fileID: 2048880, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
       propertyPath: orthographic size
-      value: 8.197917
+      value: 4.285714
+      objectReference: {fileID: 0}
+    - target: {fileID: 2085516, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
+      propertyPath: orthographic size
+      value: 4.285714
+      objectReference: {fileID: 0}
+    - target: {fileID: 2087748, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
+      propertyPath: orthographic size
+      value: 4.285714
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea2085dcd5ade43838dfe5f6f852d6b9, type: 2}
@@ -10365,9 +10408,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 2008697726}
+  - component: {fileID: 2008697726}
   m_Layer: 0
   m_Name: Gaps
   m_TagString: Untagged
@@ -10384,7 +10427,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1708875355}
   - {fileID: 1668603921}
@@ -10416,6 +10458,7 @@ Transform:
   - {fileID: 1006236069}
   m_Father: {fileID: 0}
   m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2010439471 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 172274, guid: eae9ab29d45ed4ba6a8195863fa4c9c5, type: 2}
@@ -10480,12 +10523,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 2026726158}
-  - 223: {fileID: 2026726161}
-  - 114: {fileID: 2026726160}
-  - 114: {fileID: 2026726159}
+  - component: {fileID: 2026726158}
+  - component: {fileID: 2026726161}
+  - component: {fileID: 2026726160}
+  - component: {fileID: 2026726159}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -10502,7 +10545,6 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 873301944}
   - {fileID: 42348742}
@@ -10513,6 +10555,7 @@ RectTransform:
   - {fileID: 345879407}
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}

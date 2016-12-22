@@ -54,7 +54,7 @@ public class CarEngine {
 	float m_wheelbaseLength = 1f;
 	public float WheelbaseLength {
 		get { return m_wheelbaseLength; }
-		set { m_wheelbaseLength = Mathf.Clamp (value, 0f, value); }
+		set { m_wheelbaseLength = Mathf.Clamp (value, 0.1f, value); }
 	}
 
 	public float CurrentSpeed {
@@ -97,6 +97,7 @@ public class CarEngine {
 		} else {
 			float radius = WheelbaseLength / Mathf.Sin (CurrentTireRotation * Mathf.Deg2Rad);
 			float angularVelocityInRadians = m_carRB.velocity.magnitude / radius;
+
 			m_carRB.angularVelocity = angularVelocityInRadians * Mathf.Rad2Deg;
 		}
 	}
